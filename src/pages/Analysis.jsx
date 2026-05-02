@@ -44,7 +44,7 @@ export default function Analysis() {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 pt-20 pb-8" style={{ background: 'linear-gradient(160deg, #f8faff 0%, #eef4ff 100%)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           {/* Mode tabs */}
           <div className="inline-flex bg-white rounded-2xl p-1.5 shadow-card mb-10">
             {['upload', 'camera'].map((m) => (

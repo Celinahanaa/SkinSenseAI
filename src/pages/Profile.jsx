@@ -60,7 +60,7 @@ export default function Profile() {
                 <h2 className="font-bold text-gray-900 text-lg">{user.name}</h2>
                 <p className="text-sm text-gray-500">{user.email}</p>
                 <p className="text-xs text-gray-400 mt-1">Member sejak {user.memberSince}</p>
-                <button className="btn-primary w-full mt-5 py-2.5 rounded-xl text-sm tracking-widest">
+                <button onClick={() => navigate('/profile/edit')} className="btn-primary w-full mt-5 py-2.5 rounded-xl text-sm tracking-widest">
                   EDIT
                 </button>
               </div>

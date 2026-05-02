@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
+import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -10,6 +11,12 @@ import Analysis from './pages/Analysis';
 import Result from './pages/Result';
 import History from './pages/History';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
+
+function RootRoute() {
+  const { user } = useAuth();
+  return user ? <Navigate to="/dashboard" /> : <LandingPage />;
+}
 
 function Layout({ children }) {
   return (
@@ -25,13 +32,15 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          <Route path="/" element={<RootRoute />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/dashboard" element={<Layout><ProtectedRoute><Home /></ProtectedRoute></Layout>} />
           <Route path="/analysis" element={<Layout><ProtectedRoute><Analysis /></ProtectedRoute></Layout>} />
           <Route path="/result" element={<Layout><ProtectedRoute><Result /></ProtectedRoute></Layout>} />
           <Route path="/history" element={<Layout><ProtectedRoute><History /></ProtectedRoute></Layout>} />
           <Route path="/profile" element={<Layout><ProtectedRoute><Profile /></ProtectedRoute></Layout>} />
+          <Route path="/profile/edit" element={<Layout><ProtectedRoute><EditProfile /></ProtectedRoute></Layout>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

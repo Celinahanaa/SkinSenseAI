@@ -26,7 +26,7 @@ export default function History() {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 pt-20 pb-8" style={{ background: 'linear-gradient(160deg, #f8faff 0%, #eef4ff 100%)' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
           {/* Decorative dots */}
           <div className="absolute top-8 right-4 opacity-30">
             {[0,1,2,3,4].map(r => (

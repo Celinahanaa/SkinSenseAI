@@ -24,9 +24,9 @@ const mockResult = {
 
 const badgeColor = {
   'ESSENTIAL': 'bg-gray-900 text-white',
-  'TARGETED': 'bg-gray-700 text-white',
-  'BARRIER REPAIR': 'bg-blue-800 text-white',
-  'MAINTENANCE': 'bg-gray-500 text-white',
+  'TARGETED': 'bg-gray-900 text-white',
+  'BARRIER REPAIR': 'bg-gray-900 text-white',
+  'MAINTENANCE': 'bg-gray-900 text-white',
 };
 
 function ProgressBar({ value, color }) {
@@ -66,9 +66,9 @@ export default function Result() {
           <h1 className="text-3xl font-bold text-center text-blue-900 mb-8">Type of Your Skin</h1>
 
           {/* Main result grid */}
-          <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          <div className="grid lg:grid-cols-2 gap-6 mb-8 items-stretch">
             {/* Photo */}
-            <div className="relative rounded-2xl overflow-hidden bg-gray-200 aspect-[4/3]">
+            <div className="relative rounded-2xl overflow-hidden bg-gray-200 h-full">
               <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300">
                 <div className="text-center">
                   <div className="text-6xl mb-3">👤</div>
@@ -94,26 +94,30 @@ export default function Result() {
             </div>
 
             {/* Analysis card */}
-            <div className="bg-white rounded-2xl shadow-card p-6">
-              <p className="text-gray-500 text-sm mb-1">Tipe Kulit</p>
-              <div className="flex justify-between items-start mb-4">
-                <h2 className="text-3xl font-bold text-amber-600">{mockResult.skinType}</h2>
-                <div className="text-center">
+            <div className="bg-white rounded-2xl shadow-card p-6 h-full">
+              <div className="flex justify-between items-end mb-4">
+                
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Tipe Kulit</p>
+                  <h2 className="text-3xl font-black text-amber-500 tracking-wide mb-4">{mockResult.skinType}</h2>
+                <div className="flex flex-wrap gap-2">
+                  {mockResult.tags.map((tag, i) => (
+                    <span key={i} className={`text-xs font-semibold px-3 py-1 rounded-full ${mockResult.tagColors[i]}`}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                </div>
+                
+                <div className="flex flex-col items-center gap-1">
                   <div className="w-16 h-16 rounded-full border-4 border-amber-200 flex items-center justify-center">
                     <span className="text-2xl font-bold text-gray-900">{mockResult.score}</span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">/100</p>
+                  <p className="text-xs text-gray-400 font-medium text-center mt-2">SKOR KULIT</p>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 mb-2">
-                {mockResult.tags.map((tag, i) => (
-                  <span key={i} className={`text-xs font-semibold px-3 py-1 rounded-full ${mockResult.tagColors[i]}`}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <p className="text-xs text-gray-400 text-right mb-5">SKOR KESEHATAN KULIT</p>
+              <hr className="border-gray-400 my-4" />
 
               {/* Metrics */}
               <div className="space-y-3">
