@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f8faff;
+    color: #1a1a2e;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-blue-800 text-white font-semibold px-6 py-3 rounded-xl hover:bg-blue-900 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer;
+  }
+  .btn-outline {
+    @apply border-2 border-gray-200 bg-white text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-blue-800 hover:text-blue-800 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer;
+  }
+  .card {
+    @apply bg-white rounded-2xl p-6;
+    box-shadow: 0 2px 20px rgba(30, 58, 138, 0.08);
+  }
+  .input-field {
+    @apply w-full border border-gray-200 rounded-xl px-4 py-3 pl-11 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-600 transition-all bg-gray-50 text-sm;
+  }
+  .nav-link {
+    @apply text-gray-600 hover:text-blue-800 font-medium text-sm transition-colors cursor-pointer;
+  }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scanLine {
+  0%   { top: 0%; }
+  100% { top: 95%; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 8s linear infinite; }
+.scan-line { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #3b5fc0, transparent); animation: scanLine 1.8s linear infinite; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
