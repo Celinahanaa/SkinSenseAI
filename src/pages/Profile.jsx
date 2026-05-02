@@ -17,6 +17,7 @@ const routine = {
   ],
   evening: [
     { name: 'Retinol 0.5% Night Cream', sub: 'Alternate days', done: false, icon: '🌙' },
+    { name: 'Retinol 0.5% Night Cream', sub: 'Alternate days', done: false, icon: '🌙' },
   ],
 };
 
@@ -46,12 +47,12 @@ export default function Profile() {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 pt-20 pb-8" style={{ background: 'linear-gradient(160deg, #f8faff 0%, #eef4ff 100%)' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-4xl font-bold text-blue-800 mb-8">Profil Pengguna</h1>
 
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-6 items-stretch mb-6">
             {/* Left col */}
-            <div className="space-y-5">
+            <div className="grid grid-rows-[auto_1fr] gap-5">
               {/* User info card */}
               <div className="card text-center">
                 <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -64,7 +65,7 @@ export default function Profile() {
                   EDIT
                 </button>
               </div>
-
+              
               {/* Skin metrics */}
               <div className="card">
                 <div className="space-y-3">
@@ -80,9 +81,9 @@ export default function Profile() {
             </div>
 
             {/* Right col */}
-            <div className="space-y-5">
+            <div className="h-full">
               {/* Routine card */}
-              <div className="card">
+              <div className="card h-full">
                 <h3 className="font-semibold text-gray-700 mb-5">Personalized Routine</h3>
 
                 {/* Morning */}
@@ -126,8 +127,9 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
-
-              {/* AI Insights */}
+            </div>
+          </div>
+                                    {/* AI Insights */}
               <div className="card">
                 <h3 className="text-gray-500 text-sm font-medium mb-4">AI Insights</h3>
                 <div>
@@ -141,8 +143,6 @@ export default function Profile() {
                   <p className="text-xs text-gray-500 italic">Hidrasi kulit masih rendah. Gunakan moisturizer ringan untuk menjaga keseimbangan kulit.</p>
                 </div>
               </div>
-            </div>
-          </div>
         </div>
       </div>
       <Footer />

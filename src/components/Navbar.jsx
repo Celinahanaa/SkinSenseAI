@@ -16,16 +16,11 @@ export default function Navbar() {
     navigate('/');
   };
 
-  const navLinks = user
-    ? [
-        { to: '/', label: 'Home' },
+  const navLinks = [
+        { to: '/dashboard', label: 'Home' },
         { to: '/analysis', label: 'Analysis' },
         { to: '/history', label: 'History' },
         { to: '/profile', label: 'Profile' },
-      ]
-    : [
-        { to: '/', label: 'Home' },
-        { to: '/about', label: 'About' },
       ];
 
   return (
