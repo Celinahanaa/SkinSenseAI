@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, Eye, EyeOff, Target, FlaskConical, BarChart3 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { FcGoogle } from 'react-icons/fc';
+import { FaApple } from 'react-icons/fa';
 
 export default function Register() {
   const { register } = useAuth();
@@ -127,7 +129,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-4 rounded-xl text-base mt-2"
+              className="btn-primary w-full h-[50px] rounded-xl text-base mt-2 flex items-center justify-center"
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
             >
               {loading
@@ -144,8 +146,14 @@ export default function Register() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button className="btn-outline py-3 rounded-xl text-sm">Google</button>
-            <button className="btn-outline py-3 rounded-xl text-sm">Apple</button>
+            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+              <FcGoogle size={18} />
+              Google
+            </button>
+            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+              <FaApple size={18} />
+              Apple
+            </button>
           </div>
 
           <p className="text-center text-sm text-gray-500 mt-5">
