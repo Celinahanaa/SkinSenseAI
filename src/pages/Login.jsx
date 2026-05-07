@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { FcGoogle } from 'react-icons/fc';
+import { FaApple } from 'react-icons/fa';
 
 export default function Login() {
   const { login } = useAuth();
@@ -23,7 +25,7 @@ export default function Login() {
     setError('');
     await new Promise(r => setTimeout(r, 800));
     login(form.email, form.password);
-    navigate('/');
+    navigate('/home');
   };
 
   return (
@@ -138,7 +140,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-4 rounded-xl text-base"
+              className="btn-primary w-full h-[50px] rounded-xl text-base flex items-center justify-center gap-2"
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
             >
               {loading ? (
@@ -156,12 +158,12 @@ export default function Login() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button className="btn-outline py-3 rounded-xl text-sm gap-2">
-              <div className="w-4 h-4 bg-gray-900 rounded" />
+            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+              <FcGoogle size={18} />
               Google
             </button>
-            <button className="btn-outline py-3 rounded-xl text-sm gap-2">
-              <span className="font-bold text-gray-600 text-xs">i05</span>
+            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+              <FaApple size={18} />
               Apple
             </button>
           </div>
