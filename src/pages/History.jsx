@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Trash2, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 import Footer from '../components/Footer';
+import { useLang } from '../context/LanguageContext';
 
 const initialHistory = [
   { id: 1, date: 'APR 29', fullDate: 'Kemarin - 20.18 WIB', score: 78, tags: ['BERMINYAK', 'SENSITIF'], tagColors: ['bg-amber-100 text-amber-600', 'bg-pink-100 text-pink-600'] },
@@ -10,6 +11,7 @@ const initialHistory = [
 ];
 
 export default function History() {
+  const { t } = useLang();
   const navigate = useNavigate();
   const [items, setItems] = useState(initialHistory);
 
@@ -28,8 +30,7 @@ export default function History() {
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-
-          <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">Riwayat Deteksi</h1>
+          <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">{t('nav_history')}</h1>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-10">
@@ -100,7 +101,7 @@ export default function History() {
               <div className="text-5xl mb-4">📋</div>
               <p className="text-gray-500 dark:text-gray-400 font-medium">Belum ada riwayat deteksi</p>
               <button onClick={() => navigate('/analysis')} className="btn-primary mt-4 px-6 py-2.5 rounded-xl text-sm">
-                Mulai Analisis
+                {t('analysis_btn')}
               </button>
             </div>
           )}

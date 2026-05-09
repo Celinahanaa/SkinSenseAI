@@ -4,9 +4,11 @@ import { User, Mail, Lock, Eye, EyeOff, Target, FlaskConical, BarChart3 } from '
 import { useAuth } from '../context/AuthContext';
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
+import { useLang } from '../context/LanguageContext';
 
 export default function Register() {
   const { register } = useAuth();
+  const { t } = useLang();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', agree: false });
   const [showPass, setShowPass] = useState(false);
@@ -18,22 +20,25 @@ export default function Register() {
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
   };
 
+  // Register.jsx — di handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.password || !form.confirm) { setError('Semua field wajib diisi.'); return; }
-    if (form.password !== form.confirm) { setError('Password tidak cocok.'); return; }
-    if (!form.agree) { setError('Anda harus menyetujui Terms of Service.'); return; }
     setLoading(true);
     setError('');
-    await new Promise(r => setTimeout(r, 900));
-    register(form.name, form.email, form.password);
-    navigate('/');
+    try {
+      await register(form.name, form.email, form.password);
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const features = [
-    { icon: <Target size={18} />, title: '85%+ Accuracy', desc: 'Model AI kami tervalidasi dengan akurasi tinggi pada berbagai jenis kulit.' },
-    { icon: <FlaskConical size={18} />, title: 'Data-Validated Ingredients', desc: 'Rekomendasi bahan aktif berdasarkan penelitian dermatologi terkini.' },
-    { icon: <BarChart3 size={18} />, title: 'Track Your Progress', desc: 'Monitor perkembangan kesehatan kulit Anda dari waktu ke waktu.' },
+    { icon: <Target size={18} />, title: '85%+ Accuracy', desc: t('feat1_desc') },
+    { icon: <FlaskConical size={18} />, title: t('feat2_title'), desc: t('feat2_desc') },
+    { icon: <BarChart3 size={18} />, title: t('feat3_title'), desc: t('feat3_desc') },
   ];
 
   return (
@@ -44,7 +49,7 @@ export default function Register() {
         style={{ background: 'linear-gradient(160deg, #0a1a5c 0%, #1a3c8f 60%, #1e4db7 100%)' }}
       >
         <div className="relative z-10 max-w-sm">
-          <p className="text-blue-200 text-sm mb-8">Start your personalized skin journey</p>
+          <p className="text-blue-200 text-sm mb-8">{t('register_subtitle')}</p>
           <h2 className="text-4xl font-bold text-white leading-snug mb-6">
             Skin yang Sehat<br />Dimulai dari<br />Pemahaman yang Tepat.
           </h2>
@@ -71,8 +76,8 @@ export default function Register() {
       {/* Right form */}
       <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#f0f4ff] dark:bg-gray-900">
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Create Account</h1>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">Start your personalized clinical skin journey today.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{t('register_title')}</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">{t('register_subtitle')}</p>
 
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
@@ -82,16 +87,16 @@ export default function Register() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Full Name</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_name')}</label>
               <div className="relative">
                 <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="Nama Lengkap"
+                <input type="text" name="name" value={form.name} onChange={handleChange} placeholder={t('register_name')}
                   className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Email Address</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_email')}</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="name@medical.com"
@@ -100,7 +105,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Password</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_password')}</label>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type={showPass ? 'text' : 'password'} name="password" value={form.password} onChange={handleChange} placeholder="••••••••"
@@ -112,7 +117,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Confirm Password</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_confirm')}</label>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="password" name="confirm" value={form.confirm} onChange={handleChange} placeholder="••••••••"
@@ -123,11 +128,11 @@ export default function Register() {
             <label className="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" name="agree" checked={form.agree} onChange={handleChange} className="w-4 h-4 mt-0.5 accent-blue-800" />
               <span className="text-sm text-gray-600 dark:text-gray-300">
-                I agree to the{' '}
-                <span className="text-blue-700 dark:text-blue-400 font-semibold cursor-pointer hover:underline">Term of Service</span>
-                {' '}and{' '}
-                <span className="text-blue-700 dark:text-blue-400 font-semibold cursor-pointer hover:underline">Privacy Policy</span>
-                {' '}regarding clinical data usage.
+                {t('register_agree')}{' '}
+                <span className="text-blue-700 dark:text-blue-400 font-semibold cursor-pointer hover:underline">{t('register_terms')}</span>
+                {' '}{t('register_and')}{' '}
+                <span className="text-blue-700 dark:text-blue-400 font-semibold cursor-pointer hover:underline">{t('register_privacy')}</span>
+                {' '}{t('register_clinical')}
               </span>
             </label>
 
@@ -139,14 +144,14 @@ export default function Register() {
             >
               {loading
                 ? <div className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                : 'Register Now'
+                : t('register_btn')
               }
             </button>
           </form>
 
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-            <span className="text-xs text-gray-400 dark:text-gray-500">Or continue with</span>
+            <span className="text-xs text-gray-400 dark:text-gray-500">{t('register_or')}</span>
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
           </div>
 
@@ -162,8 +167,8 @@ export default function Register() {
           </div>
 
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-5">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">Sign in</Link>
+            {t('register_have_account')}{' '}
+            <Link to="/login" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">{t('register_signin')}</Link>
           </p>
         </div>
       </div>

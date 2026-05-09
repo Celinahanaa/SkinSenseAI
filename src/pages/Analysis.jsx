@@ -2,8 +2,10 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Camera, AlertTriangle, Loader2 } from 'lucide-react';
 import Footer from '../components/Footer';
+import { useLang } from '../context/LanguageContext';
 
 export default function Analysis() {
+  const { t } = useLang();
   const [mode, setMode] = useState('upload');
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
@@ -35,9 +37,9 @@ export default function Analysis() {
   };
 
   const tips = [
-    { title: 'Wajah', desc: 'Pastikan wajah Anda terlihat jelas tanpa tertutup objek apapun' },
-    { title: 'Cahaya', desc: 'Gunakan pencahayaan yang cukup agar hasil analisis lebih akurat' },
-    { title: 'Disclaimer', desc: 'Hasil analisis yang Anda dapatkan bisa berbeda tergantung kualitas foto' },
+    { title: t('tip1_title'), desc: t('tip1_desc') },
+    { title: t('tip2_title'), desc: t('tip2_desc') },
+    { title: t('tip3_title'), desc: t('tip3_desc') },
   ];
 
   return (
@@ -57,7 +59,7 @@ export default function Analysis() {
                     : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                 }`}
               >
-                {m === 'upload' ? 'Upload Foto' : 'Gunakan Kamera'}
+                {m === 'upload' ? t('analysis_upload') : t('analysis_camera')}
               </button>
             ))}
           </div>
@@ -80,7 +82,7 @@ export default function Analysis() {
                       <div className="relative h-full" style={{ minHeight: '360px' }}>
                         <img src={preview} alt="preview" className="w-full h-full object-cover" style={{ minHeight: '360px' }} />
                         <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                          <p className="text-white font-medium text-sm bg-black/50 px-4 py-2 rounded-xl">Klik untuk ganti foto</p>
+                          <p className="text-white font-medium text-sm bg-black/50 px-4 py-2 rounded-xl">{t('analysis_change')}</p>
                         </div>
                       </div>
                     ) : (
@@ -88,8 +90,8 @@ export default function Analysis() {
                         <div className="w-20 h-20 mb-4">
                           <Upload size={60} className="mx-auto text-blue-300 dark:text-blue-600" />
                         </div>
-                        <p className="font-bold text-gray-700 dark:text-gray-200 text-base mb-1">Click to upload</p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500">Supported formats: JPEG, JPG, PNG, WEBP</p>
+                        <p className="font-bold text-gray-700 dark:text-gray-200 text-base mb-1">{t('analysis_click')}</p>
+                        <p className="text-xs text-gray-400 dark:text-gray-500">{t('analysis_formats')}</p>
                       </div>
                     )}
                   </div>
@@ -105,20 +107,17 @@ export default function Analysis() {
                     <div className="w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
                       <Camera size={36} className="text-blue-600 dark:text-blue-400" />
                     </div>
-                    <p className="font-semibold text-gray-700 dark:text-gray-200 mb-2">Aktifkan Kamera</p>
+                    <p className="font-semibold text-gray-700 dark:text-gray-200 mb-2">{t('analysis_camera_allow')}</p>
                     <p className="text-sm text-gray-400 dark:text-gray-500 text-center mb-6">Pastikan Anda berada di ruangan yang cukup cahaya</p>
                     <button className="btn-primary py-3 px-6 rounded-xl text-sm">
-                      <Camera size={16} /> Buka Kamera
+                      <Camera size={16} /> {t('analysis_camera_activate')}
                     </button>
                   </div>
 
                   <div className="px-5 pb-5">
                     <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 flex items-start gap-3">
-                      <span className="bg-white dark:bg-gray-700 text-blue-800 dark:text-blue-400 text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0">TIPS</span>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                        Untuk mendapatkan hasil analisis yang optimal, pastikan wajah terlihat jelas
-                        dengan pencahayaan yang baik serta tanpa penggunaan filter atau makeup berlebih.
-                      </p>
+                      <span className="bg-white dark:bg-gray-700 text-blue-800 dark:text-blue-400 text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0">{t('analysis_tips_label')}</span>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{t('analysis_tips_text')}</p>
                     </div>
                   </div>
                 </div>
@@ -136,10 +135,10 @@ export default function Analysis() {
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
-                    <Loader2 size={20} className="animate-spin" /> Menganalisis Kulit...
+                    <Loader2 size={20} className="animate-spin" /> {t('analysis_loading')}
                   </span>
                 ) : (
-                  'ANALISIS'
+                  t('analysis_btn')
                 )}
               </button>
             </div>
@@ -148,10 +147,10 @@ export default function Analysis() {
             {mode === 'upload' && (
               <div>
                 <span className="inline-block bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full mb-5 tracking-wide">
-                  TIPS
+                  {t('analysis_tips_label')}
                 </span>
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-1">Quick Check Skin</h2>
-                <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">With Us!</h2>
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-1">{t('analysis_tips_title')}</h2>
+                <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">{t('analysis_tips_subtitle')}</h2>
 
                 <div className="space-y-6">
                   {tips.map((tip, i) => (
