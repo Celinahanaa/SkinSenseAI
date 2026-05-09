@@ -37,7 +37,7 @@ export default function Register() {
   ];
 
   return (
-    <div className="min-h-screen flex items-stretch" style={{ background: '#f0f4ff' }}>
+    <div className="min-h-screen flex items-stretch bg-[#f0f4ff] dark:bg-gray-900">
       {/* Left panel */}
       <div
         className="hidden lg:flex lg:w-1/2 flex-col justify-center p-12 relative overflow-hidden"
@@ -64,43 +64,47 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Decorative shapes */}
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-5 bg-white -translate-y-32 translate-x-32" />
         <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-5 bg-white translate-y-24 -translate-x-24" />
       </div>
 
       {/* Right form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12">
-        <div className="bg-white rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Create Account</h1>
-          <p className="text-gray-500 text-sm mb-8">Start your personalized clinical skin journey today.</p>
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#f0f4ff] dark:bg-gray-900">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Create Account</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">Start your personalized clinical skin journey today.</p>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
+              {error}
+            </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Full Name</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Full Name</label>
               <div className="relative">
                 <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="Nama Lengkap" className="input-field" />
+                <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="Nama Lengkap"
+                  className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Email Address</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Email Address</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="name@medical.com" className="input-field" />
+                <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="name@medical.com"
+                  className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Password</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Password</label>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type={showPass ? 'text' : 'password'} name="password" value={form.password} onChange={handleChange} placeholder="••••••••" className="input-field pr-10" />
+                <input type={showPass ? 'text' : 'password'} name="password" value={form.password} onChange={handleChange} placeholder="••••••••"
+                  className="input-field pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400">
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -108,20 +112,21 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Confirm Password</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Confirm Password</label>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="password" name="confirm" value={form.confirm} onChange={handleChange} placeholder="••••••••" className="input-field" />
+                <input type="password" name="confirm" value={form.confirm} onChange={handleChange} placeholder="••••••••"
+                  className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
 
             <label className="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" name="agree" checked={form.agree} onChange={handleChange} className="w-4 h-4 mt-0.5 accent-blue-800" />
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-gray-600 dark:text-gray-300">
                 I agree to the{' '}
-                <span className="text-blue-700 font-semibold cursor-pointer hover:underline">Term of Service</span>
+                <span className="text-blue-700 dark:text-blue-400 font-semibold cursor-pointer hover:underline">Term of Service</span>
                 {' '}and{' '}
-                <span className="text-blue-700 font-semibold cursor-pointer hover:underline">Privacy Policy</span>
+                <span className="text-blue-700 dark:text-blue-400 font-semibold cursor-pointer hover:underline">Privacy Policy</span>
                 {' '}regarding clinical data usage.
               </span>
             </label>
@@ -140,25 +145,25 @@ export default function Register() {
           </form>
 
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-xs text-gray-400">Or continue with</span>
-            <div className="flex-1 h-px bg-gray-200" />
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+            <span className="text-xs text-gray-400 dark:text-gray-500">Or continue with</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
               <FcGoogle size={18} />
               Google
             </button>
-            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
               <FaApple size={18} />
               Apple
             </button>
           </div>
 
-          <p className="text-center text-sm text-gray-500 mt-5">
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-5">
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-700 font-semibold hover:underline">Sign in</Link>
+            <Link to="/login" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">Sign in</Link>
           </p>
         </div>
       </div>
