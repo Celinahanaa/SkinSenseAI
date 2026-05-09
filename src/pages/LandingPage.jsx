@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Scan, FlaskConical, TrendingUp, AlertTriangle, Zap, Droplets, Camera, Brain, LayoutDashboard, Download, Share2, Shield } from 'lucide-react';
+import { Scan, FlaskConical, TrendingUp, AlertTriangle, Zap, Camera, Brain, LayoutDashboard, Shield } from 'lucide-react';
 import Footer from '../components/Footer';
 
 const features = [
@@ -23,19 +23,19 @@ const features = [
 const problems = [
   {
     icon: <AlertTriangle size={20} className="text-red-500" />,
-    bg: 'bg-red-50',
+    bg: 'bg-red-50 dark:bg-red-900/30',
     title: 'Hidden Reactivity',
     desc: 'Standard products often contain ingredients that trigger micro-inflammation invisible to the naked eye until it\'s too late.',
   },
   {
     icon: <Zap size={20} className="text-pink-500" />,
-    bg: 'bg-pink-50',
+    bg: 'bg-pink-50 dark:bg-pink-900/30',
     title: 'Chemical Conflict',
     desc: 'Many "viral" skincare trends combine actives that neutralize each other or cause long-term sensitivity when used incorrectly.',
   },
   {
     icon: <TrendingUp size={20} className="text-orange-400" />,
-    bg: 'bg-orange-50',
+    bg: 'bg-orange-50 dark:bg-orange-900/30',
     title: 'Barrier Fatigue',
     desc: 'Without precise data, it\'s easy to over-treat your skin, leading to chronic dehydration and premature aging.',
   },
@@ -72,47 +72,47 @@ const team = [
 ];
 
 const roleColors = {
-  'Data Scientist': 'bg-blue-100 text-blue-700',
-  'Full Stack Developer': 'bg-green-100 text-green-700',
-  'AI Engineer': 'bg-purple-100 text-purple-700',
+  'Data Scientist': 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
+  'Full Stack Developer': 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400',
+  'AI Engineer': 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400',
 };
 
-export default function Home() {
+export default function LandingPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20">
 
-<nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center">
-  <div className="flex items-center gap-2">
-    <div className="w-8 h-8 bg-blue-800 rounded-lg flex items-center justify-center">
-      <span className="text-white text-xs font-black">SS</span>
-    </div>
-    <span className="font-bold text-gray-900">SkinSense AI</span>
-  </div>
-  <div className="flex items-center gap-3">
-    <button onClick={() => navigate('/login')} className="text-sm font-medium text-gray-600 hover:text-blue-800">
-      Sign In
-    </button>
-    <button onClick={() => navigate('/register')} className="bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-900">
-      Analyze My Skin
-    </button>
-  </div>
-</nav>
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-blue-800 rounded-lg flex items-center justify-center">
+              <span className="text-white text-xs font-black">SS</span>
+            </div>
+            <span className="font-bold text-gray-900 dark:text-white">SkinSense AI</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button onClick={() => navigate('/login')} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-800 dark:hover:text-blue-400">
+              Sign In
+            </button>
+            <button onClick={() => navigate('/register')} className="bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-900">
+              Analyze My Skin
+            </button>
+          </div>
+        </nav>
 
         {/* Hero */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-5">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 border border-gray-200 text-gray-500 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
+            <span className="inline-flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
               <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
               NEURAL NETWORK DERMATOLOGY ENGINE
             </span>
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-4">
+            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
               The Science of Perfect Skin,{' '}
-              <span className="text-blue-800">Decoded by Deep Learning</span>
+              <span className="text-blue-800 dark:text-blue-400">Decoded by Deep Learning</span>
             </h1>
-            <p className="text-gray-500 text-base leading-relaxed mb-8 max-w-lg">
+            <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed mb-8 max-w-lg">
               Experience the first AI-driven skincare companion that bridges the gap between clinical research and your daily routine. DermaAI uses advanced computer vision to understand your skin's unique cellular needs.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -123,7 +123,7 @@ export default function Home() {
               >
                 <Scan size={16} /> Try the Scanner
               </button>
-              <button className="flex items-center gap-2 border border-gray-200 text-gray-700 hover:bg-gray-50 font-semibold px-6 py-3 rounded-xl transition-all text-sm">
+              <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold px-6 py-3 rounded-xl transition-all text-sm">
                 <FlaskConical size={16} /> Explore Technology
               </button>
             </div>
@@ -131,11 +131,11 @@ export default function Home() {
         </section>
 
         {/* Designed for Your Journey */}
-        <section className="bg-gray-50 py-16">
+        <section className="bg-gray-50 dark:bg-gray-800 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Designed for Your Journey</h2>
-              <p className="text-gray-500 text-sm max-w-md mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Designed for Your Journey</h2>
+              <p className="text-gray-500 dark:text-gray-400 text-sm max-w-md mx-auto">
                 DermaAI isn't just a scanner; it's a comprehensive platform for lifelong skin health management.
               </p>
             </div>
@@ -145,8 +145,8 @@ export default function Home() {
                   <div className="w-10 h-10 bg-blue-800 rounded-xl flex items-center justify-center mb-4">
                     {f.icon}
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-2">{f.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">{f.title}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{f.desc}</p>
                 </div>
               ))}
             </div>
@@ -154,22 +154,22 @@ export default function Home() {
         </section>
 
         {/* Why Guessing Fails */}
-        <section className="py-16">
+        <section className="py-16 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Why Guessing Fails</h2>
-              <p className="text-gray-500 text-sm max-w-md mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Why Guessing Fails</h2>
+              <p className="text-gray-500 dark:text-gray-400 text-sm max-w-md mx-auto">
                 The skincare industry relies on trial and error. We believe your skin deserves a more rigorous, evidence-based approach.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
               {problems.map((p, i) => (
-                <div key={i} className="border border-gray-100 rounded-2xl p-6 bg-white">
+                <div key={i} className="border border-gray-100 dark:border-gray-700 rounded-2xl p-6 bg-white dark:bg-gray-800">
                   <div className={`w-10 h-10 ${p.bg} rounded-xl flex items-center justify-center mb-4`}>
                     {p.icon}
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-2">{p.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{p.desc}</p>
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">{p.title}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{p.desc}</p>
                 </div>
               ))}
             </div>
@@ -177,12 +177,12 @@ export default function Home() {
         </section>
 
         {/* Clinical Roadmap */}
-        <section className="bg-gray-50 py-16">
+        <section className="bg-gray-50 dark:bg-gray-800 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-12 gap-4">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Clinical Roadmap</h2>
-                <p className="text-gray-500 text-sm max-w-sm">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Your Clinical Roadmap</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm max-w-sm">
                   Our three-step neural analysis transforms a simple smartphone capture into a data-rich dermatological assessment.
                 </p>
               </div>
@@ -196,9 +196,9 @@ export default function Home() {
                   <div className="w-14 h-14 bg-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
                     {p.icon}
                   </div>
-                  <p className="text-xs font-bold text-blue-600 tracking-widest mb-2">{p.phase}</p>
-                  <h3 className="font-bold text-gray-900 mb-2">{p.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{p.desc}</p>
+                  <p className="text-xs font-bold text-blue-600 dark:text-blue-400 tracking-widest mb-2">{p.phase}</p>
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">{p.title}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{p.desc}</p>
                 </div>
               ))}
             </div>
@@ -206,7 +206,7 @@ export default function Home() {
         </section>
 
         {/* CTA Banner */}
-        <section className="py-10 px-4">
+        <section className="py-10 px-4 bg-white dark:bg-gray-900">
           <div className="max-w-3xl mx-auto bg-blue-800 rounded-3xl px-8 py-14 text-center">
             <h2 className="text-3xl font-bold text-white mb-3">Ready for your healthiest skin ever?</h2>
             <p className="text-blue-200 text-sm mb-2 max-w-md mx-auto">
@@ -223,24 +223,24 @@ export default function Home() {
         </section>
 
         {/* Meet Our Team */}
-        <section className="py-16">
+        <section className="py-16 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Meet Our Team</h2>
-              <p className="text-gray-500 text-sm max-w-md mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Meet Our Team</h2>
+              <p className="text-gray-500 dark:text-gray-400 text-sm max-w-md mx-auto">
                 The specialized minds bridging the gap between advanced deep learning and your daily skincare routine.
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {team.map((member, i) => (
                 <div key={i} className="text-center">
-                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <svg viewBox="0 0 40 40" className="w-10 h-10 text-gray-400" fill="currentColor">
+                  <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg viewBox="0 0 40 40" className="w-10 h-10 text-gray-400 dark:text-gray-500" fill="currentColor">
                       <circle cx="20" cy="14" r="7" />
                       <path d="M4 36c0-8.837 7.163-16 16-16s16 7.163 16 16" />
                     </svg>
                   </div>
-                  <p className="font-semibold text-gray-800 text-sm">{member.name}</p>
+                  <p className="font-semibold text-gray-800 dark:text-gray-100 text-sm">{member.name}</p>
                   <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full mt-1 ${roleColors[member.role]}`}>
                     {member.role}
                   </span>
