@@ -59,39 +59,40 @@ export default function EditProfile() {
   };
 
   const inputClass = `
-    w-full px-4 py-3 rounded-xl border border-gray-200 bg-white
-    text-gray-800 text-sm font-medium placeholder-gray-400
+    w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700
+    bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100
+    text-sm font-medium placeholder-gray-400 dark:placeholder-gray-500
     focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent
     transition-all
   `;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 pt-7 pb-8" style={{ background: 'linear-gradient(160deg, #f8faff 0%, #eef4ff 100%)' }}>
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+      <div className="flex-1 pt-7 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
 
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <button
               onClick={() => navigate('/profile')}
-              className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-gray-500 hover:text-blue-800 hover:bg-blue-50 transition-all"
+              className="w-10 h-10 bg-white dark:bg-gray-800 rounded-xl shadow-sm flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-blue-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-all"
             >
               <ArrowLeft size={18} />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-blue-800">Edit Profil</h1>
-              <p className="text-sm text-gray-400 mt-0.5">Perbarui informasi akun Anda</p>
+              <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-400">Edit Profil</h1>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">Perbarui informasi akun Anda</p>
             </div>
           </div>
 
           {/* Avatar */}
           <div className="flex flex-col items-center mb-8">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border-4 border-white shadow-md">
+              <div className="w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-md">
                 {avatarPreview ? (
                   <img src={avatarPreview} alt="avatar" className="w-full h-full object-cover" />
                 ) : (
-                  <User size={36} className="text-blue-400" />
+                  <User size={36} className="text-blue-400 dark:text-blue-500" />
                 )}
               </div>
               <button
@@ -102,82 +103,54 @@ export default function EditProfile() {
               </button>
               <input ref={fileRef} type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
             </div>
-            <p className="text-xs text-gray-400 mt-3">Klik ikon kamera untuk ganti foto</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">Klik ikon kamera untuk ganti foto</p>
           </div>
 
           {/* Form Card */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-5">
-            <h2 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-5">Informasi Pribadi</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-5">
+            <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">Informasi Pribadi</h2>
 
             <div className="space-y-4">
-              {/* Name */}
               <div>
-                <label className="text-xs font-semibold text-gray-500 mb-1.5 block">Nama Lengkap</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Nama Lengkap</label>
                 <div className="relative">
                   <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    value={form.name}
-                    onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                    className={inputClass + ' pl-10'}
-                    placeholder="Nama lengkap"
-                  />
+                  <input type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className={inputClass + ' pl-10'} placeholder="Nama lengkap" />
                 </div>
               </div>
 
-              {/* Email */}
               <div>
-                <label className="text-xs font-semibold text-gray-500 mb-1.5 block">Email</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Email</label>
                 <div className="relative">
                   <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                    className={inputClass + ' pl-10'}
-                    placeholder="Email"
-                  />
+                  <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className={inputClass + ' pl-10'} placeholder="Email" />
                 </div>
               </div>
 
-              {/* Phone */}
               <div>
-                <label className="text-xs font-semibold text-gray-500 mb-1.5 block">Nomor Telepon</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Nomor Telepon</label>
                 <div className="relative">
                   <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="tel"
-                    value={form.phone}
-                    onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                    className={inputClass + ' pl-10'}
-                    placeholder="+62 ..."
-                  />
+                  <input type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} className={inputClass + ' pl-10'} placeholder="+62 ..." />
                 </div>
               </div>
 
-              {/* Birthdate */}
               <div>
-                <label className="text-xs font-semibold text-gray-500 mb-1.5 block">Tanggal Lahir</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Tanggal Lahir</label>
                 <div className="relative">
                   <Calendar size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="date"
-                    value={form.birthdate}
-                    onChange={e => setForm(p => ({ ...p, birthdate: e.target.value }))}
-                    className={inputClass + ' pl-10'}
-                  />
+                  <input type="date" value={form.birthdate} onChange={e => setForm(p => ({ ...p, birthdate: e.target.value }))} className={inputClass + ' pl-10'} />
                 </div>
               </div>
             </div>
           </div>
 
           {/* Skin Profile Card */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-            <h2 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-5">Profil Kulit</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-6">
+            <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">Profil Kulit</h2>
 
-            {/* Skin Type */}
             <div className="mb-5">
-              <label className="text-xs font-semibold text-gray-500 mb-3 block">Tipe Kulit</label>
+              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">Tipe Kulit</label>
               <div className="flex flex-wrap gap-2">
                 {skinTypes.map(type => (
                   <button
@@ -186,7 +159,7 @@ export default function EditProfile() {
                     className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                       form.skinType === type.value
                         ? 'bg-blue-800 text-white shadow-sm'
-                        : 'bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-700'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-700'
                     }`}
                   >
                     {type.label}
@@ -195,9 +168,8 @@ export default function EditProfile() {
               </div>
             </div>
 
-            {/* Skin Concerns */}
             <div>
-              <label className="text-xs font-semibold text-gray-500 mb-3 block">Masalah Kulit</label>
+              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">Masalah Kulit</label>
               <div className="flex flex-wrap gap-2">
                 {skinConcernOptions.map(concern => {
                   const isSelected = form.skinConcerns.includes(concern.toLowerCase());
@@ -207,8 +179,8 @@ export default function EditProfile() {
                       onClick={() => toggleConcern(concern)}
                       className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                         isSelected
-                          ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                          : 'bg-gray-100 text-gray-500 hover:bg-blue-50 hover:text-blue-700 border border-transparent'
+                          ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 border border-blue-300 dark:border-blue-700'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-700 border border-transparent'
                       }`}
                     >
                       {concern}
@@ -223,7 +195,7 @@ export default function EditProfile() {
           <div className="flex gap-3">
             <button
               onClick={() => navigate('/profile')}
-              className="flex-1 py-4 rounded-2xl font-bold text-sm text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 transition-all"
+              className="flex-1 py-4 rounded-2xl font-bold text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
             >
               Batal
             </button>
