@@ -5,8 +5,8 @@ import { useAuth } from '../context/AuthContext';
 
 function HeroCard() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-card-hover p-6 relative overflow-hidden w-full max-w-sm mx-auto">
-      <div className="relative h-56 bg-gradient-to-b from-amber-50 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl overflow-hidden mb-4 flex items-center justify-center">
+    <div className="bg-white dark:bg-blue-900 rounded-3xl shadow-card-hover p-6 relative overflow-hidden w-full max-w-sm mx-auto">
+      <div className="relative h-56 bg-gradient-to-b dark:white rounded-2xl overflow-hidden mb-4 flex items-center justify-center">
         <div className="relative">
           <div className="w-40 h-40 relative">
             <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-amber-200 to-orange-300 opacity-80" />
