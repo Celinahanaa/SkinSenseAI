@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { Scan, FlaskConical, TrendingUp, AlertTriangle, Zap, Camera, Brain, LayoutDashboard, Shield } from 'lucide-react';
+import { Scan, FlaskConical, TrendingUp, AlertTriangle, Zap, Camera, Brain, LayoutDashboard, Shield, Sun, Moon } from 'lucide-react';
 import Footer from '../components/Footer';
+import { useTheme } from '../context/ThemeContext';
 
 const features = [
   {
@@ -79,19 +80,25 @@ const roleColors = {
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { dark, setDark } = useTheme();
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
-      <div className="flex-1 pt-20">
+      <div className="flex-1 pt-10">
 
         <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-800 rounded-lg flex items-center justify-center">
-              <span className="text-white text-xs font-black">SS</span>
-            </div>
+            <img src="/images/logo.png" alt="SkinSense AI" className="h-8 w-auto" />
             <span className="font-bold text-gray-900 dark:text-white">SkinSense AI</span>
           </div>
           <div className="flex items-center gap-3">
+            {/* Dark mode toggle */}
+            <button
+              onClick={() => setDark(!dark)}
+              className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            >
+              {dark ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} className="text-gray-500" />}
+            </button>
             <button onClick={() => navigate('/login')} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-800 dark:hover:text-blue-400">
               Sign In
             </button>
@@ -102,7 +109,7 @@ export default function LandingPage() {
         </nav>
 
         {/* Hero */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-5">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:py-20">
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
               <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
