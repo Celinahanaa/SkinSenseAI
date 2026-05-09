@@ -29,9 +29,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-800 rounded-lg flex items-center justify-center">
-              <span className="text-white text-xs font-bold">SS</span>
-            </div>
+            <img src="/images/logo.jpg" alt="SkinSense AI" className="h-8 w-auto" />
             <span className="font-bold text-blue-900 text-lg">SkinSense AI</span>
           </Link>
 

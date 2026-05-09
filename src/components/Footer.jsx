@@ -10,19 +10,16 @@ export default function Footer() {
   ];
   
   return (
-    <footer className="bg-white border-t border-gray-100 mt-auto h-20">
+    <footer className="bg-white border-t border-gray-100 mt-auto py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between h-full gap-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-6 h-6 bg-blue-800 rounded flex items-center justify-center">
-                <span className="text-white text-xs font-bold">SS</span>
-              </div>
+              <img src="/images/logo.jpg" alt="SkinSense AI" className="h-8 w-auto" />
               <span className="font-bold text-blue-900">SkinSense AI</span>
             </div>
             <p className="text-xs text-gray-400">
-              © 2026 SkinSense AI. Promoting Healthy Lives<br />
-              through Precision Science.
+              © 2026 SkinSense AI. Promoting Healthy Lives
             </p>
           </div>
 
