@@ -24,24 +24,25 @@ export default function History() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 pt-20 pb-8" style={{ background: 'linear-gradient(160deg, #f8faff 0%, #eef4ff 100%)' }}>
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+      <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-          <h1 className="text-4xl font-bold text-blue-800 mb-8">Riwayat Deteksi</h1>
+
+          <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">Riwayat Deteksi</h1>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-10">
-            <div className="card">
-              <p className="text-sm text-gray-500 mb-1">Total Scan</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
+            <div className="card dark:bg-gray-800 dark:border-gray-700">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Total Scan</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
             </div>
-            <div className="card">
-              <p className="text-sm text-gray-500 mb-1">Skor Rata-Rata</p>
-              <p className="text-3xl font-bold text-gray-900">{stats.avgScore}</p>
+            <div className="card dark:bg-gray-800 dark:border-gray-700">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Skor Rata-Rata</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.avgScore}</p>
             </div>
-            <div className="card">
-              <p className="text-sm text-gray-500 mb-1">Perubahan Kulit</p>
+            <div className="card dark:bg-gray-800 dark:border-gray-700">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Perubahan Kulit</p>
               <p className="text-3xl font-bold text-red-500">{stats.change} lebih buruk</p>
             </div>
           </div>
@@ -49,21 +50,21 @@ export default function History() {
           {/* Month group */}
           {items.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-4">April</h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">April</h2>
 
               <div className="space-y-4">
                 {items.map((item) => (
-                  <div key={item.id} className="card flex items-center gap-4 animate-fade-in">
+                  <div key={item.id} className="card dark:bg-gray-800 dark:border-gray-700 flex items-center gap-4 animate-fade-in">
                     {/* Date badge */}
                     <div className="w-16 flex-shrink-0 text-center">
-                      <p className="text-xs text-gray-500 font-medium">{item.date.split(' ')[0]}</p>
-                      <p className="text-2xl font-bold text-gray-800">{item.date.split(' ')[1]}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{item.date.split(' ')[0]}</p>
+                      <p className="text-2xl font-bold text-gray-800 dark:text-white">{item.date.split(' ')[1]}</p>
                     </div>
 
                     {/* Content */}
                     <div className="flex-1">
-                      <p className="font-bold text-gray-800 mb-0.5">Skor: {item.score}%</p>
-                      <p className="text-xs text-gray-400 mb-2">{item.fullDate}</p>
+                      <p className="font-bold text-gray-800 dark:text-white mb-0.5">Skor: {item.score}%</p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">{item.fullDate}</p>
                       <div className="flex flex-wrap gap-2">
                         {item.tags.map((tag, i) => (
                           <span key={i} className={`text-xs font-semibold px-2.5 py-1 rounded-full ${item.tagColors[i]}`}>
@@ -77,13 +78,13 @@ export default function History() {
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <button
                         onClick={() => navigate('/result')}
-                        className="flex items-center gap-1.5 text-sm font-medium text-gray-600 border border-gray-200 bg-gray-50 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-200 px-4 py-2 rounded-xl transition-all"
+                        className="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-800 hover:border-blue-200 px-4 py-2 rounded-xl transition-all"
                       >
                         Detail <ExternalLink size={14} />
                       </button>
                       <button
                         onClick={() => handleDelete(item.id)}
-                        className="w-10 h-10 bg-red-50 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-100 transition-colors"
+                        className="w-10 h-10 bg-red-50 dark:bg-red-900/30 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -97,7 +98,7 @@ export default function History() {
           {items.length === 0 && (
             <div className="text-center py-20">
               <div className="text-5xl mb-4">📋</div>
-              <p className="text-gray-500 font-medium">Belum ada riwayat deteksi</p>
+              <p className="text-gray-500 dark:text-gray-400 font-medium">Belum ada riwayat deteksi</p>
               <button onClick={() => navigate('/analysis')} className="btn-primary mt-4 px-6 py-2.5 rounded-xl text-sm">
                 Mulai Analisis
               </button>
