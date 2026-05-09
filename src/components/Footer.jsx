@@ -15,7 +15,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between h-full gap-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <img src="/images/logo.jpg" alt="SkinSense AI" className="h-8 w-auto" />
+              <img src="/images/logo.png" alt="SkinSense AI" className="h-8 w-auto" />
               <span className="font-bold text-blue-900 dark:text-white">SkinSense AI</span>
             </div>
             <p className="text-xs text-gray-400 dark:text-gray-500">
