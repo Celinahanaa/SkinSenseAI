@@ -11,6 +11,7 @@ import Analysis from './pages/Analysis';
 import Result from './pages/Result';
 import History from './pages/History';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile'
 
 function Layout({ children }) {
   return (
@@ -31,9 +32,10 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Layout><ProtectedRoute><Home /></ProtectedRoute></Layout>} />
           <Route path="/analysis" element={<Layout><ProtectedRoute><Analysis /></ProtectedRoute></Layout>} />
-          <Route path="/result" element={<Layout><ProtectedRoute><Result /></ProtectedRoute></Layout>} />
+          <Route path="/result" element={<ProtectedRoute><Result /></ProtectedRoute>} />
           <Route path="/history" element={<Layout><ProtectedRoute><History /></ProtectedRoute></Layout>} />
           <Route path="/profile" element={<Layout><ProtectedRoute><Profile /></ProtectedRoute></Layout>} />
+          <Route path="/editprofile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
