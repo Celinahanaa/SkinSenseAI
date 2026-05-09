@@ -5,21 +5,18 @@ import { useAuth } from '../context/AuthContext';
 
 function HeroCard() {
   return (
-    <div className="bg-white rounded-3xl shadow-card-hover p-16 relative overflow-hidden w-full max-w-sm mx-auto">
+    <div className="bg-white rounded-3xl shadow-card-hover p-6 relative overflow-hidden w-full max-w-sm mx-auto">
       {/* Skin layer visual */}
-      <div className="relative h-44 bg-gradient-to-b from-amber-50 to-orange-100 rounded-2xl overflow-hidden mb-4 flex items-center justify-center">
+      <div className="relative h-56 bg-gradient-to-b from-amber-50 to-orange-100 rounded-2xl overflow-hidden mb-4 flex items-center justify-center">
         <div className="relative">
-          {/* Simplified skin cross-section visual */}
-          <div className="w-32 h-32 relative">
+          <div className="w-40 h-40 relative">
             <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-amber-200 to-orange-300 opacity-80" />
             <div className="absolute inset-2 rounded-lg bg-gradient-to-b from-amber-100 to-amber-200 opacity-90" />
             <div className="absolute inset-4 rounded-md bg-amber-50 opacity-80" />
-            {/* Scan lines */}
             <div className="absolute inset-0 rounded-xl border-2 border-green-400 opacity-60" />
             <div className="absolute left-0 right-0 h-0.5 bg-green-400 opacity-50 top-1/2" />
           </div>
         </div>
-        {/* Corner dots */}
         <div className="absolute top-3 left-3 w-5 h-5 border-2 border-green-400 rounded-sm" />
         <div className="absolute top-3 right-3 w-5 h-5 border-2 border-green-400 rounded-sm" />
         <div className="absolute bottom-3 left-3 w-5 h-5 border-2 border-green-400 rounded-sm" />
@@ -27,7 +24,7 @@ function HeroCard() {
       </div>
 
       {/* Stats row */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center px-1">
         <div>
           <div className="flex items-center gap-1.5 text-green-700 text-xs font-semibold mb-0.5">
             <CheckCircle2 size={12} />
