@@ -17,7 +17,7 @@ export default function Navbar() {
   };
 
   const navLinks = [
-        { to: '/dashboard', label: 'Home' },
+        { to: '/home', label: 'Home' },
         { to: '/analysis', label: 'Analysis' },
         { to: '/history', label: 'History' },
         { to: '/profile', label: 'Profile' },
