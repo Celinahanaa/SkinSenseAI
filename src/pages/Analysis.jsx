@@ -62,7 +62,7 @@ export default function Analysis() {
             ))}
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-10 items-start">
+          <div className={mode === 'camera' ? 'block' : 'grid lg:grid-cols-2 gap-10 items-start'}>
             {/* Upload area */}
             <div>
               {mode === 'upload' ? (
@@ -95,15 +95,37 @@ export default function Analysis() {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white rounded-2xl shadow-card p-8 flex flex-col items-center justify-center" style={{ minHeight: '360px' }}>
-                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                    <Camera size={36} className="text-blue-600" />
+                <div className="bg-white rounded-2xl shadow-card overflow-hidden relative">
+                  
+                  {/* Live indicator */}
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    <span className="text-xs text-red-500 font-semibold">Live</span>
                   </div>
-                  <p className="font-semibold text-gray-700 mb-2">Aktifkan Kamera</p>
-                  <p className="text-sm text-gray-400 text-center mb-6">Pastikan Anda berada di ruangan yang cukup cahaya</p>
-                  <button className="btn-primary py-3 px-6 rounded-xl text-sm">
-                    <Camera size={16} /> Buka Kamera
-                  </button>
+
+                  {/* Area kamera */}
+                  <div className="bg-white rounded-2xl p-8 flex flex-col items-center justify-center" style={{ minHeight: '360px' }}>
+                    <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                      <Camera size={36} className="text-blue-600" />
+                    </div>
+                    <p className="font-semibold text-gray-700 mb-2">Aktifkan Kamera</p>
+                    <p className="text-sm text-gray-400 text-center mb-6">Pastikan Anda berada di ruangan yang cukup cahaya</p>
+                    <button className="btn-primary py-3 px-6 rounded-xl text-sm">
+                      <Camera size={16} /> Buka Kamera
+                    </button>
+                  </div>
+
+                  {/* Tips */}
+                  <div className="px-5 pb-5">
+                    <div className="bg-blue-50 rounded-xl p-4 flex items-start gap-3">
+                      <span className="bg-white text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0">TIPS</span>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        Untuk mendapatkan hasil analisis yang optimal, pastikan wajah terlihat jelas
+                        dengan pencahayaan yang baik serta tanpa penggunaan filter atau makeup berlebih.
+                      </p>
+                    </div>
+                  </div>
+
                 </div>
               )}
 
@@ -128,6 +150,7 @@ export default function Analysis() {
             </div>
 
             {/* Tips */}
+            {mode === 'upload' && (
             <div>
               <span className="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1.5 rounded-full mb-5 tracking-wide">
                 TIPS
@@ -171,6 +194,7 @@ export default function Analysis() {
                 </div>
               )}
             </div>
+            )}
           </div>
         </div>
       </div>
