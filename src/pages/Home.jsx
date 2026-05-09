@@ -74,8 +74,8 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       {/* Hero */}
       <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 50%, #dce8ff 100%)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center py-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-up">
               <span className="inline-flex items-center gap-1.5 bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
                 <CheckCircle2 size={12} />
@@ -113,30 +113,39 @@ export default function Home() {
 
       {/* Problem section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Image collage */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="h-40 bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl flex items-center justify-center overflow-hidden">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🧴</div>
-                    <p className="text-xs text-amber-700 font-medium">Skincare</p>
-                  </div>
+            {/* Image collage - NEW DESIGN */}
+            <div className="grid grid-cols-3 gap-4">
+            {/* Kolom kiri - 2 gambar kecil */}
+            <div className="col-span-1 space-y-4">
+                {/* Skincare image */}
+                <div className="h-40 rounded-2xl overflow-hidden shadow-md">
+                  <img
+                    src="/images/skincare.jpg"
+                    alt="Skincare"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="h-28 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center">
-                  <div className="text-3xl">✨</div>
+
+                {/* Skin texture */}
+                <div className="h-40 rounded-2xl overflow-hidden shadow-md">
+                  <img
+                    src="/images/skin-texture.jpg"
+                    alt="Skin Texture"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
-              <div className="space-y-4 pt-8">
-                <div className="h-28 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center">
-                  <div className="text-3xl">🔬</div>
-                </div>
-                <div className="h-40 bg-gradient-to-br from-green-100 to-teal-100 rounded-2xl flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">💊</div>
-                    <p className="text-xs text-green-700 font-medium">Ingredients</p>
-                  </div>
+
+              {/* Right column */}
+              <div className="col-span-2">
+              <div className="h-[336px] rounded-2xl overflow-hidden shadow-md">
+                  <img
+                    src="/images/lab.jpg"
+                    alt="Lab Analysis"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -181,7 +190,7 @@ export default function Home() {
 
       {/* How it works */}
       <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%)' }}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold text-gray-900 mb-3">Precision Analysis in Seconds</h2>
             <p className="text-gray-500 max-w-xl mx-auto">Teknologi canggih kami memproses citra wajah Anda dan menghasilkan rekomendasi dalam hitungan detik.</p>
