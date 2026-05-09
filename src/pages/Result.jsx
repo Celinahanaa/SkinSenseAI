@@ -45,8 +45,8 @@ export default function Result() {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(160deg, #f8faff 0%, #eef4ff 100%)' }}>
-      <div className="pt-20 pb-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="pt-10 pb-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           {/* Back & History nav */}
           <div className="flex justify-between items-center mb-6">
             <button
