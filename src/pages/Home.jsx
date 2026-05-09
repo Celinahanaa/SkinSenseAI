@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 function HeroCard() {
   return (
-    <div className="bg-white rounded-3xl shadow-card-hover p-6 relative overflow-hidden w-full max-w-sm mx-auto">
+    <div className="bg-white rounded-3xl shadow-card-hover p-16 relative overflow-hidden w-full max-w-sm mx-auto">
       {/* Skin layer visual */}
       <div className="relative h-44 bg-gradient-to-b from-amber-50 to-orange-100 rounded-2xl overflow-hidden mb-4 flex items-center justify-center">
         <div className="relative">
@@ -29,7 +29,7 @@ function HeroCard() {
       {/* Stats row */}
       <div className="flex justify-between items-center">
         <div>
-          <div className="flex items-center gap-1.5 text-green-600 text-xs font-semibold mb-0.5">
+          <div className="flex items-center gap-1.5 text-green-700 text-xs font-semibold mb-0.5">
             <CheckCircle2 size={12} />
             <span>DETECTION COMPLETE</span>
           </div>
@@ -112,81 +112,81 @@ export default function Home() {
       </section>
 
       {/* Problem section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Image collage - NEW DESIGN */}
-            <div className="grid grid-cols-3 gap-4">
-            {/* Kolom kiri - 2 gambar kecil */}
-            <div className="col-span-1 space-y-4">
-                {/* Skincare image */}
-                <div className="h-40 rounded-2xl overflow-hidden shadow-md">
-                  <img
-                    src="/images/skincare.jpg"
-                    alt="Skincare"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+<section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+  <div className="max-w-6xl mx-auto">
+    <div className="grid lg:grid-cols-2 gap-16 items-center">
+      {/* Image collage */}
+      <div className="grid grid-cols-3 gap-4 h-full">
+        {/* Kolom kiri - 2 gambar kecil */}
+        <div className="col-span-1 flex flex-col gap-4">
+          {/* Skincare image */}
+          <div className="flex-1 rounded-2xl overflow-hidden shadow-md">
+            <img
+              src="/images/skincare.jpg"
+              alt="Skincare"
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-                {/* Skin texture */}
-                <div className="h-40 rounded-2xl overflow-hidden shadow-md">
-                  <img
-                    src="/images/skin-texture.jpg"
-                    alt="Skin Texture"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
+          {/* Skin texture */}
+          <div className="flex-1 rounded-2xl overflow-hidden shadow-md">
+            <img
+              src="/images/skin-texture.jpg"
+              alt="Skin Texture"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
 
-              {/* Right column */}
-              <div className="col-span-2">
-              <div className="h-[336px] rounded-2xl overflow-hidden shadow-md">
-                  <img
-                    src="/images/lab.jpg"
-                    alt="Lab Analysis"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
+        {/* Right column */}
+        <div className="col-span-2">
+          <div className="h-full rounded-2xl overflow-hidden shadow-md">
+            <img
+              src="/images/lab.jpg"
+              alt="Lab Analysis"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div>
+        <p className="text-blue-800 text-sm font-semibold uppercase tracking-wider mb-3">Mengapa SkinSense AI?</p>
+        <h2 className="text-4xl font-bold text-gray-900 mb-2">Kenali Kulit</h2>
+        <h2 className="text-4xl font-bold text-blue-800 mb-8">Anda Lebih Dalam</h2>
+
+        <div className="space-y-6">
+          <div className="flex gap-4">
+            <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield size={18} className="text-red-500" />
             </div>
-
-            {/* Content */}
             <div>
-              <p className="text-blue-800 text-sm font-semibold uppercase tracking-wider mb-3">Mengapa SkinSense AI?</p>
-              <h2 className="text-4xl font-bold text-gray-900 mb-2">Kenali Kulit</h2>
-              <h2 className="text-4xl font-bold text-blue-800 mb-8">Anda Lebih Dalam</h2>
+              <h3 className="font-bold text-gray-800 mb-1">Acne Cosmetica Risks</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">Penggunaan kosmetik yang tidak sesuai jenis kulit dapat memicu jerawat kosmetik (acne cosmetica) yang memperburuk kondisi kulit.</p>
+            </div>
+          </div>
 
-              <div className="space-y-6">
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Shield size={18} className="text-red-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-800 mb-1">Acne Cosmetica Risks</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed">Penggunaan kosmetik yang tidak sesuai jenis kulit dapat memicu jerawat kosmetik (acne cosmetica) yang memperburuk kondisi kulit.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Zap size={18} className="text-orange-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-800 mb-1">Ingredient Mismatches</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed">38,1% pasien melaporkan perburukan kondisi kulit akibat penggunaan skincare yang tidak sesuai kebutuhan spesifik mereka (Ryu et al., 2021).</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 p-4 bg-gray-50 rounded-xl border-l-4 border-blue-800">
-                <p className="text-gray-600 text-sm italic leading-relaxed">
-                  "SkinSense AI was born to bridge the gap between expensive dermatological consultations and the guesswork of the beauty aisle."
-                </p>
-              </div>
+          <div className="flex gap-4">
+            <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Zap size={18} className="text-orange-500" />
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-800 mb-1">Ingredient Mismatches</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">38,1% pasien melaporkan perburukan kondisi kulit akibat penggunaan skincare yang tidak sesuai kebutuhan spesifik mereka (Ryu et al., 2021).</p>
             </div>
           </div>
         </div>
-      </section>
+
+        <div className="mt-8 p-4 bg-gray-50 rounded-xl border-l-4 border-blue-800">
+          <p className="text-gray-600 text-sm italic leading-relaxed">
+            "SkinSense AI was born to bridge the gap between expensive dermatological consultations and the guesswork of the beauty aisle."
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* How it works */}
       <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%)' }}>
@@ -252,9 +252,6 @@ export default function Home() {
             <div className="rounded-2xl p-6 text-white animate-fade-in-up delay-400" style={{ background: 'linear-gradient(135deg, #1a3c8f 0%, #0f2460 100%)' }}>
               <h3 className="text-2xl font-bold mb-3">Science-First Approach</h3>
               <p className="text-blue-200 text-sm leading-relaxed mb-5">Setiap rekomendasi didasarkan pada penelitian ilmiah yang tervalidasi untuk memastikan keamanan dan efektivitas.</p>
-              <button className="border border-white/40 text-white text-sm font-medium px-5 py-2.5 rounded-xl hover:bg-white/10 transition-colors flex items-center gap-2">
-                Learn about our Research <ChevronRight size={16} />
-              </button>
             </div>
           </div>
         </div>
