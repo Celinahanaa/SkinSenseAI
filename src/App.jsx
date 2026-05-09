@@ -3,7 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
-import Landing from './pages/Landing';
+import Landing from './pages/LandingPage';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
