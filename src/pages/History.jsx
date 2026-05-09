@@ -27,16 +27,6 @@ export default function History() {
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 pt-20 pb-8" style={{ background: 'linear-gradient(160deg, #f8faff 0%, #eef4ff 100%)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Decorative dots */}
-          <div className="absolute top-8 right-4 opacity-30">
-            {[0,1,2,3,4].map(r => (
-              <div key={r} className="flex gap-1.5 mb-1.5">
-                {[0,1,2,3,4].map(c => (
-                  <div key={c} className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
-                ))}
-              </div>
-            ))}
-          </div>
 
           <h1 className="text-4xl font-bold text-blue-800 mb-8">Riwayat Deteksi</h1>
 
