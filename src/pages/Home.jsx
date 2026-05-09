@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Shield, Zap, Brain, Star, Camera } from 'lucide-react';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
+import { useLang } from '../context/LanguageContext';
 
 function HeroCard() {
   return (
@@ -41,6 +42,7 @@ function HeroCard() {
 
 export default function Home() {
   const { user } = useAuth();
+  const { t } = useLang();
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -69,10 +71,10 @@ export default function Home() {
                   className="btn-primary py-3.5 px-8 rounded-xl text-base"
                   style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.35)' }}
                 >
-                  Start Analysis <ArrowRight size={18} />
+                  {t('landing_analyze_btn')} <ArrowRight size={18} />
                 </Link>
                 <button className="btn-outline py-3.5 px-8 rounded-xl text-base">
-                  How it Works
+                  {t('landing_explore_tech')}
                 </button>
               </div>
             </div>
@@ -104,7 +106,7 @@ export default function Home() {
             </div>
 
             <div>
-              <p className="text-blue-800 dark:text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">Mengapa SkinSense AI?</p>
+              <p className="text-blue-800 dark:text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">{t('landing_problems_title')}</p>
               <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Kenali Kulit</h2>
               <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">Anda Lebih Dalam</h2>
 
@@ -114,8 +116,8 @@ export default function Home() {
                     <Shield size={18} className="text-red-500" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1">Acne Cosmetica Risks</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Penggunaan kosmetik yang tidak sesuai jenis kulit dapat memicu jerawat kosmetik (acne cosmetica) yang memperburuk kondisi kulit.</p>
+                    <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1">{t('prob1_title')}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{t('prob1_desc')}</p>
                   </div>
                 </div>
 
@@ -124,8 +126,8 @@ export default function Home() {
                     <Zap size={18} className="text-orange-500" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1">Ingredient Mismatches</h3>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">38,1% pasien melaporkan perburukan kondisi kulit akibat penggunaan skincare yang tidak sesuai kebutuhan spesifik mereka (Ryu et al., 2021).</p>
+                    <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1">{t('prob2_title')}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{t('prob2_desc')}</p>
                   </div>
                 </div>
               </div>
@@ -144,16 +146,16 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">Precision Analysis in Seconds</h2>
-            <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Teknologi canggih kami memproses citra wajah Anda dan menghasilkan rekomendasi dalam hitungan detik.</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>
+            <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">{t('landing_roadmap_desc')}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {/* Step 1 */}
             <div className="card dark:bg-gray-800 dark:border-gray-700 animate-fade-in-up">
               <div className="w-9 h-9 bg-blue-800 text-white rounded-full flex items-center justify-center font-bold text-sm mb-5">1</div>
-              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">High-Res Capture</h3>
-              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">Upload foto wajah berkualitas tinggi. Sistem kami memandu pencahayaan optimal.</p>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('phase1_title')}</h3>
+              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">{t('phase1_desc')}</p>
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <CheckCircle2 size={14} className="text-green-500" />
@@ -179,14 +181,14 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center font-medium">SAFE SCAN</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center font-medium">{t('landing_encrypted')}</p>
             </div>
 
             {/* Step 2 */}
             <div className="card dark:bg-gray-800 dark:border-gray-700 animate-fade-in-up delay-100">
               <div className="w-9 h-9 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 rounded-full flex items-center justify-center font-bold text-sm mb-5">2</div>
-              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">Neural Processing</h3>
-              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">Model deep learning menganalisis ratusan parameter kulit secara real-time dengan akurasi tinggi.</p>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('phase2_title')}</h3>
+              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">{t('phase2_desc')}</p>
               <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-full border-2 border-dashed border-blue-200 dark:border-blue-700 flex items-center justify-center">
                 <Brain size={24} className="text-blue-600 dark:text-blue-400" />
               </div>
@@ -197,13 +199,13 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 mt-6">
             <div className="card dark:bg-gray-800 dark:border-gray-700 animate-fade-in-up delay-300">
               <div className="w-9 h-9 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 rounded-full flex items-center justify-center font-bold text-sm mb-5">3</div>
-              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">Smart Routine</h3>
-              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Dapatkan rekomendasi bahan aktif yang dipersonalisasi berdasarkan jenis dan kondisi kulit unik Anda.</p>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{t('phase3_title')}</h3>
+              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{t('phase3_desc')}</p>
             </div>
 
             <div className="rounded-2xl p-6 text-white animate-fade-in-up delay-400" style={{ background: 'linear-gradient(135deg, #1a3c8f 0%, #0f2460 100%)' }}>
-              <h3 className="text-2xl font-bold mb-3">Science-First Approach</h3>
-              <p className="text-blue-200 text-sm leading-relaxed">Setiap rekomendasi didasarkan pada penelitian ilmiah yang tervalidasi untuk memastikan keamanan dan efektivitas.</p>
+              <h3 className="text-2xl font-bold mb-3">{t('landing_features_title')}</h3>
+              <p className="text-blue-200 text-sm leading-relaxed">{t('landing_features_desc')}</p>
             </div>
           </div>
         </div>
@@ -212,15 +214,15 @@ export default function Home() {
       {/* CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Ready for your clearest skin ever?</h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 text-lg">Bergabunglah dengan ribuan pengguna yang telah menemukan rutinitas skincare yang tepat untuk mereka.</p>
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('landing_cta_title')}</h2>
+          <p className="text-gray-500 dark:text-gray-400 mb-8 text-lg">{t('landing_cta_desc')}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={user ? '/analysis' : '/register'}
               className="btn-primary py-4 px-10 rounded-xl text-base"
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.35)' }}
             >
-              Start Free Analysis <Camera size={18} />
+              {t('landing_analyze_btn')} <Camera size={18} />
             </Link>
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
@@ -232,7 +234,7 @@ export default function Home() {
                 <div className="flex items-center gap-1">
                   {[1,2,3,4,5].map(i => <Star key={i} size={12} fill="#FBBF24" className="text-yellow-400" />)}
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">4.9/5 Rating dari verified users</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{t('landing_cta_note')}</p>
               </div>
             </div>
           </div>

@@ -3,10 +3,12 @@ import { User, LogOut, Menu, X, Sun, Moon } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useLang } from '../context/LanguageContext';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { dark, setDark } = useTheme();
+  const { lang, setLang, t } = useLang();
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,10 +21,10 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { to: '/home', label: 'Home' },
-    { to: '/analysis', label: 'Analysis' },
-    { to: '/history', label: 'History' },
-    { to: '/profile', label: 'Profile' },
+    { to: '/home', label: t('nav_home') },
+    { to: '/analysis', label: t('nav_analysis') },
+    { to: '/history', label: t('nav_history') },
+    { to: '/profile', label: t('nav_profile') },
   ];
 
   return (
@@ -54,7 +56,16 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Toggle dark mode */}
+            {/* Language toggle */}
+            <button
+              onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
+              className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-xs font-bold text-gray-600 dark:text-gray-300"
+              title={lang === 'id' ? 'Switch to English' : 'Ganti ke Indonesia'}
+            >
+              {lang === 'id' ? 'EN' : 'ID'}
+            </button>
+
+            {/* Dark mode toggle */}
             <button
               onClick={() => setDark(!dark)}
               className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -73,7 +84,7 @@ export default function Navbar() {
                 <button
                   onClick={handleLogout}
                   className="text-gray-500 hover:text-red-500 transition-colors"
-                  title="Sign Out"
+                  title={t('nav_signout')}
                 >
                   <LogOut size={16} />
                 </button>
@@ -81,10 +92,10 @@ export default function Navbar() {
             ) : (
               <>
                 <Link to="/login" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-800 transition-colors">
-                  Sign In
+                  {t('nav_signin')}
                 </Link>
                 <Link to="/register" className="btn-primary text-sm py-2 px-5 rounded-xl">
-                  Get Started
+                  {t('nav_getstarted')}
                 </Link>
               </>
             )}
@@ -112,24 +123,32 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <button
-            onClick={() => setDark(!dark)}
-            className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 py-2"
-          >
-            {dark ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} />}
-            {dark ? 'Light Mode' : 'Dark Mode'}
-          </button>
+          <div className="flex items-center gap-3 py-2">
+            <button
+              onClick={() => setDark(!dark)}
+              className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"
+            >
+              {dark ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} />}
+              {dark ? t('nav_lightmode') : t('nav_darkmode')}
+            </button>
+            <button
+              onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
+              className="text-xs font-bold px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
+            >
+              {lang === 'id' ? 'EN' : 'ID'}
+            </button>
+          </div>
           {user ? (
             <button onClick={handleLogout} className="text-sm text-red-500 font-medium py-2">
-              Sign Out
+              {t('nav_signout')}
             </button>
           ) : (
             <div className="flex gap-3 pt-2">
               <Link to="/login" onClick={() => setMenuOpen(false)} className="flex-1 btn-outline text-sm py-2">
-                Sign In
+                {t('nav_signin')}
               </Link>
               <Link to="/register" onClick={() => setMenuOpen(false)} className="flex-1 btn-primary text-sm py-2">
-                Register
+                {t('nav_register')}
               </Link>
             </div>
           )}

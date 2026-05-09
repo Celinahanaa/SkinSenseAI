@@ -4,9 +4,11 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
+import { useLang } from '../context/LanguageContext';
 
 export default function Login() {
   const { login } = useAuth();
+  const { t } = useLang();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '', remember: false });
   const [showPass, setShowPass] = useState(false);
@@ -20,12 +22,16 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.email || !form.password) { setError('Email dan password wajib diisi.'); return; }
     setLoading(true);
     setError('');
-    await new Promise(r => setTimeout(r, 800));
-    login(form.email, form.password);
-    navigate('/home');
+    try {
+      await login(form.email, form.password);
+      navigate('/home');
+    } catch (err) {
+      setError(err.message); // tampilkan pesan error dari backend
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,7 +69,7 @@ export default function Login() {
               Advanced AI,<br />Rooted in Science.
             </h2>
             <p className="text-blue-200 text-sm leading-relaxed">
-              Experience clinical-grade dermatology analysis from the comfort of your home. Your skin's health, decoded by intelligence.
+              {t('login_subtitle')}
             </p>
           </div>
         </div>
@@ -74,8 +80,8 @@ export default function Login() {
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
           <div className="mb-8">
             <Link to="/" className="text-blue-800 dark:text-blue-400 font-bold text-lg">SkinSense AI</Link>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4 mb-1">Welcome Back</h1>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">Access your personalized dermatological dashboard.</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4 mb-1">{t('login_welcome')}</h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('login_subtitle')}</p>
           </div>
 
           {error && (
@@ -86,7 +92,7 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Email Address</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('login_email')}</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
@@ -102,8 +108,8 @@ export default function Login() {
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Password</label>
-                <button type="button" className="text-xs text-blue-700 dark:text-blue-400 hover:underline">Forgot password?</button>
+                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('login_password')}</label>
+                <button type="button" className="text-xs text-blue-700 dark:text-blue-400 hover:underline">{t('login_forgot')}</button>
               </div>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -133,7 +139,7 @@ export default function Login() {
                 onChange={handleChange}
                 className="w-4 h-4 rounded border-gray-300 accent-blue-800"
               />
-              <span className="text-sm text-gray-600 dark:text-gray-300">Keep me signed in for 30 days</span>
+              <span className="text-sm text-gray-600 dark:text-gray-300">{t('login_remember')}</span>
             </label>
 
             <button
@@ -145,14 +151,14 @@ export default function Login() {
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
               ) : (
-                <>Sign In <ArrowRight size={18} /></>
+                <>{t('login_btn')} <ArrowRight size={18} /></>
               )}
             </button>
           </form>
 
           <div className="flex items-center gap-3 my-6">
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-            <span className="text-xs text-gray-400 dark:text-gray-500">Or continue with</span>
+            <span className="text-xs text-gray-400 dark:text-gray-500">{t('login_or')}</span>
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
           </div>
 
@@ -168,9 +174,9 @@ export default function Login() {
           </div>
 
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-            New to SkinSense?{' '}
+            {t('login_no_account')}{' '}
             <Link to="/register" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">
-              Create an account
+              {t('login_create')}
             </Link>
           </p>
         </div>

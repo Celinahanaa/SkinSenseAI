@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -26,21 +27,23 @@ function Layout({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <ThemeProvider> {/* tambahkan ini */}
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/home" element={<Layout><ProtectedRoute><Home /></ProtectedRoute></Layout>} />
-            <Route path="/analysis" element={<Layout><ProtectedRoute><Analysis /></ProtectedRoute></Layout>} />
-            <Route path="/result" element={<ProtectedRoute><Result /></ProtectedRoute>} />
-            <Route path="/history" element={<Layout><ProtectedRoute><History /></ProtectedRoute></Layout>} />
-            <Route path="/profile" element={<Layout><ProtectedRoute><Profile /></ProtectedRoute></Layout>} />
-            <Route path="/editprofile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
-          </Routes>
-        </AuthProvider>
-      </ThemeProvider> {/* tambahkan ini */}
+      <AuthProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/home" element={<Layout><ProtectedRoute><Home /></ProtectedRoute></Layout>} />
+              <Route path="/analysis" element={<Layout><ProtectedRoute><Analysis /></ProtectedRoute></Layout>} />
+              <Route path="/result" element={<Layout><ProtectedRoute><Result /></ProtectedRoute></Layout>} />
+              <Route path="/history" element={<Layout><ProtectedRoute><History /></ProtectedRoute></Layout>} />
+              <Route path="/profile" element={<Layout><ProtectedRoute><Profile /></ProtectedRoute></Layout>} />
+              <Route path="/editprofile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
+            </Routes>
+          </LanguageProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
