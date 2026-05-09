@@ -29,13 +29,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-stretch" style={{ background: '#f0f4ff' }}>
+    <div className="min-h-screen flex items-stretch bg-[#f0f4ff] dark:bg-gray-900">
       {/* Left panel */}
       <div
         className="hidden lg:flex lg:w-1/2 items-end p-12 relative overflow-hidden"
         style={{ background: 'linear-gradient(160deg, #0a1a5c 0%, #1a3c8f 50%, #0e2770 100%)' }}
       >
-        {/* Animated orb background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             {[1,2,3,4].map((_, i) => (
@@ -71,23 +70,23 @@ export default function Login() {
       </div>
 
       {/* Right panel */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12">
-        <div className="bg-white rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#f0f4ff] dark:bg-gray-900">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
           <div className="mb-8">
-            <Link to="/" className="text-blue-800 font-bold text-lg">SkinSense AI</Link>
-            <h1 className="text-3xl font-bold text-gray-900 mt-4 mb-1">Welcome Back</h1>
-            <p className="text-gray-500 text-sm">Access your personalized dermatological dashboard.</p>
+            <Link to="/" className="text-blue-800 dark:text-blue-400 font-bold text-lg">SkinSense AI</Link>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4 mb-1">Welcome Back</h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">Access your personalized dermatological dashboard.</p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Email Address</label>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Email Address</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
@@ -96,15 +95,15 @@ export default function Login() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="name@medical.com"
-                  className="input-field"
+                  className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Password</label>
-                <button type="button" className="text-xs text-blue-700 hover:underline">Forgot password?</button>
+                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Password</label>
+                <button type="button" className="text-xs text-blue-700 dark:text-blue-400 hover:underline">Forgot password?</button>
               </div>
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -114,7 +113,7 @@ export default function Login() {
                   value={form.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="input-field pr-10"
+                  className="input-field pr-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
                 />
                 <button
                   type="button"
@@ -134,7 +133,7 @@ export default function Login() {
                 onChange={handleChange}
                 className="w-4 h-4 rounded border-gray-300 accent-blue-800"
               />
-              <span className="text-sm text-gray-600">Keep me signed in for 30 days</span>
+              <span className="text-sm text-gray-600 dark:text-gray-300">Keep me signed in for 30 days</span>
             </label>
 
             <button
@@ -152,25 +151,25 @@ export default function Login() {
           </form>
 
           <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-xs text-gray-400">Or continue with</span>
-            <div className="flex-1 h-px bg-gray-200" />
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+            <span className="text-xs text-gray-400 dark:text-gray-500">Or continue with</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
               <FcGoogle size={18} />
               Google
             </button>
-            <button className="btn-outline w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
               <FaApple size={18} />
               Apple
             </button>
           </div>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
             New to SkinSense?{' '}
-            <Link to="/register" className="text-blue-700 font-semibold hover:underline">
+            <Link to="/register" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">
               Create an account
             </Link>
           </p>
