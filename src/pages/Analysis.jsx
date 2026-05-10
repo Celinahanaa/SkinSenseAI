@@ -28,13 +28,19 @@ export default function Analysis() {
     setPreview(URL.createObjectURL(f));
   };
 
-  const handleAnalyze = async () => {
-    if (!preview && mode === 'upload') return;
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 2500));
-    setLoading(false);
-    navigate('/result');
-  };
+const handleAnalyze = async () => {
+  if (!preview && mode === 'upload') return;
+  setLoading(true);
+  await new Promise(r => setTimeout(r, 2500)); // nanti ganti dengan apiAnalyze(file)
+  setLoading(false);
+  navigate('/result', {
+    state: {
+      imageUrl: preview, // ✅ kirim foto preview
+      // nanti ganti dengan response API:
+      // skinType, score, tags, metrics, dll
+    }
+  });
+};
 
   const tips = [
     { title: t('tip1_title'), desc: t('tip1_desc') },

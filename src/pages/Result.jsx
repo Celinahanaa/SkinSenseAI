@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download } from 'lucide-react';
 import Footer from '../components/Footer';
+import { useLocation } from 'react-router-dom';
 
 const mockResult = {
   skinType: 'BERMINYAK',
@@ -32,6 +33,8 @@ function ProgressBar({ value, color }) {
 
 export default function Result() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const imageUrl = location.state?.imageUrl || null;
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
@@ -59,13 +62,20 @@ export default function Result() {
           {/* Main result grid */}
           <div className="grid lg:grid-cols-2 gap-6 mb-8 items-stretch">
             {/* Photo */}
-            <div className="relative rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-700 h-full">
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600">
-                <div className="text-center">
-                  <div className="text-6xl mb-3">👤</div>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">Foto Wajah</p>
-                </div>
-              </div>
+<div className="relative rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-700 min-h-[300px] h-full">
+  <div className="absolute inset-0">
+    {imageUrl ? (
+      <img src={imageUrl} alt="Foto analisis" className="w-full h-full object-cover" />
+    ) : (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center">
+          <div className="text-6xl mb-3">👤</div>
+          <p className="text-gray-500 text-sm">Foto Wajah</p>
+        </div>
+      </div>
+    )}
+  </div>
+  {/* overlay DETECTION COMPLETE tetap di sini */}
               <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm rounded-xl px-4 py-3 flex justify-between items-center">
                 <div>
                   <div className="flex items-center gap-1.5 text-green-400 text-xs font-semibold mb-0.5">

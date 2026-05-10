@@ -1,24 +1,40 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Camera, User, Mail, Phone, Calendar, Save, Loader2, Check } from 'lucide-react';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
+import { apiUpdateProfile, apiGetProfile } from '../services/api';
 
 export default function EditProfile() {
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
   const fileRef = useRef();
+
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    birthdate: '',
+    skinType: 'normal',
+    skinConcerns: [],
+  });
+
+  useEffect(() => {
+    if (user) {
+      setForm({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        birthdate: user.birthdate || '',
+        skinType: user.skin_type || 'normal',
+        skinConcerns: user.skin_concerns || [],
+      });
+    }
+  }, [user]); // ← re-run kalau user berubah
 
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-
-  const [form, setForm] = useState({
-    name: 'Anissa Prisilia',
-    email: 'celina.23102@mhs.unesa.ac.id',
-    phone: '+62 812 3456 7890',
-    birthdate: '2003-05-14',
-    skinType: 'berminyak',
-    skinConcerns: ['jerawat', 'pori-pori'],
-  });
 
   const skinTypes = [
     { value: 'normal', label: 'Normal' },
@@ -51,11 +67,28 @@ export default function EditProfile() {
 
   const handleSave = async () => {
     setSaving(true);
-    await new Promise(r => setTimeout(r, 1800));
-    setSaving(false);
-    setSaved(true);
-    await new Promise(r => setTimeout(r, 1000));
-    navigate('/profile');
+    try {
+      await apiUpdateProfile({
+        name: form.name,
+        phone: form.phone,
+        birthdate: form.birthdate,
+        skin_type: form.skinType,           
+        skin_concerns: form.skinConcerns,  
+      });
+
+      const updatedUser = await apiGetProfile();
+      console.log('Profile dari API:', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+
+      setSaved(true);
+      await new Promise(r => setTimeout(r, 1000));
+      navigate('/profile');
+    } catch (err) {
+      console.error('Gagal simpan:', err);
+      alert(err.message); // biar tau kalau ada error dari backend
+    } finally {
+      setSaving(false);
+    }
   };
 
   const inputClass = `

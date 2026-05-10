@@ -3,6 +3,7 @@ import { Scan, FlaskConical, TrendingUp, AlertTriangle, Zap, Camera, Brain, Layo
 import Footer from '../components/Footer';
 import { useTheme } from '../context/ThemeContext';
 import { useLang } from '../context/LanguageContext';
+import FaceScanHero from '../components/FaceScanHero';
 
 const roleColors = {
   'Data Scientist': 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
@@ -44,6 +45,13 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
+
       <div className="flex-1 pt-10">
 
         <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-6 py-4 flex justify-between items-center">
@@ -52,14 +60,12 @@ export default function LandingPage() {
             <span className="font-bold text-gray-900 dark:text-white">SkinSense AI</span>
           </div>
           <div className="flex items-center gap-3">
-            {/* Language toggle */}
             <button
               onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
               className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-xs font-bold text-gray-600 dark:text-gray-300"
             >
               {lang === 'id' ? 'EN' : 'ID'}
             </button>
-            {/* Dark mode toggle */}
             <button
               onClick={() => setDark(!dark)}
               className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -77,29 +83,37 @@ export default function LandingPage() {
 
         {/* Hero */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:py-20">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-              {t('landing_badge')}
-            </span>
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
-              {t('landing_hero_title')}{' '}
-              <span className="text-blue-800 dark:text-blue-400">{t('landing_hero_subtitle')}</span>
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed mb-8 max-w-lg">
-              {t('landing_hero_desc')}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => navigate('/analysis')}
-                className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white font-semibold px-6 py-3 rounded-xl transition-all text-sm"
-                style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
-              >
-                <Scan size={16} /> {t('landing_try_scanner')}
-              </button>
-              <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold px-6 py-3 rounded-xl transition-all text-sm">
-                <FlaskConical size={16} /> {t('landing_explore_tech')}
-              </button>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12">
+            {/* Kiri: teks */}
+            <div className="max-w-2xl lg:w-1/2">
+              <span className="inline-flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                {t('landing_badge')}
+              </span>
+              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+                {t('landing_hero_title')}{' '}
+                <span className="text-blue-800 dark:text-blue-400">{t('landing_hero_subtitle')}</span>
+              </h1>
+              <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed mb-8 max-w-lg">
+                {t('landing_hero_desc')}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => navigate('/analysis')}
+                  className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white font-semibold px-6 py-3 rounded-xl transition-all text-sm"
+                  style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
+                >
+                  <Scan size={16} /> {t('landing_try_scanner')}
+                </button>
+                <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold px-6 py-3 rounded-xl transition-all text-sm">
+                  <FlaskConical size={16} /> {t('landing_explore_tech')}
+                </button>
+              </div>
+            </div>
+
+            {/* Kanan: face scan animation */}
+            <div className="hidden lg:flex lg:w-1/2 items-center justify-center mt-10 lg:mt-0">
+              <FaceScanHero />
             </div>
           </div>
         </section>
