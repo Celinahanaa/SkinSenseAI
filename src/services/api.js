@@ -84,6 +84,16 @@ export const apiGetHistoryDetail = async (id) => {
   return data;
 };
 
+export const apiDeleteHistory = async (id) => {
+  const res = await fetch(`${BASE_URL}/history/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Gagal hapus history');
+  return data;
+};
+
 // ─────────────────────────────────────────
 // ANALYZE
 // ─────────────────────────────────────────

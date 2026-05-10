@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, Shield, Zap, Brain, Star, Camera } from 'luci
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
+import { useRef } from 'react';
 
 function HeroCard() {
   return (
@@ -41,6 +42,11 @@ function HeroCard() {
 }
 
 export default function Home() {
+  const featuresRef = useRef(null);
+
+  const scrollToFeatures = () => {
+    featuresRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
   const { user } = useAuth();
   const { t } = useLang();
 
@@ -73,7 +79,7 @@ export default function Home() {
                 >
                   {t('landing_analyze_btn')} <ArrowRight size={18} />
                 </Link>
-                <button className="btn-outline py-3.5 px-8 rounded-xl text-base">
+                <button onClick={scrollToFeatures} className="btn-outline py-3.5 px-8 rounded-xl text-base">
                   {t('landing_explore_tech')}
                 </button>
               </div>
@@ -143,7 +149,7 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
+      <section ref={featuresRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>

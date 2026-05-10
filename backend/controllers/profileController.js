@@ -3,7 +3,9 @@ const pool = require('../config/db');
 const getProfile = async (req, res) => {
   try {
     const user = await pool.query(
-      'SELECT id, name, email, phone, birthdate, avatar_url, created_at FROM users WHERE id = $1',
+      `SELECT id, name, email, phone, 
+       TO_CHAR(birthdate, 'YYYY-MM-DD') as birthdate,
+       avatar_url, created_at FROM users WHERE id = $1`,
       [req.user.id]
     );
     if (user.rows.length === 0)
@@ -30,10 +32,11 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const { name, phone, birthdate, skin_type, skin_concerns } = req.body;
+
   try {
     await pool.query(
       'UPDATE users SET name=$1, phone=$2, birthdate=$3 WHERE id=$4',
-      [name, phone, birthdate, req.user.id]
+      [name, phone, birthdate || null, req.user.id]
     );
 
     if (skin_type) {
@@ -44,7 +47,7 @@ const updateProfile = async (req, res) => {
       );
     }
 
-    if (skin_concerns) {
+    if (Array.isArray(skin_concerns) && skin_concerns.length > 0) {
       await pool.query('DELETE FROM skin_concerns WHERE user_id = $1', [req.user.id]);
       for (const concern of skin_concerns) {
         await pool.query(
@@ -55,7 +58,9 @@ const updateProfile = async (req, res) => {
     }
 
     res.json({ message: 'Profil berhasil diperbarui' });
+
   } catch (err) {
+    console.error('Update profile error:', err.message);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };

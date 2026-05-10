@@ -1,30 +1,21 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Sun, Moon, CheckCircle2, Circle } from 'lucide-react';
+import { User, Sun, Moon, CheckCircle2, Circle, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { apiGetHistory } from '../services/api';
 import Footer from '../components/Footer';
 
-const metrics = [
-  { label: 'Kadar Minyak', value: 74, color: 'bg-gray-900 dark:bg-gray-300' },
-  { label: 'Kelembapan', value: 42, color: 'bg-gray-700 dark:bg-gray-400' },
-  { label: 'Sensitif', value: 12, color: 'bg-gray-500' },
-  { label: 'Kerutan', value: 13, color: 'bg-gray-500' },
+const METRIC_COLORS = [
+  'bg-gray-900 dark:bg-gray-300',
+  'bg-gray-700 dark:bg-gray-400',
+  'bg-gray-500',
+  'bg-gray-400',
 ];
-
-const routine = {
-  morning: [
-    { name: 'Gentle Cleansing Milk', sub: 'Apply to damp skin for 60 seconds', done: true, icon: '🧼' },
-    { name: 'Vitamin C Serum (15%)', sub: 'For antioxidant protection', done: false, icon: '🍊' },
-  ],
-  evening: [
-    { name: 'Retinol 0.5% Night Cream', sub: 'Alternate days', done: false, icon: '🌙' },
-    { name: 'Retinol 0.5% Night Cream', sub: 'Alternate days', done: false, icon: '🌙' },
-  ],
-};
 
 function ProgressBar({ value, color }) {
   return (
     <div className="flex-1 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-      <div className={`h-full rounded-full ${color}`} style={{ width: `${value}%` }} />
+      <div className={`h-full rounded-full ${color}`} style={{ width: `${Math.min(value ?? 0, 100)}%` }} />
     </div>
   );
 }
@@ -32,6 +23,18 @@ function ProgressBar({ value, color }) {
 export default function Profile() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [latestScan, setLatestScan] = useState(null);
+
+  useEffect(() => {
+    // Ambil history, pakai scan paling pertama (terbaru)
+    apiGetHistory()
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setLatestScan(data[0]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   if (!user) {
     return (
@@ -43,6 +46,33 @@ export default function Profile() {
       </div>
     );
   }
+
+  // Metrics dari scan terakhir — sesuaikan field-nya dengan response backend
+  const metricFields = [
+    { label: 'Kadar Minyak', key: 'oil_level' },
+    { label: 'Kelembapan',   key: 'moisture' },
+    { label: 'Sensitif',     key: 'sensitivity' },
+    { label: 'Kerutan',      key: 'wrinkle' },
+  ];
+
+  const metrics = metricFields.map((m, i) => ({
+    label: m.label,
+    value: latestScan?.[m.key] ?? 0,
+    color: METRIC_COLORS[i],
+  }));
+
+  // Routine dari rekomendasi scan terakhir, fallback ke kosong
+  const recommendations = latestScan?.recommendations ?? [];
+  const morning = recommendations.filter(r => r.time === 'morning' || r.type === 'morning');
+  const evening = recommendations.filter(r => r.time === 'evening' || r.type === 'evening');
+
+  const hydrationGoal = latestScan?.moisture ?? latestScan?.hydration ?? 0;
+  const aiInsight = latestScan?.insight ?? latestScan?.recommendation_note ?? 'Lakukan scan untuk mendapatkan rekomendasi AI.';
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -60,71 +90,96 @@ export default function Profile() {
                 </div>
                 <h2 className="font-bold text-gray-900 dark:text-white text-lg">{user.name}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Member sejak {user.memberSince}</p>
-                <button onClick={() => navigate('/editprofile')} className="btn-primary w-full mt-5 py-2.5 rounded-xl text-sm tracking-widest">
-                  EDIT
-                </button>
+                {user.memberSince && (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Member sejak {user.memberSince}</p>
+                )}
+                <div className="flex gap-2 mt-5">
+                  <button
+                    onClick={() => navigate('/editprofile')}
+                    className="btn-primary flex-1 py-2.5 rounded-xl text-sm tracking-widest"
+                  >
+                    EDIT
+                  </button>
+                </div>
               </div>
 
               {/* Skin metrics */}
               <div className="card dark:bg-gray-800 dark:border-gray-700">
-                <div className="space-y-3">
-                  {metrics.map((m) => (
-                    <div key={m.label} className="flex items-center gap-3">
-                      <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">{m.label}</span>
-                      <ProgressBar value={m.value} color={m.color} />
-                      <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 w-10 text-right">{m.value}%</span>
-                    </div>
-                  ))}
-                </div>
+                {latestScan ? (
+                  <div className="space-y-3">
+                    {metrics.map((m) => (
+                      <div key={m.label} className="flex items-center gap-3">
+                        <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">{m.label}</span>
+                        <ProgressBar value={m.value} color={m.color} />
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 w-10 text-right">{m.value}%</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-6">
+                    <p className="text-sm text-gray-400 dark:text-gray-500">Belum ada data scan</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Right col */}
+            {/* Right col — Personalized Routine */}
             <div className="h-full">
               <div className="card dark:bg-gray-800 dark:border-gray-700 h-full">
                 <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">Personalized Routine</h3>
 
-                {/* Morning */}
-                <div className="mb-5">
-                  <div className="flex items-center gap-2 text-amber-500 font-semibold text-sm mb-3">
-                    <Sun size={16} /> Morning Protocol
+                {recommendations.length === 0 ? (
+                  <div className="text-center py-8">
+                    <p className="text-sm text-gray-400 dark:text-gray-500">Lakukan scan untuk mendapatkan rekomendasi rutinitas.</p>
                   </div>
-                  <div className="space-y-3">
-                    {routine.morning.map((item) => (
-                      <div key={item.name} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
-                        <span className="text-xl">{item.icon}</span>
-                        <div className="flex-1">
-                          <p className={`text-sm font-semibold ${item.done ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}`}>{item.name}</p>
-                          <p className="text-xs text-gray-400 dark:text-gray-500">{item.sub}</p>
+                ) : (
+                  <>
+                    {/* Morning */}
+                    {morning.length > 0 && (
+                      <div className="mb-5">
+                        <div className="flex items-center gap-2 text-amber-500 font-semibold text-sm mb-3">
+                          <Sun size={16} /> Morning Protocol
                         </div>
-                        {item.done
-                          ? <CheckCircle2 size={20} className="text-green-500 flex-shrink-0" />
-                          : <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
-                        }
+                        <div className="space-y-3">
+                          {morning.map((item, i) => (
+                            <div key={i} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
+                              <span className="text-xl">{item.icon ?? '🧴'}</span>
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-white">{item.name}</p>
+                                <p className="text-xs text-gray-400 dark:text-gray-500">{item.sub ?? item.description}</p>
+                              </div>
+                              {item.done
+                                ? <CheckCircle2 size={20} className="text-green-500 flex-shrink-0" />
+                                : <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
+                              }
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                    )}
 
-                {/* Evening */}
-                <div>
-                  <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm mb-3">
-                    <Moon size={16} /> Evening Protocol
-                  </div>
-                  <div className="space-y-3">
-                    {routine.evening.map((item) => (
-                      <div key={item.name} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
-                        <span className="text-xl">{item.icon}</span>
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold text-gray-400 dark:text-gray-500">{item.name}</p>
-                          <p className="text-xs text-gray-400 dark:text-gray-500">{item.sub}</p>
+                    {/* Evening */}
+                    {evening.length > 0 && (
+                      <div>
+                        <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm mb-3">
+                          <Moon size={16} /> Evening Protocol
                         </div>
-                        <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
+                        <div className="space-y-3">
+                          {evening.map((item, i) => (
+                            <div key={i} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
+                              <span className="text-xl">{item.icon ?? '🌙'}</span>
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-gray-400 dark:text-gray-500">{item.name}</p>
+                                <p className="text-xs text-gray-400 dark:text-gray-500">{item.sub ?? item.description}</p>
+                              </div>
+                              <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -135,12 +190,12 @@ export default function Profile() {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <p className="text-sm text-gray-700 dark:text-gray-200">Hydration Goal</p>
-                <p className="text-sm font-bold text-gray-900 dark:text-white">85%</p>
+                <p className="text-sm font-bold text-gray-900 dark:text-white">{hydrationGoal}%</p>
               </div>
               <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden mb-3">
-                <div className="h-full bg-gray-900 dark:bg-gray-300 rounded-full" style={{ width: '85%' }} />
+                <div className="h-full bg-gray-900 dark:bg-gray-300 rounded-full" style={{ width: `${hydrationGoal}%` }} />
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 italic">Hidrasi kulit masih rendah. Gunakan moisturizer ringan untuk menjaga keseimbangan kulit.</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 italic">{aiInsight}</p>
             </div>
           </div>
 

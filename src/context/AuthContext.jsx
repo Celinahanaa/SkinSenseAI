@@ -24,19 +24,23 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = async (email, password) => {
-    const data = await apiLogin(email, password); // lempar error kalau gagal
-    localStorage.setItem('token', data.token);    // simpan token
-    setUser(data.user);                           // simpan user ke state
-    return data;
-  };
+const login = async (email, password) => {
+  const data = await apiLogin(email, password);
+  localStorage.setItem('token', data.token);
+  // ✅ fetch profile lengkap termasuk skin_type & skin_concerns
+  const profile = await apiGetProfile();
+  setUser(profile);
+  return data;
+};
 
-  const register = async (name, email, password) => {
-    const data = await apiRegister(name, email, password);
-    localStorage.setItem('token', data.token);
-    setUser(data.user);
-    return data;
-  };
+const register = async (name, email, password) => {
+  const data = await apiRegister(name, email, password);
+  localStorage.setItem('token', data.token);
+  // ✅ sama di register
+  const profile = await apiGetProfile();
+  setUser(profile);
+  return data;
+};
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -53,4 +57,11 @@ export function AuthProvider({ children }) {
   );
 }
 
-export const useAuth = () => useContext(AuthContext);
+// Di AuthContext.jsx, ubah baris terakhir
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === null) {
+    throw new Error('useAuth harus digunakan di dalam AuthProvider');
+  }
+  return context;
+};
