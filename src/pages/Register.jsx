@@ -36,7 +36,7 @@ export default function Register() {
   };
 
   const features = [
-    { icon: <Target size={18} />, title: '85%+ Accuracy', desc: t('feat1_desc') },
+    { icon: <Target size={18} />, title: t('feat1_title'), desc: t('feat1_desc') },
     { icon: <FlaskConical size={18} />, title: t('feat2_title'), desc: t('feat2_desc') },
     { icon: <BarChart3 size={18} />, title: t('feat3_title'), desc: t('feat3_desc') },
   ];
@@ -51,7 +51,7 @@ export default function Register() {
         <div className="relative z-10 max-w-sm">
           <p className="text-blue-200 text-sm mb-8">{t('register_subtitle')}</p>
           <h2 className="text-4xl font-bold text-white leading-snug mb-6">
-            Skin yang Sehat<br />Dimulai dari<br />Pemahaman yang Tepat.
+            {t('register_text1')}<br />{t('register_text2')}<br />{t('register_text3')}
           </h2>
 
           <div className="space-y-5">

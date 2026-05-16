@@ -66,7 +66,7 @@ export default function Login() {
         <div className="relative z-10 max-w-sm">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
             <h2 className="text-3xl font-bold text-white leading-tight mb-3">
-              Advanced AI,<br />Rooted in Science.
+              {t('login_text1')}<br />{t('login_text2')}
             </h2>
             <p className="text-blue-200 text-sm leading-relaxed">
               {t('login_subtitle')}
