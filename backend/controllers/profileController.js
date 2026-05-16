@@ -1,4 +1,16 @@
 const pool = require('../config/db');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `avatar_${req.user.id}_${Date.now()}${ext}`);
+  },
+});
+
+const upload = multer({ storage });
 
 const getProfile = async (req, res) => {
   try {
@@ -32,12 +44,20 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const { name, phone, birthdate, skin_type, skin_concerns } = req.body;
+  const avatar_url = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
-    await pool.query(
-      'UPDATE users SET name=$1, phone=$2, birthdate=$3 WHERE id=$4',
-      [name, phone, birthdate || null, req.user.id]
-    );
+    if (avatar_url) {
+      await pool.query(
+        'UPDATE users SET name=$1, phone=$2, birthdate=$3, avatar_url=$4 WHERE id=$5',
+        [name, phone, birthdate || null, avatar_url, req.user.id]
+      );
+    } else {
+      await pool.query(
+        'UPDATE users SET name=$1, phone=$2, birthdate=$3 WHERE id=$4',
+        [name, phone, birthdate || null, req.user.id]
+      );
+    }
 
     if (skin_type) {
       await pool.query(
@@ -58,11 +78,10 @@ const updateProfile = async (req, res) => {
     }
 
     res.json({ message: 'Profil berhasil diperbarui' });
-
   } catch (err) {
     console.error('Update profile error:', err.message);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
 
-module.exports = { getProfile, updateProfile };
+module.exports = { getProfile, updateProfile, upload };

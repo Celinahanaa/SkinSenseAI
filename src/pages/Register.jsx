@@ -5,9 +5,10 @@ import { useAuth } from '../context/AuthContext';
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
 import { useLang } from '../context/LanguageContext';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export default function Register() {
-  const { register } = useAuth();
+  const { register, setUser } = useAuth();
   const { t } = useLang();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', agree: false });
@@ -20,7 +21,6 @@ export default function Register() {
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  // Register.jsx — di handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -34,6 +34,37 @@ export default function Register() {
       setLoading(false);
     }
   };
+
+  const handleGoogleLogin = useGoogleLogin({
+  onSuccess: async (tokenResponse) => {
+    try {
+      // Ambil data dari Google
+      const googleUser = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+      }).then(res => res.json());
+
+      // Kirim ke backend untuk dapat JWT
+      const res = await fetch('http://localhost:3000/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: googleUser.email,
+          name: googleUser.name,
+          avatar_url: googleUser.picture,
+        }),
+      });
+      const data = await res.json();
+
+      // Simpan token & set user
+      localStorage.setItem('token', data.token);
+      setUser(data.user);
+      navigate('/home');
+    } catch (err) {
+      setError('Login Google gagal');
+    }
+  },
+  onError: () => setError('Login Google gagal'),
+});
 
   const features = [
     { icon: <Target size={18} />, title: t('feat1_title'), desc: t('feat1_desc') },
@@ -156,11 +187,17 @@ export default function Register() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button
+              onClick={() => handleGoogleLogin()}
+              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2"
+            >
               <FcGoogle size={18} />
               Google
             </button>
-            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button
+              onClick={() => handleGoogleLogin()}
+              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2"
+            >
               <FaApple size={18} />
               Apple
             </button>
