@@ -73,6 +73,8 @@ export default function Profile() {
     navigate('/');
   };
 
+  console.log('user.avatar_url:', user?.avatar_url);
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
@@ -84,8 +86,14 @@ export default function Profile() {
             <div className="grid grid-rows-[auto_1fr] gap-5">
               {/* User info card */}
               <div className="card dark:bg-gray-800 dark:border-gray-700 text-center">
-                <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <User size={32} className="text-blue-600 dark:text-blue-400" />
+                <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-3">
+                  {user.avatar_url ? (
+                    <img src={`http://localhost:3000${user.avatar_url}`} alt="avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                      <User size={32} className="text-blue-600 dark:text-blue-400" />
+                    </div>
+                  )}
                 </div>
                 <h2 className="font-bold text-gray-900 dark:text-white text-lg">{user.name}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>

@@ -10,6 +10,11 @@ const storage = multer.diskStorage({
   },
 });
 
+const fs = require('fs');
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads');
+}
+
 const upload = multer({ storage });
 
 const getProfile = async (req, res) => {
@@ -43,6 +48,8 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
+  console.log('req.body:', req.body);
+  console.log('req.file:', req.file);
   const { name, phone, birthdate, skin_type, skin_concerns } = req.body;
   const avatar_url = req.file ? `/uploads/${req.file.filename}` : null;
 
