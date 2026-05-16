@@ -54,8 +54,11 @@ export const apiGetProfile = async () => {
 export const apiUpdateProfile = async (profileData) => {
   const res = await fetch(`${BASE_URL}/profile`, {
     method: 'PUT',
-    headers: authHeaders(),
-    body: JSON.stringify(profileData),
+    headers: {
+      'Authorization': `Bearer ${getToken()}`,
+      // Jangan set Content-Type, biar browser set otomatis untuk multipart
+    },
+    body: profileData,
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Gagal update profil');
