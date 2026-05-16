@@ -30,9 +30,16 @@ export default function EditProfile() {
         skinConcerns: user.skin_concerns || [],
       });
     }
-  }, [user]); // ← re-run kalau user berubah
+  }, [user]);
 
   const [avatarPreview, setAvatarPreview] = useState(null);
+
+  useEffect(() => {
+    if (user?.avatar_url) {
+      setAvatarPreview(`http://localhost:3000${user.avatar_url}`);
+    }
+  }, [user]);
+
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -68,16 +75,19 @@ export default function EditProfile() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await apiUpdateProfile({
-        name: form.name,
-        phone: form.phone,
-        birthdate: form.birthdate,
-        skin_type: form.skinType,           
-        skin_concerns: form.skinConcerns,  
-      });
+      const formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('phone', form.phone);
+      formData.append('birthdate', form.birthdate);
+      formData.append('skin_type', form.skinType);
+      form.skinConcerns.forEach(c => formData.append('skin_concerns[]', c));
 
+      if (fileRef.current?.files[0]) {
+        formData.append('avatar', fileRef.current.files[0]);
+      }
+
+      await apiUpdateProfile(formData);
       const updatedUser = await apiGetProfile();
-      console.log('Profile dari API:', JSON.stringify(updatedUser));
       setUser(updatedUser);
 
       setSaved(true);
@@ -85,7 +95,7 @@ export default function EditProfile() {
       navigate('/profile');
     } catch (err) {
       console.error('Gagal simpan:', err);
-      alert(err.message); // biar tau kalau ada error dari backend
+      alert(err.message);
     } finally {
       setSaving(false);
     }
@@ -156,7 +166,7 @@ export default function EditProfile() {
                 <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Email</label>
                 <div className="relative">
                   <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className={inputClass + ' pl-10'} placeholder="Email" />
+                  <input type="email" value={form.email} disabled className={inputClass + ' pl-10 opacity-60 cursor-not-allowed'} placeholder="Email" />
                 </div>
               </div>
 
