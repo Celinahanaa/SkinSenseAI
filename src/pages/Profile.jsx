@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Sun, Moon, CheckCircle2, Circle, LogOut } from 'lucide-react';
+import { User, Sun, Moon, CheckCircle2, Circle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiGetHistory } from '../services/api';
 import Footer from '../components/Footer';
+import { useLang } from '../context/LanguageContext';
 
 const METRIC_COLORS = [
   'bg-gray-900 dark:bg-gray-300',
@@ -23,10 +24,10 @@ function ProgressBar({ value, color }) {
 export default function Profile() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLang();
   const [latestScan, setLatestScan] = useState(null);
 
   useEffect(() => {
-    // Ambil history, pakai scan paling pertama (terbaru)
     apiGetHistory()
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -40,34 +41,32 @@ export default function Profile() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
         <div className="text-center">
-          <p className="text-gray-500 dark:text-gray-400 mb-4">Silakan login untuk melihat profil</p>
-          <button onClick={() => navigate('/login')} className="btn-primary px-6 py-2.5 rounded-xl">Login</button>
+          <p className="text-gray-500 dark:text-gray-400 mb-4">{t('profile_login_prompt')}</p>
+          <button onClick={() => navigate('/login')} className="btn-primary px-6 py-2.5 rounded-xl">{t('login_btn')}</button>
         </div>
       </div>
     );
   }
 
-  // Metrics dari scan terakhir — sesuaikan field-nya dengan response backend
   const metricFields = [
-    { label: 'Kadar Minyak', key: 'oil_level' },
-    { label: 'Kelembapan',   key: 'moisture' },
-    { label: 'Sensitif',     key: 'sensitivity' },
-    { label: 'Kerutan',      key: 'wrinkle' },
+    { labelKey: 'profile_metric_oil',       key: 'oil_level' },
+    { labelKey: 'profile_metric_moisture',  key: 'moisture' },
+    { labelKey: 'profile_metric_sensitive', key: 'sensitivity' },
+    { labelKey: 'profile_metric_wrinkle',   key: 'wrinkle' },
   ];
 
   const metrics = metricFields.map((m, i) => ({
-    label: m.label,
+    label: t(m.labelKey),
     value: latestScan?.[m.key] ?? 0,
     color: METRIC_COLORS[i],
   }));
 
-  // Routine dari rekomendasi scan terakhir, fallback ke kosong
   const recommendations = latestScan?.recommendations ?? [];
   const morning = recommendations.filter(r => r.time === 'morning' || r.type === 'morning');
   const evening = recommendations.filter(r => r.time === 'evening' || r.type === 'evening');
 
   const hydrationGoal = latestScan?.moisture ?? latestScan?.hydration ?? 0;
-  const aiInsight = latestScan?.insight ?? latestScan?.recommendation_note ?? 'Lakukan scan untuk mendapatkan rekomendasi AI.';
+  const aiInsight = latestScan?.insight ?? latestScan?.recommendation_note ?? t('profile_no_insight');
 
   const handleLogout = () => {
     logout();
@@ -77,8 +76,8 @@ export default function Profile() {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">Profil Pengguna</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">{t('profile_title')}</h1>
 
           <div className="grid lg:grid-cols-2 gap-6 items-stretch mb-6">
             {/* Left col */}
@@ -91,14 +90,14 @@ export default function Profile() {
                 <h2 className="font-bold text-gray-900 dark:text-white text-lg">{user.name}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
                 {user.memberSince && (
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Member sejak {user.memberSince}</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('profile_member_since')} {user.memberSince}</p>
                 )}
                 <div className="flex gap-2 mt-5">
                   <button
                     onClick={() => navigate('/editprofile')}
                     className="btn-primary flex-1 py-2.5 rounded-xl text-sm tracking-widest"
                   >
-                    EDIT
+                    {t('profile_edit')}
                   </button>
                 </div>
               </div>
@@ -117,7 +116,7 @@ export default function Profile() {
                   </div>
                 ) : (
                   <div className="text-center py-6">
-                    <p className="text-sm text-gray-400 dark:text-gray-500">Belum ada data scan</p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500">{t('profile_no_scan')}</p>
                   </div>
                 )}
               </div>
@@ -126,19 +125,18 @@ export default function Profile() {
             {/* Right col — Personalized Routine */}
             <div className="h-full">
               <div className="card dark:bg-gray-800 dark:border-gray-700 h-full">
-                <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">Personalized Routine</h3>
+                <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">{t('profile_routine_title')}</h3>
 
                 {recommendations.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-sm text-gray-400 dark:text-gray-500">Lakukan scan untuk mendapatkan rekomendasi rutinitas.</p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500">{t('profile_no_routine')}</p>
                   </div>
                 ) : (
                   <>
-                    {/* Morning */}
                     {morning.length > 0 && (
                       <div className="mb-5">
                         <div className="flex items-center gap-2 text-amber-500 font-semibold text-sm mb-3">
-                          <Sun size={16} /> Morning Protocol
+                          <Sun size={16} /> {t('profile_morning')}
                         </div>
                         <div className="space-y-3">
                           {morning.map((item, i) => (
@@ -158,11 +156,10 @@ export default function Profile() {
                       </div>
                     )}
 
-                    {/* Evening */}
                     {evening.length > 0 && (
                       <div>
                         <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm mb-3">
-                          <Moon size={16} /> Evening Protocol
+                          <Moon size={16} /> {t('profile_evening')}
                         </div>
                         <div className="space-y-3">
                           {evening.map((item, i) => (
@@ -186,10 +183,10 @@ export default function Profile() {
 
           {/* AI Insights */}
           <div className="card dark:bg-gray-800 dark:border-gray-700">
-            <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">AI Insights</h3>
+            <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">{t('profile_ai_insights')}</h3>
             <div>
               <div className="flex justify-between items-center mb-2">
-                <p className="text-sm text-gray-700 dark:text-gray-200">Hydration Goal</p>
+                <p className="text-sm text-gray-700 dark:text-gray-200">{t('profile_hydration_goal')}</p>
                 <p className="text-sm font-bold text-gray-900 dark:text-white">{hydrationGoal}%</p>
               </div>
               <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden mb-3">

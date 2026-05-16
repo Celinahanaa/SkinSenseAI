@@ -5,19 +5,6 @@ import { useLang } from '../context/LanguageContext';
 import { useEffect, useState } from 'react';
 import { apiGetHistory, apiDeleteHistory } from '../services/api';
 
-// Helper: format tanggal dari backend (misal "2026-04-29T20:18:00Z")
-const formatDate = (dateStr) => {
-  const d = new Date(dateStr);
-  const bulan = d.toLocaleString('id-ID', { month: 'short' }).toUpperCase();
-  const tanggal = d.getDate();
-  const jam = d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-  return {
-    date: `${bulan} ${tanggal}`,          // "APR 29"
-    fullDate: `${d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} - ${jam} WIB`,
-  };
-};
-
-// Warna tag berdasarkan tipe kulit
 const TAG_COLORS = {
   berminyak: 'bg-amber-100 text-amber-600',
   sensitif:  'bg-pink-100 text-pink-600',
@@ -30,12 +17,24 @@ const getTagColor = (tag) =>
   TAG_COLORS[tag?.toLowerCase()] || 'bg-gray-100 text-gray-600';
 
 export default function History() {
-  const { t } = useLang();         // ✅ fix: destructure t
-  const navigate = useNavigate();  // ✅ fix: destructure navigate
+  const { t, lang } = useLang();
+  const navigate = useNavigate();
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    const locale = lang === 'id' ? 'id-ID' : 'en-US';
+    const bulan = d.toLocaleString(locale, { month: 'short' }).toUpperCase();
+    const tanggal = d.getDate();
+    const jam = d.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+    return {
+      date: `${bulan} ${tanggal}`,
+      fullDate: `${d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })} - ${jam}${lang === 'id' ? ' WIB' : ''}`,
+    };
+  };
 
   useEffect(() => {
     apiGetHistory()
@@ -61,16 +60,15 @@ export default function History() {
     avgScore: items.length
       ? Math.round(items.reduce((a, b) => a + (b.score ?? 0), 0) / items.length)
       : 0,
-    // Perubahan: selisih skor terbaru vs sebelumnya
     change: items.length >= 2
       ? (items[0].score ?? 0) - (items[1].score ?? 0)
       : null,
   };
 
-  // Grup item berdasarkan bulan
   const grouped = items.reduce((acc, item) => {
     const d = new Date(item.created_at ?? item.date ?? Date.now());
-    const label = d.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
+    const locale = lang === 'id' ? 'id-ID' : 'en-US';
+    const label = d.toLocaleString(locale, { month: 'long', year: 'numeric' });
     if (!acc[label]) acc[label] = [];
     acc[label].push(item);
     return acc;
@@ -78,14 +76,14 @@ export default function History() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
-      <p className="text-gray-400 dark:text-gray-500">Memuat riwayat...</p>
+      <p className="text-gray-400 dark:text-gray-500">{t('history_loading')}</p>
     </div>
   );
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">
             {t('nav_history')}
@@ -94,21 +92,20 @@ export default function History() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-10">
             <div className="card dark:bg-gray-800 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Total Scan</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('history_total')}</p>
               <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
             </div>
             <div className="card dark:bg-gray-800 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Skor Rata-Rata</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('history_avg')}</p>
               <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.avgScore}</p>
             </div>
             <div className="card dark:bg-gray-800 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Perubahan Kulit</p>
-              {/* ✅ fix: hitung dari data, bukan hardcode */}
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('history_change')}</p>
               {stats.change === null ? (
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">Belum cukup data</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">{t('history_no_data')}</p>
               ) : (
                 <p className={`text-3xl font-bold ${stats.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {stats.change >= 0 ? `+${stats.change}` : stats.change} poin
+                  {stats.change >= 0 ? `+${stats.change}` : stats.change} {t('history_points')}
                 </p>
               )}
             </div>
@@ -116,7 +113,7 @@ export default function History() {
 
           {error && (
             <div className="bg-red-50 dark:bg-red-900/30 text-red-500 rounded-xl px-4 py-3 text-sm mb-6">
-              Gagal memuat riwayat: {error}
+              {t('history_error')}: {error}
             </div>
           )}
 
@@ -127,7 +124,6 @@ export default function History() {
               <div className="space-y-4">
                 {groupItems.map((item) => {
                   const { date, fullDate } = formatDate(item.created_at ?? item.date);
-                  // tags bisa berupa array string dari backend
                   const tags = Array.isArray(item.tags)
                     ? item.tags
                     : item.skin_type
@@ -145,7 +141,7 @@ export default function History() {
                       {/* Content */}
                       <div className="flex-1">
                         <p className="font-bold text-gray-800 dark:text-white mb-0.5">
-                          Skor: {item.score ?? '-'}%
+                          {t('history_score')}: {item.score ?? '-'}%
                         </p>
                         <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">{fullDate}</p>
                         <div className="flex flex-wrap gap-2">
@@ -163,7 +159,7 @@ export default function History() {
                           onClick={() => navigate(`/result/${item.id}`)}
                           className="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-800 hover:border-blue-200 px-4 py-2 rounded-xl transition-all"
                         >
-                          Detail <ExternalLink size={14} />
+                          {t('history_detail')} <ExternalLink size={14} />
                         </button>
                         <button
                           onClick={() => handleDelete(item.id)}
@@ -181,7 +177,7 @@ export default function History() {
 
           {!loading && items.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-gray-500 dark:text-gray-400 font-medium">Belum ada riwayat deteksi</p>
+              <p className="text-gray-500 dark:text-gray-400 font-medium">{t('history_empty')}</p>
             </div>
           )}
 
