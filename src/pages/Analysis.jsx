@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Camera, AlertTriangle, Loader2, User, Sun, Info } from 'lucide-react';
+import { Upload, Camera, Loader2, User, Sun, Info } from 'lucide-react';
 import Footer from '../components/Footer';
 import { useLang } from '../context/LanguageContext';
+import { apiAnalyze, apiSaveHistory } from '../services/api';
 
 export default function Analysis() {
   const { t } = useLang();
@@ -12,6 +13,10 @@ export default function Analysis() {
   const [loading, setLoading] = useState(false);
   const fileRef = useRef();
   const navigate = useNavigate();
+
+  const videoRef = useRef(null);
+  const [cameraActive, setCameraActive] = useState(false);
+  const streamRef = useRef(null);
 
   const handleFile = (e) => {
     const f = e.target.files?.[0];
@@ -28,45 +33,99 @@ export default function Analysis() {
     setPreview(URL.createObjectURL(f));
   };
 
-const handleAnalyze = async () => {
-  if (!preview && mode === 'upload') return;
-  setLoading(true);
-  await new Promise(r => setTimeout(r, 2500)); // nanti ganti dengan apiAnalyze(file)
-  setLoading(false);
-  navigate('/result', {
-    state: {
-      imageUrl: preview, // ✅ kirim foto preview
-      // nanti ganti dengan response API:
-      // skinType, score, tags, metrics, dll
+  const handleActivateCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      streamRef.current = stream;
+      setCameraActive(true);
+    } catch (err) {
+      alert('Kamera tidak dapat diakses. Pastikan izin kamera sudah diberikan.');
     }
+  };
+
+  useEffect(() => {
+    if (cameraActive && videoRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [cameraActive]);
+
+  // Stop kamera saat ganti ke mode upload
+  useEffect(() => {
+    if (mode === 'upload' && streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+      setCameraActive(false);
+    }
+  }, [mode]);
+
+  const toBase64 = (f) => new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(f);
   });
-};
 
-const videoRef = useRef(null);
-const [cameraActive, setCameraActive] = useState(false);
-const streamRef = useRef(null);
+  const handleAnalyze = async () => {
+    setLoading(true);
+    try {
+      let fileToAnalyze = file;
+      let imageUrl = preview;
 
-const handleActivateCamera = async () => {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    streamRef.current = stream;
-    setCameraActive(true);
-  } catch (err) {
-    alert('Kamera tidak dapat diakses. Pastikan izin kamera sudah diberikan.');
-  }
-};
+      // Mode kamera: ambil snapshot dari video
+      if (mode === 'camera') {
+        if (!videoRef.current || !cameraActive) {
+          alert('Aktifkan kamera terlebih dahulu.');
+          setLoading(false);
+          return;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+        canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
 
-useEffect(() => {
-  if (cameraActive && videoRef.current) {
-    videoRef.current.srcObject = streamRef.current;
-  }
-}, [cameraActive]);
+        imageUrl = canvas.toDataURL('image/jpeg');
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+        fileToAnalyze = new File([blob], 'camera.jpg', { type: 'image/jpeg' });
+      }
+
+      if (!fileToAnalyze) {
+        alert('Pilih gambar terlebih dahulu.');
+        setLoading(false);
+        return;
+      }
+
+      // Konversi ke base64 agar bisa di-pass ke halaman result
+      const imageBase64 = mode === 'camera' ? imageUrl : await toBase64(fileToAnalyze);
+
+      const result = await apiAnalyze(fileToAnalyze);
+
+      await apiSaveHistory({
+        skin_type: result.skin_type,
+        confidence: result.confidence,
+        recommendations: result.recommendations,
+      });
+
+      navigate('/result', {
+        state: {
+          imageUrl: imageBase64,
+          skinType: result.skin_type,
+          confidence: result.confidence,
+          probabilities: result.probabilities,
+          recommendations: result.recommendations,
+        }
+      });
+    } catch (err) {
+      console.error('Analyze error:', err);
+      alert('Analisis gagal: ' + (err?.message || err?.detail || 'Terjadi kesalahan, cek console untuk detail.'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const tips = [
     { icon: <User size={18} className="text-gray-500" />, bg: 'bg-gray-200 dark:bg-gray-700', title: t('tip1_title'), desc: t('tip1_desc') },
     { icon: <Sun size={18} className="text-yellow-500" />, bg: 'bg-yellow-50 dark:bg-yellow-900/30', title: t('tip2_title'), desc: t('tip2_desc') },
     { icon: <Info size={18} className="text-red-500" />, bg: 'bg-red-100 dark:bg-red-900/30', title: t('tip3_title'), desc: t('tip3_desc') },
-  ]
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -91,7 +150,6 @@ useEffect(() => {
           </div>
 
           <div className={mode === 'camera' ? 'block' : 'grid lg:grid-cols-2 gap-10 items-start'}>
-            {/* Upload area */}
             <div>
               {mode === 'upload' ? (
                 <div>
@@ -124,7 +182,7 @@ useEffect(() => {
                 </div>
               ) : (
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-card overflow-hidden relative">
-                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5 z-10">
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                     <span className="text-xs text-red-500 font-semibold">Live</span>
                   </div>
@@ -192,7 +250,7 @@ useEffect(() => {
                   {tips.map((tip, i) => (
                     <div key={i} className="flex gap-4 items-start">
                       <div className={`w-10 h-10 ${tip.bg} rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                      {tip.icon}
+                        {tip.icon}
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1">{tip.title}</h3>

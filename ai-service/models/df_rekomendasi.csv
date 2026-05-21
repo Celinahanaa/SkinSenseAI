@@ -1,0 +1,27 @@
+Bahan_Aktif,Jenis_Kulit,Kategori_Fungsi,kulit_encoded,bahan_encoded,fungsi_encoded
+Melaleuca Alternifolia Leaf Oil,Berjerawat,Anti-Acne,0,14,0
+Salicylic Acid,Berjerawat,Anti-Acne / Eksfoliasi,0,17,1
+Centella Asiatica Extract,Berjerawat,Soothing,0,6,8
+Benzoyl Peroxide,Berjerawat,Anti-Acne,0,4,0
+Zinc Pca,Berjerawat,Anti-Acne,0,20,0
+Azelaic Acid,Berjerawat,Anti-Acne,0,3,0
+Kaolin,Berminyak,Sebum Control,1,12,6
+Niacinamide,Berminyak,Sebum Control,1,15,6
+Salicylic Acid,Berminyak,Sebum Control,1,17,6
+Zinc Pca,Berminyak,Sebum Control,1,20,6
+Hamamelis Virginiana Water,Berminyak,Sebum Control,1,10,6
+Sodium Hyaluronate,Kering,Hydration,2,18,4
+Ceramide Np,Kering,Skin Barrier,2,8,7
+Hyaluronic Acid,Kering,Hydration,2,11,4
+Ceramide Ap,Kering,Skin Barrier,2,7,7
+Lactic Acid,Kering,Eksfoliasi Lembut,2,13,3
+Glycerin,Kering,Hydration,2,9,4
+Panthenol,Kering,Hydration,2,16,4
+Butyrospermum Parkii Butter,Kering,Moisturizing,2,5,5
+Squalane,Kering,Hydration,2,19,4
+Centella Asiatica Extract,Normal,Soothing,3,6,8
+Aloe Barbadensis Leaf Juice,Normal,Soothing,3,1,8
+Niacinamide,Normal,Skin Barrier,3,15,7
+Allantoin,Normal,Soothing,3,0,8
+Ascorbic Acid,Normal,Brightening,3,2,2
+Panthenol,Normal,Soothing,3,16,8

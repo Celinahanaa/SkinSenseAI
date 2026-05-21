@@ -31,9 +31,9 @@ function HeroCard() {
         <div>
           <div className="flex items-center gap-1.5 text-green-700 dark:text-green-400 text-xs font-semibold mb-0.5">
             <CheckCircle2 size={12} />
-            <span>{t('home_badge2')}</span>
+            <span>{t('result_detection')}</span>
           </div>
-          <p className="text-sm font-bold text-gray-800 dark:text-gray-100">{t('analysis_text1')}</p>
+          <p className="text-sm font-bold text-gray-800 dark:text-gray-100">{t('home_badge2')}</p>
         </div>
         <div className="text-right">
           <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">STATUS</p>
@@ -152,7 +152,7 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section ref={featuresRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
+      <section ref={featuresRef} className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>

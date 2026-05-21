@@ -43,4 +43,17 @@ router.post('/analyze', auth, (req, res) => {
   res.json({ message: 'Endpoint AI belum tersedia, menunggu tim data science' });
 });
 
+router.post('/history', auth, async (req, res) => {
+  try {
+    const { result } = req.body;
+    await pool.query(
+      'INSERT INTO scan_history (user_id, result) VALUES ($1, $2)',
+      [req.user.id, JSON.stringify(result)]
+    );
+    res.json({ message: 'History tersimpan' });
+  } catch (err) {
+    res.status(500).json({ message: 'Gagal simpan history', error: err.message });
+  }
+});
+
 module.exports = router;

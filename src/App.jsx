@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import Analysis from './pages/Analysis';
 import Result from './pages/Result';
 import History from './pages/History';
+import HistoryDetail from './pages/HistoryDetail';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 
@@ -38,6 +39,7 @@ export default function App() {
               <Route path="/analysis" element={<Layout><ProtectedRoute><Analysis /></ProtectedRoute></Layout>} />
               <Route path="/result" element={<ProtectedRoute><Result /></ProtectedRoute>} />
               <Route path="/history" element={<Layout><ProtectedRoute><History /></ProtectedRoute></Layout>} />
+              <Route path="/history/:id" element={<ProtectedRoute><HistoryDetail /></ProtectedRoute>} />
               <Route path="/profile" element={<Layout><ProtectedRoute><Profile /></ProtectedRoute></Layout>} />
               <Route path="/editprofile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
             </Routes>

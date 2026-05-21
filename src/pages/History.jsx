@@ -6,11 +6,18 @@ import { useEffect, useState } from 'react';
 import { apiGetHistory, apiDeleteHistory } from '../services/api';
 
 const TAG_COLORS = {
-  berminyak: 'bg-amber-100 text-amber-600',
-  sensitif:  'bg-pink-100 text-pink-600',
-  normal:    'bg-green-100 text-green-600',
-  kering:    'bg-blue-100 text-blue-600',
-  kombinasi: 'bg-purple-100 text-purple-600',
+  // Indonesia
+  berminyak:  'bg-amber-100 text-amber-600',
+  sensitif:   'bg-pink-100 text-pink-600',
+  normal:     'bg-green-100 text-green-600',
+  kering:     'bg-blue-100 text-blue-600',
+  kombinasi:  'bg-purple-100 text-purple-600',
+  berjerawat: 'bg-pink-100 text-pink-600',
+  // English
+  oily:        'bg-amber-100 text-amber-600',
+  dry:         'bg-blue-100 text-blue-600',
+  acne:        'bg-pink-100 text-pink-600',
+  combination: 'bg-purple-100 text-purple-600',
 };
 
 const getTagColor = (tag) =>
@@ -52,21 +59,27 @@ export default function History() {
       setItems(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error('Gagal hapus:', err);
+      alert('Gagal hapus: ' + err.message);
     }
   };
+
+  // Data ada di dalam item.result
+  const getConfidence = (item) => item.result?.confidence ?? 0;
+  const getSkinType   = (item) => item.result?.skin_type ?? '-';
+  const getScore      = (item) => Math.round(getConfidence(item) * 100);
 
   const stats = {
     total: items.length,
     avgScore: items.length
-      ? Math.round(items.reduce((a, b) => a + (b.score ?? 0), 0) / items.length)
+      ? Math.round(items.reduce((a, b) => a + getConfidence(b), 0) / items.length * 100)
       : 0,
     change: items.length >= 2
-      ? (items[0].score ?? 0) - (items[1].score ?? 0)
+      ? Math.round((getConfidence(items[0]) - getConfidence(items[1])) * 100)
       : null,
   };
 
   const grouped = items.reduce((acc, item) => {
-    const d = new Date(item.created_at ?? item.date ?? Date.now());
+    const d = new Date(item.created_at ?? Date.now());
     const locale = lang === 'id' ? 'id-ID' : 'en-US';
     const label = d.toLocaleString(locale, { month: 'long', year: 'numeric' });
     if (!acc[label]) acc[label] = [];
@@ -97,7 +110,7 @@ export default function History() {
             </div>
             <div className="card dark:bg-gray-800 dark:border-gray-700">
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('history_avg')}</p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.avgScore}</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.avgScore}%</p>
             </div>
             <div className="card dark:bg-gray-800 dark:border-gray-700">
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('history_change')}</p>
@@ -105,7 +118,7 @@ export default function History() {
                 <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">{t('history_no_data')}</p>
               ) : (
                 <p className={`text-3xl font-bold ${stats.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {stats.change >= 0 ? `+${stats.change}` : stats.change} {t('history_points')}
+                  {stats.change >= 0 ? `+${stats.change}` : stats.change}%
                 </p>
               )}
             </div>
@@ -123,12 +136,9 @@ export default function History() {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 capitalize">{bulan}</h2>
               <div className="space-y-4">
                 {groupItems.map((item) => {
-                  const { date, fullDate } = formatDate(item.created_at ?? item.date);
-                  const tags = Array.isArray(item.tags)
-                    ? item.tags
-                    : item.skin_type
-                      ? [item.skin_type]
-                      : [];
+                  const { date, fullDate } = formatDate(item.created_at);
+                  const skinType = getSkinType(item);
+                  const score    = getScore(item);
 
                   return (
                     <div key={item.id} className="card dark:bg-gray-800 dark:border-gray-700 flex items-center gap-4">
@@ -141,22 +151,20 @@ export default function History() {
                       {/* Content */}
                       <div className="flex-1">
                         <p className="font-bold text-gray-800 dark:text-white mb-0.5">
-                          {t('history_score')}: {item.score ?? '-'}%
+                          {t('history_score')}: {score}%
                         </p>
                         <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">{fullDate}</p>
                         <div className="flex flex-wrap gap-2">
-                          {tags.map((tag, i) => (
-                            <span key={i} className={`text-xs font-semibold px-2.5 py-1 rounded-full ${getTagColor(tag)}`}>
-                              {tag.toUpperCase()}
-                            </span>
-                          ))}
+                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${getTagColor(skinType)}`}>
+                            {skinType.toUpperCase()}
+                          </span>
                         </div>
                       </div>
 
                       {/* Actions */}
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <button
-                          onClick={() => navigate(`/result/${item.id}`)}
+                          onClick={() => navigate(`/history/${item.id}`)}
                           className="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-800 hover:border-blue-200 px-4 py-2 rounded-xl transition-all"
                         >
                           {t('history_detail')} <ExternalLink size={14} />
