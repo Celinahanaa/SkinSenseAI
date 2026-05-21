@@ -5,9 +5,10 @@ import { useAuth } from '../context/AuthContext';
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
 import { useLang } from '../context/LanguageContext';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, setUser } = useAuth();
   const { t } = useLang();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '', remember: false });
@@ -28,11 +29,42 @@ export default function Login() {
       await login(form.email, form.password);
       navigate('/home');
     } catch (err) {
-      setError(err.message); // tampilkan pesan error dari backend
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+
+ const handleGoogleLogin = useGoogleLogin({
+  onSuccess: async (tokenResponse) => {
+    try {
+      // Ambil data dari Google
+      const googleUser = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+      }).then(res => res.json());
+
+      // Kirim ke backend untuk dapat JWT
+      const res = await fetch('http://localhost:3000/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: googleUser.email,
+          name: googleUser.name,
+          avatar_url: googleUser.picture,
+        }),
+      });
+      const data = await res.json();
+
+      // Simpan token & set user
+      localStorage.setItem('token', data.token);
+      setUser(data.user);
+      navigate('/home');
+    } catch (err) {
+      setError('Login Google gagal');
+    }
+  },
+  onError: () => setError('Login Google gagal'),
+});
 
   return (
     <div className="min-h-screen flex items-stretch bg-[#f0f4ff] dark:bg-gray-900">
@@ -66,7 +98,7 @@ export default function Login() {
         <div className="relative z-10 max-w-sm">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
             <h2 className="text-3xl font-bold text-white leading-tight mb-3">
-              Advanced AI,<br />Rooted in Science.
+              {t('login_text1')}<br />{t('login_text2')}
             </h2>
             <p className="text-blue-200 text-sm leading-relaxed">
               {t('login_subtitle')}
@@ -145,7 +177,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full h-[50px] rounded-xl text-base flex items-center justify-center gap-2"
+              className="btn-primary w-full h-[47px] rounded-xl text-base flex items-center justify-center gap-2"
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
             >
               {loading ? (
@@ -163,11 +195,17 @@ export default function Login() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button
+              onClick={() => handleGoogleLogin()}
+              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[50px] rounded-xl text-sm flex items-center justify-center gap-2"
+            >
               <FcGoogle size={18} />
               Google
             </button>
-            <button className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[56px] rounded-xl text-sm flex items-center justify-center gap-2">
+            <button
+              onClick={() => handleGoogleLogin()}
+              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[50px] rounded-xl text-sm flex items-center justify-center gap-2"
+            >
               <FaApple size={18} />
               Apple
             </button>

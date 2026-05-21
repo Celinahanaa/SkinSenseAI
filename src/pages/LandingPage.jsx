@@ -82,7 +82,7 @@ export default function LandingPage() {
         </nav>
 
         {/* Hero */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:py-20">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:py-10">
           <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12">
             {/* Kiri: teks */}
             <div className="max-w-2xl lg:w-1/2">
@@ -90,7 +90,7 @@ export default function LandingPage() {
                 <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
                 {t('landing_badge')}
               </span>
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+              <h1 className="text-5xl lg:text-5.5xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
                 {t('landing_hero_title')}{' '}
                 <span className="text-blue-800 dark:text-blue-400">{t('landing_hero_subtitle')}</span>
               </h1>
@@ -182,7 +182,7 @@ export default function LandingPage() {
         </section>
 
         {/* CTA Banner */}
-        <section className="py-10 px-4 bg-white dark:bg-gray-900">
+        <section className="pb-2 py-14 px-4 bg-white dark:bg-gray-900">
           <div className="max-w-3xl mx-auto bg-blue-800 rounded-3xl px-8 py-14 text-center">
             <h2 className="text-3xl font-bold text-white mb-3">{t('landing_cta_title')}</h2>
             <p className="text-blue-200 text-sm mb-2 max-w-md mx-auto">{t('landing_cta_desc')}</p>
@@ -197,7 +197,7 @@ export default function LandingPage() {
         </section>
 
         {/* Meet Our Team */}
-        <section className="py-16 bg-white dark:bg-gray-900">
+        <section className="py-14 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_team_title')}</h2>
@@ -221,7 +221,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
       </div>
       <Footer />
     </div>

@@ -1,8 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Camera, AlertTriangle, Loader2 } from 'lucide-react';
+import { Upload, Camera, Loader2, User, Sun, Info } from 'lucide-react';
 import Footer from '../components/Footer';
 import { useLang } from '../context/LanguageContext';
+import { apiAnalyze, apiSaveHistory } from '../services/api';
 
 export default function Analysis() {
   const { t } = useLang();
@@ -12,6 +13,10 @@ export default function Analysis() {
   const [loading, setLoading] = useState(false);
   const fileRef = useRef();
   const navigate = useNavigate();
+
+  const videoRef = useRef(null);
+  const [cameraActive, setCameraActive] = useState(false);
+  const streamRef = useRef(null);
 
   const handleFile = (e) => {
     const f = e.target.files?.[0];
@@ -28,30 +33,104 @@ export default function Analysis() {
     setPreview(URL.createObjectURL(f));
   };
 
-const handleAnalyze = async () => {
-  if (!preview && mode === 'upload') return;
-  setLoading(true);
-  await new Promise(r => setTimeout(r, 2500)); // nanti ganti dengan apiAnalyze(file)
-  setLoading(false);
-  navigate('/result', {
-    state: {
-      imageUrl: preview, // ✅ kirim foto preview
-      // nanti ganti dengan response API:
-      // skinType, score, tags, metrics, dll
+  const handleActivateCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      streamRef.current = stream;
+      setCameraActive(true);
+    } catch (err) {
+      alert('Kamera tidak dapat diakses. Pastikan izin kamera sudah diberikan.');
     }
+  };
+
+  useEffect(() => {
+    if (cameraActive && videoRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [cameraActive]);
+
+  // Stop kamera saat ganti ke mode upload
+  useEffect(() => {
+    if (mode === 'upload' && streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+      setCameraActive(false);
+    }
+  }, [mode]);
+
+  const toBase64 = (f) => new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(f);
   });
-};
+
+  const handleAnalyze = async () => {
+    setLoading(true);
+    try {
+      let fileToAnalyze = file;
+      let imageUrl = preview;
+
+      // Mode kamera: ambil snapshot dari video
+      if (mode === 'camera') {
+        if (!videoRef.current || !cameraActive) {
+          alert('Aktifkan kamera terlebih dahulu.');
+          setLoading(false);
+          return;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+        canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
+
+        imageUrl = canvas.toDataURL('image/jpeg');
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+        fileToAnalyze = new File([blob], 'camera.jpg', { type: 'image/jpeg' });
+      }
+
+      if (!fileToAnalyze) {
+        alert('Pilih gambar terlebih dahulu.');
+        setLoading(false);
+        return;
+      }
+
+      // Konversi ke base64 agar bisa di-pass ke halaman result
+      const imageBase64 = mode === 'camera' ? imageUrl : await toBase64(fileToAnalyze);
+
+      const result = await apiAnalyze(fileToAnalyze);
+
+      await apiSaveHistory({
+        skin_type: result.skin_type,
+        confidence: result.confidence,
+        recommendations: result.recommendations,
+      });
+
+      navigate('/result', {
+        state: {
+          imageUrl: imageBase64,
+          skinType: result.skin_type,
+          confidence: result.confidence,
+          probabilities: result.probabilities,
+          recommendations: result.recommendations,
+        }
+      });
+    } catch (err) {
+      console.error('Analyze error:', err);
+      alert('Analisis gagal: ' + (err?.message || err?.detail || 'Terjadi kesalahan, cek console untuk detail.'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const tips = [
-    { title: t('tip1_title'), desc: t('tip1_desc') },
-    { title: t('tip2_title'), desc: t('tip2_desc') },
-    { title: t('tip3_title'), desc: t('tip3_desc') },
+    { icon: <User size={18} className="text-gray-500" />, bg: 'bg-gray-200 dark:bg-gray-700', title: t('tip1_title'), desc: t('tip1_desc') },
+    { icon: <Sun size={18} className="text-yellow-500" />, bg: 'bg-yellow-50 dark:bg-yellow-900/30', title: t('tip2_title'), desc: t('tip2_desc') },
+    { icon: <Info size={18} className="text-red-500" />, bg: 'bg-red-100 dark:bg-red-900/30', title: t('tip3_title'), desc: t('tip3_desc') },
   ];
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
           {/* Mode tabs */}
           <div className="inline-flex bg-white dark:bg-gray-800 rounded-2xl p-1.5 shadow-card mb-10">
@@ -71,7 +150,6 @@ const handleAnalyze = async () => {
           </div>
 
           <div className={mode === 'camera' ? 'block' : 'grid lg:grid-cols-2 gap-10 items-start'}>
-            {/* Upload area */}
             <div>
               {mode === 'upload' ? (
                 <div>
@@ -104,23 +182,33 @@ const handleAnalyze = async () => {
                 </div>
               ) : (
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-card overflow-hidden relative">
-                  <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5 z-10">
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                     <span className="text-xs text-red-500 font-semibold">Live</span>
                   </div>
 
-                  <div className="rounded-2xl p-8 flex flex-col items-center justify-center" style={{ minHeight: '360px' }}>
-                    <div className="w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
-                      <Camera size={36} className="text-blue-600 dark:text-blue-400" />
+                  {cameraActive ? (
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      playsInline
+                      className="w-full rounded-2xl"
+                      style={{ minHeight: '360px', maxHeight: '360px', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div className="rounded-2xl p-8 flex flex-col items-center justify-center" style={{ minHeight: '360px' }}>
+                      <div className="w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
+                        <Camera size={36} className="text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <p className="font-semibold text-gray-700 dark:text-gray-200 mb-2">{t('analysis_camera_allow')}</p>
+                      <br />
+                      <button onClick={handleActivateCamera} className="btn-primary py-3 px-6 rounded-xl text-sm flex items-center gap-2">
+                        <Camera size={16} /> {t('analysis_camera_activate')}
+                      </button>
                     </div>
-                    <p className="font-semibold text-gray-700 dark:text-gray-200 mb-2">{t('analysis_camera_allow')}</p>
-                    <p className="text-sm text-gray-400 dark:text-gray-500 text-center mb-6">Pastikan Anda berada di ruangan yang cukup cahaya</p>
-                    <button className="btn-primary py-3 px-6 rounded-xl text-sm">
-                      <Camera size={16} /> {t('analysis_camera_activate')}
-                    </button>
-                  </div>
+                  )}
 
-                  <div className="px-5 pb-5">
+                  <div className="px-5 pb-5 pt-5">
                     <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 flex items-start gap-3">
                       <span className="bg-white dark:bg-gray-700 text-blue-800 dark:text-blue-400 text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0">{t('analysis_tips_label')}</span>
                       <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{t('analysis_tips_text')}</p>
@@ -161,8 +249,8 @@ const handleAnalyze = async () => {
                 <div className="space-y-6">
                   {tips.map((tip, i) => (
                     <div key={i} className="flex gap-4 items-start">
-                      <div className="w-10 h-10 bg-red-50 dark:bg-red-900/30 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <AlertTriangle size={18} className="text-red-500" />
+                      <div className={`w-10 h-10 ${tip.bg} rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                        {tip.icon}
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-1">{tip.title}</h3>

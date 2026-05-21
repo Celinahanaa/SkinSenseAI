@@ -4,10 +4,12 @@ import { ArrowLeft, Camera, User, Mail, Phone, Calendar, Save, Loader2, Check } 
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { apiUpdateProfile, apiGetProfile } from '../services/api';
+import { useLang } from '../context/LanguageContext';
 
 export default function EditProfile() {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLang();
   const fileRef = useRef();
 
   const [form, setForm] = useState({
@@ -30,23 +32,36 @@ export default function EditProfile() {
         skinConcerns: user.skin_concerns || [],
       });
     }
-  }, [user]); // ← re-run kalau user berubah
+  }, [user]);
 
   const [avatarPreview, setAvatarPreview] = useState(null);
+
+  useEffect(() => {
+    if (user?.avatar_url) {
+      setAvatarPreview(`http://localhost:3000${user.avatar_url}`);
+    }
+  }, [user]);
+
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const skinTypes = [
-    { value: 'normal', label: 'Normal' },
-    { value: 'berminyak', label: 'Berminyak' },
-    { value: 'kering', label: 'Kering' },
-    { value: 'kombinasi', label: 'Kombinasi' },
-    { value: 'sensitif', label: 'Sensitif' },
+    { value: 'normal',    labelKey: 'edit_skin_normal' },
+    { value: 'berminyak', labelKey: 'edit_skin_oily' },
+    { value: 'kering',    labelKey: 'edit_skin_dry' },
+    { value: 'kombinasi', labelKey: 'edit_skin_combo' },
+    { value: 'sensitif',  labelKey: 'edit_skin_sensitive' },
   ];
 
   const skinConcernOptions = [
-    'Jerawat', 'Pori-Pori', 'Flek Hitam', 'Kerutan',
-    'Kulit Kusam', 'Lingkaran Hitam', 'Minyak Berlebih', 'Kulit Kering',
+    { value: 'jerawat',          labelKey: 'edit_concern_acne' },
+    { value: 'pori-pori',        labelKey: 'edit_concern_pores' },
+    { value: 'flek hitam',       labelKey: 'edit_concern_darkspot' },
+    { value: 'kerutan',          labelKey: 'edit_concern_wrinkle' },
+    { value: 'kulit kusam',      labelKey: 'edit_concern_dull' },
+    { value: 'lingkaran hitam',  labelKey: 'edit_concern_darkcircle' },
+    { value: 'minyak berlebih',  labelKey: 'edit_concern_excess_oil' },
+    { value: 'kulit kering',     labelKey: 'edit_concern_dry_skin' },
   ];
 
   const handleAvatarChange = (e) => {
@@ -55,29 +70,31 @@ export default function EditProfile() {
     setAvatarPreview(URL.createObjectURL(f));
   };
 
-  const toggleConcern = (concern) => {
-    const key = concern.toLowerCase();
+  const toggleConcern = (value) => {
     setForm(prev => ({
       ...prev,
-      skinConcerns: prev.skinConcerns.includes(key)
-        ? prev.skinConcerns.filter(c => c !== key)
-        : [...prev.skinConcerns, key],
+      skinConcerns: prev.skinConcerns.includes(value)
+        ? prev.skinConcerns.filter(c => c !== value)
+        : [...prev.skinConcerns, value],
     }));
   };
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      await apiUpdateProfile({
-        name: form.name,
-        phone: form.phone,
-        birthdate: form.birthdate,
-        skin_type: form.skinType,           
-        skin_concerns: form.skinConcerns,  
-      });
+      const formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('phone', form.phone);
+      formData.append('birthdate', form.birthdate);
+      formData.append('skin_type', form.skinType);
+      form.skinConcerns.forEach(c => formData.append('skin_concerns[]', c));
 
+      if (fileRef.current?.files[0]) {
+        formData.append('avatar', fileRef.current.files[0]);
+      }
+
+      await apiUpdateProfile(formData);
       const updatedUser = await apiGetProfile();
-      console.log('Profile dari API:', JSON.stringify(updatedUser));
       setUser(updatedUser);
 
       setSaved(true);
@@ -85,7 +102,7 @@ export default function EditProfile() {
       navigate('/profile');
     } catch (err) {
       console.error('Gagal simpan:', err);
-      alert(err.message); // biar tau kalau ada error dari backend
+      alert(err.message);
     } finally {
       setSaving(false);
     }
@@ -102,7 +119,7 @@ export default function EditProfile() {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-7 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
 
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
@@ -113,8 +130,8 @@ export default function EditProfile() {
               <ArrowLeft size={18} />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-400">Edit Profil</h1>
-              <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">Perbarui informasi akun Anda</p>
+              <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-400">{t('edit_title')}</h1>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">{t('edit_subtitle')}</p>
             </div>
           </div>
 
@@ -136,32 +153,32 @@ export default function EditProfile() {
               </button>
               <input ref={fileRef} type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
             </div>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">Klik ikon kamera untuk ganti foto</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('edit_avatar_hint')}</p>
           </div>
 
-          {/* Form Card */}
+          {/* Personal Info Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-5">
-            <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">Informasi Pribadi</h2>
+            <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">{t('edit_personal_info')}</h2>
 
             <div className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Nama Lengkap</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_name')}</label>
                 <div className="relative">
                   <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className={inputClass + ' pl-10'} placeholder="Nama lengkap" />
+                  <input type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className={inputClass + ' pl-10'} placeholder={t('edit_name_placeholder')} />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Email</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_email')}</label>
                 <div className="relative">
                   <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className={inputClass + ' pl-10'} placeholder="Email" />
+                  <input type="email" value={form.email} disabled className={inputClass + ' pl-10 opacity-60 cursor-not-allowed'} placeholder={t('edit_email_placeholder')} />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Nomor Telepon</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_phone')}</label>
                 <div className="relative">
                   <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} className={inputClass + ' pl-10'} placeholder="+62 ..." />
@@ -169,7 +186,7 @@ export default function EditProfile() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">Tanggal Lahir</label>
+                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_birthdate')}</label>
                 <div className="relative">
                   <Calendar size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input type="date" value={form.birthdate} onChange={e => setForm(p => ({ ...p, birthdate: e.target.value }))} className={inputClass + ' pl-10'} />
@@ -180,10 +197,10 @@ export default function EditProfile() {
 
           {/* Skin Profile Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-6">
-            <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">Profil Kulit</h2>
+            <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">{t('edit_skin_profile')}</h2>
 
             <div className="mb-5">
-              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">Tipe Kulit</label>
+              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">{t('edit_skin_type')}</label>
               <div className="flex flex-wrap gap-2">
                 {skinTypes.map(type => (
                   <button
@@ -195,28 +212,28 @@ export default function EditProfile() {
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-700'
                     }`}
                   >
-                    {type.label}
+                    {t(type.labelKey)}
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">Masalah Kulit</label>
+              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">{t('edit_skin_concerns')}</label>
               <div className="flex flex-wrap gap-2">
                 {skinConcernOptions.map(concern => {
-                  const isSelected = form.skinConcerns.includes(concern.toLowerCase());
+                  const isSelected = form.skinConcerns.includes(concern.value);
                   return (
                     <button
-                      key={concern}
-                      onClick={() => toggleConcern(concern)}
+                      key={concern.value}
+                      onClick={() => toggleConcern(concern.value)}
                       className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                         isSelected
                           ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 border border-blue-300 dark:border-blue-700'
                           : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-700 border border-transparent'
                       }`}
                     >
-                      {concern}
+                      {t(concern.labelKey)}
                     </button>
                   );
                 })}
@@ -230,7 +247,7 @@ export default function EditProfile() {
               onClick={() => navigate('/profile')}
               className="flex-1 py-4 rounded-2xl font-bold text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
             >
-              Batal
+              {t('edit_cancel')}
             </button>
             <button
               onClick={handleSave}
@@ -241,11 +258,11 @@ export default function EditProfile() {
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
             >
               {saving ? (
-                <><Loader2 size={18} className="animate-spin" /> Menyimpan...</>
+                <><Loader2 size={18} className="animate-spin" /> {t('edit_saving')}</>
               ) : saved ? (
-                <><Check size={18} /> Tersimpan!</>
+                <><Check size={18} /> {t('edit_saved')}</>
               ) : (
-                <><Save size={18} /> Simpan Perubahan</>
+                <><Save size={18} /> {t('edit_save')}</>
               )}
             </button>
           </div>

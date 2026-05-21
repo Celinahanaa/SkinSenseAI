@@ -6,6 +6,9 @@ import { useLang } from '../context/LanguageContext';
 import { useRef } from 'react';
 
 function HeroCard() {
+  const { user } = useAuth();
+  const { t } = useLang();
+
   return (
     <div className="bg-white dark:bg-blue-900 rounded-3xl shadow-card-hover p-6 relative overflow-hidden w-full max-w-sm mx-auto">
       <div className="relative h-56 bg-gradient-to-b dark:white rounded-2xl overflow-hidden mb-4 flex items-center justify-center">
@@ -28,13 +31,13 @@ function HeroCard() {
         <div>
           <div className="flex items-center gap-1.5 text-green-700 dark:text-green-400 text-xs font-semibold mb-0.5">
             <CheckCircle2 size={12} />
-            <span>DETECTION COMPLETE</span>
+            <span>{t('result_detection')}</span>
           </div>
-          <p className="text-sm font-bold text-gray-800 dark:text-gray-100">Hydration: 78%</p>
+          <p className="text-sm font-bold text-gray-800 dark:text-gray-100">{t('home_badge2')}</p>
         </div>
         <div className="text-right">
           <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">STATUS</p>
-          <p className="text-sm font-bold text-green-600 dark:text-green-400">Healthy Glow</p>
+          <p className="text-sm font-bold text-green-600 dark:text-green-400">{t('analysis_subtext4')}</p>
         </div>
       </div>
     </div>
@@ -55,21 +58,21 @@ export default function Home() {
 
       {/* Hero */}
       <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] via-[#e8f0fe] to-[#dce8ff] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="max-w-6xl mx-auto py-6">
+        <div className="max-w-7xl mx-auto py-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-up">
               <span className="inline-flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
                 <CheckCircle2 size={12} />
-                85% ACCURACY RATE
+                {t('home_badge')}
               </span>
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-3">
-                Precision<br />Dermatology,
+                {t('home_title1')}<br />{t('home_title2')}
               </h1>
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-6 text-blue-800 dark:text-blue-400">
-                Powered by AI.
+                {t('home_subtitle')}
               </h1>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8 max-w-md">
-                Hentikan siklus trial-and-error yang mahal. Neural network kami memberikan analisis kulit instan dan rekomendasi berbasis sains yang sesuai biologi unik Anda.
+              {t('landing_hero_desc')}
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -93,7 +96,7 @@ export default function Home() {
 
       {/* Problem section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="grid grid-cols-3 gap-4 h-full">
               <div className="col-span-1 flex flex-col gap-4">
@@ -113,8 +116,8 @@ export default function Home() {
 
             <div>
               <p className="text-blue-800 dark:text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">{t('landing_problems_title')}</p>
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Kenali Kulit</h2>
-              <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">Anda Lebih Dalam</h2>
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">{t('home_title3')}</h2>
+              <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">{t('home_subtitle2')}</h2>
 
               <div className="space-y-6">
                 <div className="flex gap-4">
@@ -140,7 +143,7 @@ export default function Home() {
 
               <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border-l-4 border-blue-800 dark:border-blue-500">
                 <p className="text-gray-600 dark:text-gray-300 text-sm italic leading-relaxed">
-                  "SkinSense AI was born to bridge the gap between expensive dermatological consultations and the guesswork of the beauty aisle."
+                {t('home_text1')}
                 </p>
               </div>
             </div>
@@ -149,8 +152,8 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section ref={featuresRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
-        <div className="max-w-6xl mx-auto">
+      <section ref={featuresRef} className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>
             <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">{t('landing_roadmap_desc')}</p>
@@ -165,11 +168,11 @@ export default function Home() {
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <CheckCircle2 size={14} className="text-green-500" />
-                  AI-guided lighting correction
+                  {t('home_text2')}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <CheckCircle2 size={14} className="text-green-500" />
-                  Auto-focus for macro precision
+                  {t('home_text3')}
                 </div>
               </div>
             </div>

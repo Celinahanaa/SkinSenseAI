@@ -3,6 +3,9 @@
 
 const BASE_URL = 'http://localhost:3000/api';
 
+// URL FastAPI model (jalankan: uvicorn main:app --port 8000)
+const AI_URL = 'http://localhost:8000';
+
 // Helper: ambil token dari localStorage
 const getToken = () => localStorage.getItem('token');
 
@@ -95,22 +98,35 @@ export const apiDeleteHistory = async (id) => {
 };
 
 // ─────────────────────────────────────────
-// ANALYZE
+// ANALYZE — memanggil FastAPI Python model
 // ─────────────────────────────────────────
 
 export const apiAnalyze = async (imageFile) => {
   const formData = new FormData();
-  formData.append('image', imageFile);
+  // FastAPI pakai key "file", bukan "image"
+  formData.append('file', imageFile);
 
-  const res = await fetch(`${BASE_URL}/analyze`, {
+  const res = await fetch(`${AI_URL}/analyze`, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${getToken()}`,
-      // Jangan set Content-Type, biar browser set otomatis untuk multipart
-    },
+    // Jangan set Content-Type, biar browser set otomatis untuk multipart
     body: formData,
   });
+
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Analisis gagal');
-  return data; // { skin_type, conditions, score, recommendations }
+  if (!res.ok) throw new Error(data.detail || 'Analisis gagal');
+
+  // Response dari FastAPI:
+  // { skin_type, confidence, probabilities, recommendations: [{Bahan_Standar, Kategori_Fungsi}] }
+  return data;
+};
+
+export const apiSaveHistory = async (result) => {
+  const res = await fetch(`${BASE_URL}/history`, {
+    method: 'POST',
+    headers: authHeaders(),
+    body: JSON.stringify({ result }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Gagal simpan history');
+  return data;
 };
