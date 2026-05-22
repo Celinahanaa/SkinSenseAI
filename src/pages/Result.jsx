@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Download } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react'; 
 import Footer from '../components/Footer';
 import { useLang } from '../context/LanguageContext';
 import jsPDF from 'jspdf';
@@ -51,6 +51,17 @@ export default function Result() {
   const confidence      = state.confidence      || 0;
   const probabilities   = state.probabilities   || {};
   const recommendations = state.recommendations || [];
+
+  useEffect(() => {
+    if (skinType && skinType !== 'Unknown') {
+      localStorage.setItem('lastScanResult', JSON.stringify({
+        skin_type: skinType,
+        confidence,
+        probabilities,
+        recommendations,
+      }));
+    }
+  }, [skinType]);
 
   const score = Math.round(confidence * 100);
   const sortedProbs = Object.entries(probabilities).sort(([, a], [, b]) => b - a);

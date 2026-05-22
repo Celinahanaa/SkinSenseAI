@@ -25,13 +25,21 @@ export default function Profile() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { t } = useLang();
-  const [latestScan, setLatestScan] = useState(null);
+
+  const [lastScan, setLastScan] = useState(null);
 
   useEffect(() => {
+    const saved = localStorage.getItem('lastScanResult');
+    if (saved) {
+      setLastScan(JSON.parse(saved));
+      return;
+    }
+    const token = localStorage.getItem('token');
+    if (!token) return;
     apiGetHistory()
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
-          setLatestScan(data[0]);
+          setLastScan(data[0]);
         }
       })
       .catch(() => {});
@@ -48,32 +56,105 @@ export default function Profile() {
     );
   }
 
-  const metricFields = [
-    { labelKey: 'profile_metric_oil',       key: 'oil_level' },
-    { labelKey: 'profile_metric_moisture',  key: 'moisture' },
-    { labelKey: 'profile_metric_sensitive', key: 'sensitivity' },
-    { labelKey: 'profile_metric_wrinkle',   key: 'wrinkle' },
-  ];
+  const analysisResult = lastScan?.result || lastScan || {};
 
-  const metrics = metricFields.map((m, i) => ({
-    label: t(m.labelKey),
-    value: latestScan?.[m.key] ?? 0,
-    color: METRIC_COLORS[i],
-  }));
+  const probabilities = analysisResult?.probabilities || {};
+  const sortedProbs = Object.entries(probabilities).sort(([, a], [, b]) => b - a);
 
-  const recommendations = latestScan?.recommendations ?? [];
+  const skinType =
+    analysisResult.skin_type ||
+    analysisResult.jenis_kulit ||
+    'Normal';
+
+  const aiRecommendations = analysisResult.recommendations || [];
+
+  const mappedRecommendations = aiRecommendations.map((item, index) => {
+    const isMorning = index % 2 === 0;
+    return {
+      name: item.Bahan_Standar,
+      description: item.Kategori_Fungsi,
+      icon: isMorning ? '☀️' : '🌙',
+      time: isMorning ? 'morning' : 'night',
+    };
+  });
+
+  const defaultRoutine = {
+    Berjerawat: {
+      morning: [
+        { name: 'Centella Asiatica', description: 'Soothing & redness relief', icon: '🌿' },
+        { name: 'Zinc PCA',          description: 'Oil control & anti-acne',   icon: '💧' },
+        { name: 'Azelaic Acid',      description: 'Anti-acne treatment',       icon: '✨' },
+      ],
+      night: [
+        { name: 'Salicylic Acid',   description: 'Exfoliate pores',      icon: '🫧' },
+        { name: 'Benzoyl Peroxide', description: 'Kill acne bacteria',   icon: '🌙' },
+        { name: 'Tea Tree Oil',     description: 'Anti-bacterial care',  icon: '🍃' },
+      ],
+    },
+    Berminyak: {
+      morning: [
+        { name: 'Niacinamide', description: 'Sebum control',     icon: '💦' },
+        { name: 'Zinc PCA',    description: 'Reduce excess oil',  icon: '✨' },
+        { name: 'Kaolin',      description: 'Absorb oil',         icon: '🧴' },
+      ],
+      night: [
+        { name: 'Salicylic Acid', description: 'Deep pore cleansing',   icon: '🌙' },
+        { name: 'Kaolin Clay',    description: 'Night detox treatment', icon: '🫧' },
+      ],
+    },
+    Kering: {
+      morning: [
+        { name: 'Hyaluronic Acid', description: 'Hydration boost',     icon: '💧' },
+        { name: 'Glycerin',        description: 'Maintain moisture',    icon: '✨' },
+        { name: 'Squalane',        description: 'Lock skin hydration',  icon: '🧴' },
+      ],
+      night: [
+        { name: 'Ceramide NP', description: 'Repair skin barrier', icon: '🌙' },
+        { name: 'Shea Butter', description: 'Deep moisturizing',   icon: '🫶' },
+        { name: 'Lactic Acid', description: 'Gentle exfoliation',  icon: '🫧' },
+      ],
+    },
+    Normal: {
+      morning: [
+        { name: 'Aloe Vera',   description: 'Fresh soothing care',     icon: '🌿' },
+        { name: 'Niacinamide', description: 'Maintain skin barrier',   icon: '✨' },
+        { name: 'Vitamin C',   description: 'Brightening antioxidant', icon: '☀️' },
+      ],
+      night: [
+        { name: 'Allantoin', description: 'Skin recovery',       icon: '🌙' },
+        { name: 'Panthenol', description: 'Night soothing care', icon: '💧' },
+      ],
+    },
+  };
+
+  const hasAnalysis = !!analysisResult?.skin_type;
+
+  const recommendations = hasAnalysis
+    ? (mappedRecommendations.length > 0
+        ? mappedRecommendations
+        : [
+            ...(defaultRoutine[skinType]?.morning || []).map(item => ({ ...item, time: 'morning' })),
+            ...(defaultRoutine[skinType]?.night   || []).map(item => ({ ...item, time: 'night' })),
+          ])
+    : [];
+
   const morning = recommendations.filter(r => r.time === 'morning' || r.type === 'morning');
-  const evening = recommendations.filter(r => r.time === 'evening' || r.type === 'evening');
+  const night   = recommendations.filter(r => r.time === 'night'   || r.type === 'night');
 
-  const hydrationGoal = latestScan?.moisture ?? latestScan?.hydration ?? 0;
-  const aiInsight = latestScan?.insight ?? latestScan?.recommendation_note ?? t('profile_no_insight');
+  const hydrationGoal =
+    analysisResult?.moisture ??
+    analysisResult?.hydration ??
+    0;
+
+  const aiInsight =
+    analysisResult?.insight ??
+    analysisResult?.recommendation_note ??
+    t('profile_no_insight');
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
-
-  console.log('user.avatar_url:', user?.avatar_url);
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -82,8 +163,10 @@ export default function Profile() {
           <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">{t('profile_title')}</h1>
 
           <div className="grid lg:grid-cols-2 gap-6 items-stretch mb-6">
+
             {/* Left col */}
             <div className="grid grid-rows-[auto_1fr] gap-5">
+
               {/* User info card */}
               <div className="card dark:bg-gray-800 dark:border-gray-700 text-center">
                 <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-3">
@@ -112,13 +195,33 @@ export default function Profile() {
 
               {/* Skin metrics */}
               <div className="card dark:bg-gray-800 dark:border-gray-700">
-                {latestScan ? (
-                  <div className="space-y-3">
-                    {metrics.map((m) => (
-                      <div key={m.label} className="flex items-center gap-3">
-                        <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">{m.label}</span>
-                        <ProgressBar value={m.value} color={m.color} />
-                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 w-10 text-right">{m.value}%</span>
+                {lastScan ? (
+                  <div className="space-y-4">
+                    <div className="text-center py-2">
+                      <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
+                        {t('result_detected') || 'Skin Type'}
+                      </p>
+                      <p className="text-3xl font-black text-amber-500">{skinType.toUpperCase()}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">
+                        {t('result_confidence') || 'Confidence'}
+                      </span>
+                      <ProgressBar
+                        value={Math.round((analysisResult?.confidence ?? 0) * 100)}
+                        color="bg-blue-500"
+                      />
+                      <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 w-10 text-right">
+                        {Math.round((analysisResult?.confidence ?? 0) * 100)}%
+                      </span>
+                    </div>
+                    {sortedProbs.map(([type, prob], i) => (
+                      <div key={type} className="flex items-center gap-3">
+                        <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">{type}</span>
+                        <ProgressBar value={Math.round(prob * 100)} color={METRIC_COLORS[i] || 'bg-gray-400'} />
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 w-10 text-right">
+                          {Math.round(prob * 100)}%
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -128,7 +231,9 @@ export default function Profile() {
                   </div>
                 )}
               </div>
+
             </div>
+            {/* End left col */}
 
             {/* Right col — Personalized Routine */}
             <div className="h-full">
@@ -137,14 +242,18 @@ export default function Profile() {
 
                 {recommendations.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-sm text-gray-400 dark:text-gray-500">{t('profile_no_routine')}</p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500">
+                      {hasAnalysis
+                        ? t('profile_no_routine')
+                        : 'Please analyze your skin first to get personalized skincare routine'}
+                    </p>
                   </div>
                 ) : (
                   <>
                     {morning.length > 0 && (
                       <div className="mb-5">
                         <div className="flex items-center gap-2 text-amber-500 font-semibold text-sm mb-3">
-                          <Sun size={16} /> {t('profile_morning')}
+                          <Sun size={16} /> {t('Morning Recommendations')}
                         </div>
                         <div className="space-y-3">
                           {morning.map((item, i) => (
@@ -164,13 +273,13 @@ export default function Profile() {
                       </div>
                     )}
 
-                    {evening.length > 0 && (
+                    {night.length > 0 && (
                       <div>
                         <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm mb-3">
-                          <Moon size={16} /> {t('profile_evening')}
+                          <Moon size={16} /> {t('Night Recommendations')}
                         </div>
                         <div className="space-y-3">
-                          {evening.map((item, i) => (
+                          {night.map((item, i) => (
                             <div key={i} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
                               <span className="text-xl">{item.icon ?? '🌙'}</span>
                               <div className="flex-1">
@@ -187,7 +296,10 @@ export default function Profile() {
                 )}
               </div>
             </div>
+            {/* End right col */}
+
           </div>
+          {/* End grid */}
 
           {/* AI Insights */}
           <div className="card dark:bg-gray-800 dark:border-gray-700">
