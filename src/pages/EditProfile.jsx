@@ -195,52 +195,6 @@ export default function EditProfile() {
             </div>
           </div>
 
-          {/* Skin Profile Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-6">
-            <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">{t('edit_skin_profile')}</h2>
-
-            <div className="mb-5">
-              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">{t('edit_skin_type')}</label>
-              <div className="flex flex-wrap gap-2">
-                {skinTypes.map(type => (
-                  <button
-                    key={type.value}
-                    onClick={() => setForm(p => ({ ...p, skinType: type.value }))}
-                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                      form.skinType === type.value
-                        ? 'bg-blue-800 text-white shadow-sm'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-700'
-                    }`}
-                  >
-                    {t(type.labelKey)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 block">{t('edit_skin_concerns')}</label>
-              <div className="flex flex-wrap gap-2">
-                {skinConcernOptions.map(concern => {
-                  const isSelected = form.skinConcerns.includes(concern.value);
-                  return (
-                    <button
-                      key={concern.value}
-                      onClick={() => toggleConcern(concern.value)}
-                      className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                        isSelected
-                          ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 border border-blue-300 dark:border-blue-700'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-blue-50 dark:hover:bg-gray-600 hover:text-blue-700 border border-transparent'
-                      }`}
-                    >
-                      {t(concern.labelKey)}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
           {/* Action Buttons */}
           <div className="flex gap-3">
             <button

@@ -27,23 +27,26 @@ export default function Profile() {
   const { t } = useLang();
 
   const [lastScan, setLastScan] = useState(null);
+  const [checkedItems, setCheckedItems] = useState({});
 
   useEffect(() => {
-    const saved = localStorage.getItem('lastScanResult');
-    if (saved) {
-      setLastScan(JSON.parse(saved));
-      return;
-    }
-    const token = localStorage.getItem('token');
-    if (!token) return;
-    apiGetHistory()
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setLastScan(data[0]);
-        }
-      })
-      .catch(() => {});
-  }, []);
+  const token = localStorage.getItem('token');
+  if (!token) return;
+  apiGetHistory()
+    .then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setLastScan(data[0]);
+      }
+    })
+    .catch(() => {});
+}, []);
+
+  const toggleCheck = (index) => {
+    setCheckedItems(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
   if (!user) {
     return (
@@ -215,15 +218,6 @@ export default function Profile() {
                         {Math.round((analysisResult?.confidence ?? 0) * 100)}%
                       </span>
                     </div>
-                    {sortedProbs.map(([type, prob], i) => (
-                      <div key={type} className="flex items-center gap-3">
-                        <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">{type}</span>
-                        <ProgressBar value={Math.round(prob * 100)} color={METRIC_COLORS[i] || 'bg-gray-400'} />
-                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 w-10 text-right">
-                          {Math.round(prob * 100)}%
-                        </span>
-                      </div>
-                    ))}
                   </div>
                 ) : (
                   <div className="text-center py-6">
@@ -260,13 +254,19 @@ export default function Profile() {
                             <div key={i} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
                               <span className="text-xl">{item.icon ?? '🧴'}</span>
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-900 dark:text-white">{item.name}</p>
+                                <p className={`text-sm font-semibold flex-shrink-0 ${
+                                  checkedItems[`morning-${i}`]
+                                    ? 'text-gray-900 dark:text-white'       // ← hitam kalau sudah dicentang
+                                    : 'text-gray-400 dark:text-gray-500'    // ← abu-abu kalau belum
+                                }`}>{item.name}</p>
                                 <p className="text-xs text-gray-400 dark:text-gray-500">{item.sub ?? item.description}</p>
                               </div>
-                              {item.done
-                                ? <CheckCircle2 size={20} className="text-green-500 flex-shrink-0" />
-                                : <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
-                              }
+                              <button onClick={() => toggleCheck(`morning-${i}`)}>
+                                {checkedItems[`morning-${i}`]
+                                  ? <CheckCircle2 size={20} className="text-gray-900 dark:text-gray-100 flex-shrink-0" />
+                                  : <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
+                                }
+                              </button>
                             </div>
                           ))}
                         </div>
@@ -280,15 +280,24 @@ export default function Profile() {
                         </div>
                         <div className="space-y-3">
                           {night.map((item, i) => (
-                            <div key={i} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
-                              <span className="text-xl">{item.icon ?? '🌙'}</span>
-                              <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-400 dark:text-gray-500">{item.name}</p>
-                                <p className="text-xs text-gray-400 dark:text-gray-500">{item.sub ?? item.description}</p>
-                              </div>
-                              <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
+                          <div key={i} className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-xl px-4 py-3">
+                            <span className="text-xl">{item.icon ?? '🌙'}</span>
+                            <div className="flex-1">
+                              <p className={`text-sm font-semibold flex-shrink-0 ${
+                                checkedItems[`night-${i}`]
+                                  ? 'text-gray-900 dark:text-white'       
+                                  : 'text-gray-400 dark:text-gray-500'    
+                              }`}>{item.name}</p>
+                              <p className="text-xs text-gray-400 dark:text-gray-500">{item.sub ?? item.description}</p>
                             </div>
-                          ))}
+                            <button onClick={() => toggleCheck(`night-${i}`)}>
+                              {checkedItems[`night-${i}`]
+                                ? <CheckCircle2 size={20} className="text-gray-900 dark:text-gray-100 flex-shrink-0" />
+                                : <Circle size={20} className="text-gray-200 dark:text-gray-600 flex-shrink-0" />
+                              }
+                            </button>
+                          </div>
+                        ))}
                         </div>
                       </div>
                     )}
@@ -299,22 +308,65 @@ export default function Profile() {
             {/* End right col */}
 
           </div>
-          {/* End grid */}
+          {/* Today's Routine Progress */}
+          {hasAnalysis && (
+            <div className="card dark:bg-gray-800 dark:border-gray-700">
+              <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">
+                Today's Routine Progress
+              </h3>
+              <div className="space-y-5">
 
-          {/* AI Insights */}
-          <div className="card dark:bg-gray-800 dark:border-gray-700">
-            <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">{t('profile_ai_insights')}</h3>
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <p className="text-sm text-gray-700 dark:text-gray-200">{t('profile_hydration_goal')}</p>
-                <p className="text-sm font-bold text-gray-900 dark:text-white">{hydrationGoal}%</p>
-              </div>
-              <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden mb-3">
-                <div className="h-full bg-gray-900 dark:bg-gray-300 rounded-full" style={{ width: `${hydrationGoal}%` }} />
-              </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 italic">{aiInsight}</p>
+              {/* Morning Progress */}
+              {morning.length > 0 && (
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex items-center gap-2 text-amber-500 font-semibold text-sm">
+                      <Sun size={14} /> Morning
+                    </div>
+                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                      {morning.filter((_, i) => checkedItems[`morning-${i}`]).length}/{morning.length} completed
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-amber-400 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${morning.length > 0
+                          ? (morning.filter((_, i) => checkedItems[`morning-${i}`]).length / morning.length) * 100
+                          : 0}%`
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Night Progress */}
+              {night.length > 0 && (
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm">
+                      <Moon size={14} /> Night
+                    </div>
+                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                      {night.filter((_, i) => checkedItems[`night-${i}`]).length}/{night.length} completed
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-blue-500 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${night.length > 0
+                          ? (night.filter((_, i) => checkedItems[`night-${i}`]).length / night.length) * 100
+                          : 0}%`
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
             </div>
           </div>
+        )}
 
         </div>
       </div>

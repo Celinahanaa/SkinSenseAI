@@ -49,14 +49,19 @@ export const apiGetProfile = async () => {
   return data;
 };
 
-export const apiUpdateProfile = async (profileData) => {
-  const res = await fetch(`${BASE_URL}/profile`, {
-    method: 'PUT',
-    headers: authHeaders(),
-    body: JSON.stringify(profileData),
+export const apiUpdateProfile = async (formData) => {
+  const token = localStorage.getItem('token');
+  const res = await fetch('http://localhost:3000/api/profile', {
+    method: 'PUT', // atau PATCH, sesuai backend
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      // JANGAN tambah Content-Type, biar FormData set sendiri
+    },
+    body: formData,
   });
+
   const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Gagal update profil');
+  if (!res.ok) throw new Error(data.message || 'Server error');
   return data;
 };
 
