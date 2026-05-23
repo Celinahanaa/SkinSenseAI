@@ -371,12 +371,12 @@ useEffect(() => {
             >
               <ArrowLeft size={16} /> {t('result_back')}
             </button>
-            <button
-              onClick={() => setShowDeleteModal(true)}
-              className="flex items-center gap-2 text-sm font-medium text-red-500 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 px-4 py-2 rounded-xl transition-colors"
-            >
-              <Trash2 size={14} /> {t('result_trash')}
-            </button>
+<button
+  onClick={() => setShowDeleteModal(true)}
+  className="flex items-center gap-2 text-sm font-medium text-red-500 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 hover:border-red-300 dark:hover:border-red-700 px-4 py-2 rounded-xl transition-colors"
+>
+  <Trash2 size={14} /> {t('result_trash')}
+</button>
           </div>
 
           <h1 className="text-3xl font-bold text-center text-blue-900 dark:text-blue-400 mb-2">{t('result_title2')}</h1>
@@ -507,8 +507,9 @@ useEffect(() => {
                     <div key={i} className="bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors rounded-xl p-3 flex flex-col items-center text-center gap-2">
                       <div className="text-3xl">{categoryEmoji[normalizedCategory] || '🧴'}</div>
                       <p className="font-semibold text-gray-800 dark:text-gray-100 text-xs capitalize leading-tight">{rec.Bahan_Standar}</p>
-                      <span className="text-xs text-gray-600 dark:text-gray-500 bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded-full">{rec.Kategori_Fungsi}</span>
-                    </div>
+            <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded-full">
+              {rec.Kategori_Fungsi}
+            </span>                    </div>
                   );
                 })}
               </div>
@@ -533,28 +534,30 @@ useEffect(() => {
       <Footer />
 
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 w-full max-w-sm">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center shrink-0">
-                <Trash2 size={17} className="text-red-600 dark:text-red-400" />
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 dark:text-white">{t('result_trashtext')}</p>
-                <p className="text-sm text-gray-400 dark:text-gray-500">{t('result_trashtext2')}</p>
-              </div>
-            </div>
-            <div className="flex gap-3 mt-2">
-              <button onClick={() => setShowDeleteModal(false)} className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                {t('edit_cancel')}
-              </button>
-              <button onClick={() => { setShowDeleteModal(false); handleDelete(); }} className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors">
-                {t('result_trash')}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
+      <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+        <Trash2 size={28} className="text-red-600 dark:text-red-400" />
+      </div>
+      <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('result_trashtext')}</p>
+      <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('result_trashtext2')}</p>
+      <div className="flex gap-3">
+        <button
+          onClick={() => setShowDeleteModal(false)}
+          className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          {t('edit_cancel')}
+        </button>
+        <button
+          onClick={handleDelete}
+          className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+        >
+          {t('result_trash')}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

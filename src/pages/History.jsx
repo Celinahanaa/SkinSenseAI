@@ -202,34 +202,30 @@ const handleDelete = async () => {
       </div>
       <Footer />
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 w-full max-w-sm">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center shrink-0">
-                <Trash2 size={17} className="text-red-600 dark:text-red-400" />
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 dark:text-white">{t('result_trashtext')}</p>
-                <p className="text-sm text-gray-400 dark:text-gray-500">{t('result_trashtext2')}</p>
-              </div>
-            </div>
-            <div className="flex gap-3 mt-2">
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                {t('edit_cancel')}
-              </button>
-              <button
-onClick={handleDelete}
-                className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
-              >
-                {t('result_trash')}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
+      <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+        <Trash2 size={28} className="text-red-600 dark:text-red-400" />
+      </div>
+      <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('result_trashtext')}</p>
+      <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('result_trashtext2')}</p>
+      <div className="flex gap-3">
+        <button
+          onClick={() => setShowDeleteModal(false)}
+          className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          {t('edit_cancel')}
+        </button>
+        <button
+          onClick={handleDelete}
+          className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+        >
+          {t('result_trash')}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

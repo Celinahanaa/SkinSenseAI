@@ -171,7 +171,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full h-[47px] rounded-xl text-base mt-2 flex items-center justify-center"
+              className="btn-primary w-full h-[42px] rounded-xl text-base mt-2 flex items-center justify-center"
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
             >
               {loading
@@ -190,14 +190,14 @@ export default function Register() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => handleGoogleLogin()}
-              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[50px] rounded-xl text-sm flex items-center justify-center gap-2"
+              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[43px] rounded-xl text-sm flex items-center justify-center gap-2"
             >
               <FcGoogle size={18} />
               Google
             </button>
             <button
               onClick={() => handleGoogleLogin()}
-              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[50px] rounded-xl text-sm flex items-center justify-center gap-2"
+              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[43px] rounded-xl text-sm flex items-center justify-center gap-2"
             >
               <FaApple size={18} />
               Apple
@@ -222,7 +222,7 @@ export default function Register() {
       <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('register_success_desc')}</p>
       <button
         onClick={() => navigate('/login')}
-        className="btn-primary w-full h-[47px] rounded-xl text-base"
+        className="btn-primary w-full h-[41px] rounded-xl text-base"
         style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
       >
         {t('register_success_btn')}
