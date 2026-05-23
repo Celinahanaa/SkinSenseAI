@@ -77,12 +77,12 @@ export default function Home() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   to={user ? '/analysis' : '/register'}
-                  className="btn-primary py-3.5 px-8 rounded-xl text-base"
+                  className="h-[45px] btn-primary py-3.5 px-8 rounded-xl text-base"
                   style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.35)' }}
                 >
                   {t('landing_analyze_btn')} <ArrowRight size={18} />
                 </Link>
-                <button onClick={scrollToFeatures} className="btn-outline py-3.5 px-8 rounded-xl text-base">
+                <button onClick={scrollToFeatures} className="h-[45px] btn-outline py-3.5 px-8 rounded-xl text-base">
                   {t('landing_explore_tech')}
                 </button>
               </div>
@@ -228,7 +228,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={user ? '/analysis' : '/register'}
-              className="btn-primary py-4 px-10 rounded-xl text-base"
+              className="h-[45px] btn-primary py-4 px-10 rounded-xl text-base"
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.35)' }}
             >
               {t('landing_analyze_btn')} <Camera size={18} />

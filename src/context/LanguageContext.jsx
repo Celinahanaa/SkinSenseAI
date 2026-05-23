@@ -125,7 +125,7 @@ export const translations = {
     home_badge2: 'Accuracy: 90%',
     home_title1: 'Precision',
     home_title2: 'Dermatology,',
-    home_subtitle: 'Powered by AI.',
+    home_subtitle: 'Powered by AI',
     home_text1: 'SkinSense AI was born to bridge the gap between expensive dermatological consultations and the guesswork of the beauty aisle.',
     home_title3: 'Understand your skin',
     home_subtitle2: 'on a deeper level',
