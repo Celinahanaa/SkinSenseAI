@@ -15,6 +15,7 @@ export default function Register() {
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,7 +28,7 @@ export default function Register() {
     setError('');
     try {
       await register(form.name, form.email, form.password);
-      navigate('/');
+      setShowSuccessModal(true);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -209,6 +210,26 @@ export default function Register() {
           </p>
         </div>
       </div>
+      {showSuccessModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center animate-fade-in-up">
+      <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('register_success_title')}</h2>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('register_success_desc')}</p>
+      <button
+        onClick={() => navigate('/login')}
+        className="btn-primary w-full h-[47px] rounded-xl text-base"
+        style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
+      >
+        {t('register_success_btn')}
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }

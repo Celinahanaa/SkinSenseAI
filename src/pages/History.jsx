@@ -30,6 +30,8 @@ export default function History() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [selectedId, setSelectedId] = useState(null);  
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -53,15 +55,19 @@ export default function History() {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleDelete = async (id) => {
-    try {
-      await apiDeleteHistory(id);
-      setItems(prev => prev.filter(item => item.id !== id));
-    } catch (err) {
-      console.error('Gagal hapus:', err);
-      alert('Gagal hapus: ' + err.message);
-    }
-  };
+const handleDelete = async () => {
+  try {
+    await apiDeleteHistory(selectedId);
+
+    // langsung update list tanpa reload
+    setItems(prev => prev.filter(item => item.id !== selectedId));
+
+    setShowDeleteModal(false);
+    setSelectedId(null);
+  } catch (err) {
+    alert('Gagal hapus: ' + err.message);
+  }
+};
 
   // Data ada di dalam item.result
   const getConfidence = (item) => item.result?.confidence ?? 0;
@@ -95,7 +101,7 @@ export default function History() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
-      <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
+      <div className="flex-1 pt-20 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">
@@ -170,7 +176,10 @@ export default function History() {
                           {t('history_detail')} <ExternalLink size={14} />
                         </button>
                         <button
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => {
+                            setSelectedId(item.id);
+                            setShowDeleteModal(true);
+                          }}
                           className="w-10 h-10 bg-red-50 dark:bg-red-900/30 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
                         >
                           <Trash2 size={16} />
@@ -192,6 +201,35 @@ export default function History() {
         </div>
       </div>
       <Footer />
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 w-full max-w-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-11 h-11 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center shrink-0">
+                <Trash2 size={17} className="text-red-600 dark:text-red-400" />
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900 dark:text-white">{t('result_trashtext')}</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500">{t('result_trashtext2')}</p>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-2">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                {t('edit_cancel')}
+              </button>
+              <button
+onClick={handleDelete}
+                className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+              >
+                {t('result_trash')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

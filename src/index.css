@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    font-size: 14px;
+  }
+
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -67,3 +71,21 @@
 .delay-300 { animation-delay: 300ms; }
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
+
+.scan-line {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #60a5fa, #3b82f6, #60a5fa, transparent);
+  box-shadow: 0 0 12px 3px rgba(96, 165, 250, 0.5);
+  animation: scanMove 2s ease-in-out infinite;
+}
+@keyframes scanMove {
+  0%, 100% { top: 0; opacity: 0; }
+  5%  { opacity: 1; }
+  95% { opacity: 1; }
+  50% { top: calc(100% - 3px); }
+}
+.scan-corner { position: absolute; width: 28px; height: 28px; }
+.scan-corner.tl { top:12px; left:12px;   border-top:3px solid #3b82f6; border-left:3px solid #3b82f6;   border-radius:4px 0 0 0; }
+.scan-corner.tr { top:12px; right:12px;  border-top:3px solid #3b82f6; border-right:3px solid #3b82f6;  border-radius:0 4px 0 0; }
+.scan-corner.bl { bottom:12px; left:12px;  border-bottom:3px solid #3b82f6; border-left:3px solid #3b82f6;  border-radius:0 0 0 4px; }
+.scan-corner.br { bottom:12px; right:12px; border-bottom:3px solid #3b82f6; border-right:3px solid #3b82f6; border-radius:0 0 4px 0; }

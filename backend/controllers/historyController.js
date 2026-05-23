@@ -27,4 +27,29 @@ const getHistoryDetail = async (req, res) => {
   }
 };
 
-module.exports = { getHistory, getHistoryDetail };
+const deleteHistory = async (req, res) => {
+  try {
+    const result = await pool.query(
+      'DELETE FROM scan_history WHERE id = $1 AND user_id = $2 RETURNING *',
+      [req.params.id, req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Data tidak ditemukan'
+      });
+    }
+
+    res.json({
+      message: 'History berhasil dihapus'
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      message: 'Server error',
+      error: err.message
+    });
+  }
+};
+
+module.exports = { getHistory, getHistoryDetail, deleteHistory };

@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const { register, login } = require('../controllers/authController');
 const { getProfile, updateProfile, upload } = require('../controllers/profileController');
-const { getHistory, getHistoryDetail } = require('../controllers/historyController');
+const { getHistory, getHistoryDetail, deleteHistory } = require('../controllers/historyController');
 const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 
@@ -38,6 +38,7 @@ router.put('/profile', auth, upload.single('avatar'), updateProfile);
 
 router.get('/history', auth, getHistory);
 router.get('/history/:id', auth, getHistoryDetail);
+router.delete('/history/:id', auth, deleteHistory);
 
 router.post('/analyze', auth, (req, res) => {
   res.json({ message: 'Endpoint AI belum tersedia, menunggu tim data science' });
@@ -45,10 +46,10 @@ router.post('/analyze', auth, (req, res) => {
 
 router.post('/history', auth, async (req, res) => {
   try {
-    const { result } = req.body;
+    const { result, image_url } = req.body;
     await pool.query(
-      'INSERT INTO scan_history (user_id, result) VALUES ($1, $2)',
-      [req.user.id, JSON.stringify(result)]
+      'INSERT INTO scan_history (user_id, result, image_url) VALUES ($1, $2, $3)',
+      [req.user.id, JSON.stringify(result), image_url || null]
     );
     res.json({ message: 'History tersimpan' });
   } catch (err) {

@@ -36,18 +36,17 @@ const login = async (email, password) => {
 const register = async (name, email, password) => {
   const data = await apiRegister(name, email, password);
   localStorage.setItem('token', data.token);
-  // ✅ sama di register
   const profile = await apiGetProfile();
   setUser(profile);
   return data;
 };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-  };
+const logout = () => {
+  setUser(null);
+  localStorage.removeItem('token');
+  window.location.href = '/';  
+};
 
-  // Jangan render app dulu sebelum selesai cek token
   if (loading) return null;
 
   return (
@@ -57,7 +56,6 @@ const register = async (name, email, password) => {
   );
 }
 
-// Di AuthContext.jsx, ubah baris terakhir
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === null) {

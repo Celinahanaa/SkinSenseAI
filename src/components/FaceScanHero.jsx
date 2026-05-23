@@ -133,36 +133,27 @@ export default function FaceScanHero() {
       </div>
 
       {/* Analysis tags */}
-      <div className="absolute left-2 top-14 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
-        <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
-        <span className="text-gray-500 dark:text-gray-400">{t('analysis_text1')}</span>
-        <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext1')}</span>
-      </div>
+      {/* Tag 1: AI Confidence — kiri atas */}
+<div className="absolute left-2 top-14 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
+  <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+  <span className="text-gray-500 dark:text-gray-400">{t('analysis_text1')}</span>
+  <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext1')}</span>
+</div>
 
-      <div className="absolute right-2 top-24 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
-        <span className="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" />
-        <span className="text-gray-500 dark:text-gray-400">{t('analysis_text2')}</span>
-        <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext2')}</span>
-      </div>
+{/* Tag 2: Skin Type — kanan atas */}
+<div className="absolute right-2 top-24 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
+  <span className="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" />
+  <span className="text-gray-500 dark:text-gray-400">{t('analysis_text2')}</span>
+  <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext2')}</span>
+</div>
 
-      <div className="absolute right-2 bottom-28 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
-        <span className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
-        <span className="text-gray-500 dark:text-gray-400">{t('analysis_text3')}</span>
-        <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext3')}</span>
-      </div>
-
-      <div className="absolute left-2 bottom-20 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
-        <span className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0" />
-        <span className="text-gray-500 dark:text-gray-400">{t('analysis_text4')}</span>
-        <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext4')}</span>
-      </div>
-
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
-        <span className="w-2 h-2 rounded-full bg-pink-500 flex-shrink-0"
-          style={{ animation: 'pulse 1.5s ease-in-out infinite' }} />
-        <span className="text-gray-500 dark:text-gray-400">{t('analysis_text5')}</span>
-        <span className="font-semibold text-blue-600 dark:text-blue-400">{t('analysis_subtext5')}</span>
-      </div>
+{/* Tag 3: Bahan Aktif — bawah tengah, animasi pulse */}
+<div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
+  <span className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0"
+    style={{ animation: 'pulse 1.5s ease-in-out infinite' }} />
+  <span className="text-gray-500 dark:text-gray-400">{t('analysis_text3')}</span>
+  <span className="font-semibold text-blue-600 dark:text-blue-400">{t('analysis_subtext3')}</span>
+</div>
     </div>
   );
 }

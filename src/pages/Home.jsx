@@ -36,8 +36,8 @@ function HeroCard() {
           <p className="text-sm font-bold text-gray-800 dark:text-gray-100">{t('home_badge2')}</p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">STATUS</p>
-          <p className="text-sm font-bold text-green-600 dark:text-green-400">{t('analysis_subtext4')}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">SKIN TYPE</p>
+          <p className="text-sm font-bold text-green-600 dark:text-green-400">{t('analysis_subtext2')}</p>
         </div>
       </div>
     </div>

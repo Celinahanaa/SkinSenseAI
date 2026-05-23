@@ -49,7 +49,6 @@ export default function Analysis() {
     }
   }, [cameraActive]);
 
-  // Stop kamera saat ganti ke mode upload
   useEffect(() => {
     if (mode === 'upload' && streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
@@ -70,7 +69,6 @@ export default function Analysis() {
       let fileToAnalyze = file;
       let imageUrl = preview;
 
-      // Mode kamera: ambil snapshot dari video
       if (mode === 'camera') {
         if (!videoRef.current || !cameraActive) {
           alert('Aktifkan kamera terlebih dahulu.');
@@ -93,7 +91,6 @@ export default function Analysis() {
         return;
       }
 
-      // Konversi ke base64 agar bisa di-pass ke halaman result
       const imageBase64 = mode === 'camera' ? imageUrl : await toBase64(fileToAnalyze);
 
       const result = await apiAnalyze(fileToAnalyze);
@@ -102,7 +99,14 @@ export default function Analysis() {
         skin_type: result.skin_type,
         confidence: result.confidence,
         recommendations: result.recommendations,
+        image_url: imageBase64,
       });
+
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+        setCameraActive(false);
+      }
 
       navigate('/result', {
         state: {
@@ -156,22 +160,60 @@ export default function Analysis() {
                   <div
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleDrop}
-                    onClick={() => fileRef.current?.click()}
+                    onClick={() => !loading && fileRef.current?.click()}
                     className="border-2 border-dashed border-blue-200 dark:border-blue-800 rounded-2xl bg-white dark:bg-gray-800 cursor-pointer hover:border-blue-400 dark:hover:border-blue-600 transition-colors overflow-hidden"
-                    style={{ minHeight: '360px' }}
+                    style={{ height: '360px' }}
                   >
                     <input ref={fileRef} type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFile} className="hidden" />
 
                     {preview ? (
-                      <div className="relative h-full" style={{ minHeight: '360px' }}>
-                        <img src={preview} alt="preview" className="w-full h-full object-cover" style={{ minHeight: '360px' }} />
-                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                          <p className="text-white font-medium text-sm bg-black/50 px-4 py-2 rounded-xl">{t('analysis_change')}</p>
-                        </div>
+                      <div className="relative h-full" style={{ height: '360px' }}>
+                        <img
+                          src={preview}
+                          alt="preview"
+                          className="w-full h-full object-cover transition-opacity duration-300"
+                          style={{ height: '360px', opacity: loading ? 0.82 : 1 }}
+                        />
+
+                        {/* Hover overlay — hanya saat tidak loading */}
+                        {!loading && (
+                          <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <p className="text-white font-medium text-sm bg-black/50 px-4 py-2 rounded-xl">{t('analysis_change')}</p>
+                          </div>
+                        )}
+
+                        {/* Scan overlay — hanya saat loading */}
+                        {loading && (
+                          <>
+                            {/* Tint biru tipis */}
+                            <div className="absolute inset-0 bg-blue-500/5 pointer-events-none" />
+
+                            {/* Dot grid */}
+                            <div
+                              className="absolute inset-0 pointer-events-none"
+                              style={{
+                                backgroundImage: 'radial-gradient(circle, rgba(96,165,250,0.18) 1px, transparent 1px)',
+                                backgroundSize: '20px 20px',
+                              }}
+                            />
+
+                            {/* Scan line */}
+                            <div className="scan-line absolute left-0 right-0 pointer-events-none" />
+
+                            {/* Corner brackets */}
+                            <div className="scan-corner tl" />
+                            <div className="scan-corner tr" />
+                            <div className="scan-corner bl" />
+                            <div className="scan-corner br" />
+                          </>
+                          
+                        )}
+                        
                       </div>
                     ) : (
+                      /* Empty state */
                       <div className="flex flex-col items-center justify-center py-20 px-8">
-                        <div className="w-20 h-20 mb-4">
+                        <div className="w-20 h-20 mb-2 mt-8">
                           <Upload size={60} className="mx-auto text-blue-300 dark:text-blue-600" />
                         </div>
                         <p className="font-bold text-gray-700 dark:text-gray-200 text-base mb-1">{t('analysis_click')}</p>
@@ -188,15 +230,34 @@ export default function Analysis() {
                   </div>
 
                   {cameraActive ? (
-                    <video
-                      ref={videoRef}
-                      autoPlay
-                      playsInline
-                      className="w-full rounded-2xl"
-                      style={{ minHeight: '360px', maxHeight: '360px', objectFit: 'cover' }}
-                    />
+  <div className="relative">
+    <video
+      ref={videoRef}
+      autoPlay
+      playsInline
+      className="w-full rounded-2xl"
+      style={{ height: '450px', objectFit: 'cover' }}
+    />
+
+    {/* Overlay scan */}
+    <div className="absolute inset-0 bg-blue-500/5 pointer-events-none rounded-2xl" />
+
+    {/* Dot grid */}
+    <div
+      className="absolute inset-0 pointer-events-none rounded-2xl"
+      style={{
+        backgroundImage:
+          'radial-gradient(circle, rgba(96,165,250,0.18) 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+      }}
+    />
+
+    {/* Scan line */}
+    <div className="scan-line absolute left-0 right-0 pointer-events-none" />
+
+  </div>
                   ) : (
-                    <div className="rounded-2xl p-8 flex flex-col items-center justify-center" style={{ minHeight: '360px' }}>
+                    <div className="rounded-2xl p-8 flex flex-col items-center justify-center" style={{ height: '450px' }}>
                       <div className="w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
                         <Camera size={36} className="text-blue-600 dark:text-blue-400" />
                       </div>
@@ -237,7 +298,7 @@ export default function Analysis() {
               </button>
             </div>
 
-            {/* Tips */}
+            {/* Tips — kolom kanan, hanya di mode upload dan tidak saat loading */}
             {mode === 'upload' && (
               <div>
                 <span className="inline-block bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full mb-5 tracking-wide">
@@ -259,27 +320,6 @@ export default function Analysis() {
                     </div>
                   ))}
                 </div>
-
-                {loading && (
-                  <div className="mt-8 card dark:bg-gray-800">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                        <Loader2 size={16} className="text-blue-600 dark:text-blue-400 animate-spin" />
-                      </div>
-                      <p className="font-semibold text-gray-700 dark:text-gray-200 text-sm">Memproses gambar...</p>
-                    </div>
-                    <div className="space-y-2">
-                      {['Mendeteksi wajah', 'Menganalisis tekstur kulit', 'Menghitung kadar minyak', 'Menyiapkan rekomendasi'].map((step, i) => (
-                        <div key={i} className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                          <div className="w-4 h-4 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                            <div className="w-1.5 h-1.5 bg-blue-600 dark:text-blue-400 rounded-full" />
-                          </div>
-                          {step}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </div>
