@@ -134,15 +134,15 @@ export default function FaceScanHero() {
 
       {/* Analysis tags */}
       {/* Tag 1: AI Confidence — kiri atas */}
-<div className="absolute left-2 top-14 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
-  <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+<div className="absolute left-2 top-16 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
+  <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" style={{ animation: 'pulse 1.5s ease-in-out infinite' }} />
   <span className="text-gray-500 dark:text-gray-400">{t('analysis_text1')}</span>
   <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext1')}</span>
 </div>
 
 {/* Tag 2: Skin Type — kanan atas */}
-<div className="absolute right-2 top-24 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
-  <span className="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" />
+<div className="absolute right-0 top-29 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-1.5 text-xs flex items-center gap-2 shadow-sm">
+  <span className="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" style={{ animation: 'pulse 1.5s ease-in-out infinite' }} />
   <span className="text-gray-500 dark:text-gray-400">{t('analysis_text2')}</span>
   <span className="font-semibold text-gray-800 dark:text-white">{t('analysis_subtext2')}</span>
 </div>

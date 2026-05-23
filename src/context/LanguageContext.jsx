@@ -391,7 +391,7 @@ export const translations = {
     analysis_tips_text: 'Untuk mendapatkan hasil analisis yang optimal, pastikan wajah terlihat jelas dengan pencahayaan yang baik serta tanpa penggunaan filter atau makeup berlebih.',
     analysis_btn: 'ANALISIS',
     analysis_loading: 'Menganalisis Kulit...',
-    analysis_tips_title: 'Cek Kulit Cepat',
+    analysis_tips_title: 'Cek Kulit dengan Cepat',
     analysis_tips_subtitle: 'Bersama Kami!',
     tip1_title: 'Wajah',
     tip1_desc: 'Pastikan wajah Anda terlihat jelas tanpa tertutup objek apapun',

@@ -58,7 +58,7 @@ export default function Home() {
 
       {/* Hero */}
       <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] via-[#e8f0fe] to-[#dce8ff] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="max-w-7xl mx-auto py-6">
+        <div className="max-w-7xl mx-auto pt-6 px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-up">
               <span className="inline-flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
@@ -96,7 +96,7 @@ export default function Home() {
 
       {/* Problem section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="grid grid-cols-3 gap-4 h-full">
               <div className="col-span-1 flex flex-col gap-4">
@@ -153,7 +153,7 @@ export default function Home() {
 
       {/* How it works */}
       <section ref={featuresRef} className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>
             <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">{t('landing_roadmap_desc')}</p>
@@ -222,7 +222,7 @@ export default function Home() {
 
       {/* CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center px-4">
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('landing_cta_title')}</h2>
           <p className="text-gray-500 dark:text-gray-400 mb-8 text-lg">{t('landing_cta_desc')}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
