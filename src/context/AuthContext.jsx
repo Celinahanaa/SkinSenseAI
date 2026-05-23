@@ -6,6 +6,7 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // cek token saat app dibuka
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Saat app pertama dibuka, cek apakah ada token tersimpan
   useEffect(() => {
@@ -42,15 +43,17 @@ const register = async (name, email, password) => {
 };
 
 const logout = () => {
+  setIsLoggingOut(true);
   setUser(null);
   localStorage.removeItem('token');
-  window.location.href = '/';  
+  window.location.href = '/';
 };
+
 
   if (loading) return null;
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, logout, loading, isLoggingOut }}>
       {children}
     </AuthContext.Provider>
   );

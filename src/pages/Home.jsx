@@ -65,10 +65,10 @@ export default function Home() {
                 <CheckCircle2 size={12} />
                 {t('home_badge')}
               </span>
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-3">
+              <h1 className="text-5xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight mb-3">
                 {t('home_title1')}<br />{t('home_title2')}
               </h1>
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-6 text-blue-800 dark:text-blue-400">
+              <h1 className="text-5xl lg:text-5xl font-bold leading-tight mb-6 text-blue-800 dark:text-blue-400">
                 {t('home_subtitle')}
               </h1>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8 max-w-md">
@@ -155,7 +155,7 @@ export default function Home() {
       <section ref={featuresRef} className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] to-[#e8f0fe] dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>
             <p className="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">{t('landing_roadmap_desc')}</p>
           </div>
 
@@ -223,7 +223,7 @@ export default function Home() {
       {/* CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-3xl mx-auto text-center px-4">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('landing_cta_title')}</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('landing_cta_title')}</h2>
           <p className="text-gray-500 dark:text-gray-400 mb-8 text-lg">{t('landing_cta_desc')}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

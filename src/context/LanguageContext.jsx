@@ -181,6 +181,8 @@ export const translations = {
     profile_ai_insights: 'AI Insights',
     profile_hydration_goal: 'Hydration Goal',
     profile_no_insight: 'Run a scan to get AI recommendations.',
+    logout_title: 'Sign Out?',
+logout_desc: 'You will be signed out of this session.',
 
     // Edit Profile
     edit_title: 'Edit Profile',
@@ -428,6 +430,8 @@ export const translations = {
     profile_ai_insights: 'Wawasan AI',
     profile_hydration_goal: 'Target Hidrasi',
     profile_no_insight: 'Lakukan scan untuk mendapatkan rekomendasi AI.',
+    logout_title: 'Keluar dari Akun?',
+logout_desc: 'Kamu akan keluar dari sesi ini.',
 
     // Edit Profile
     edit_title: 'Edit Profil',

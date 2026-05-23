@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useLang } from '../context/LanguageContext';
+import { createPortal } from 'react-dom';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -12,13 +13,14 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const isActive = (path) => location.pathname === path;
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
+
+  const isActive = (path) => location.pathname === path;
 
   const navLinks = [
     { to: '/home', label: t('nav_home') },
@@ -82,7 +84,7 @@ export default function Navbar() {
                   <User size={16} className="text-blue-800" />
                 </button>
                 <button
-                  onClick={handleLogout}
+                  onClick={() => setShowLogoutModal(true)}
                   className="text-gray-500 hover:text-red-500 transition-colors"
                   title={t('nav_signout')}
                 >
@@ -154,6 +156,32 @@ export default function Navbar() {
           )}
         </div>
       )}
+      {showLogoutModal && createPortal(
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
+      <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+        <LogOut size={22} className="text-red-500 dark:text-red-400" />
+      </div>
+      <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('logout_title')}</p>
+      <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('logout_desc')}</p>
+      <div className="flex gap-3">
+        <button
+          onClick={() => setShowLogoutModal(false)}
+          className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          {t('edit_cancel')}
+        </button>
+        <button
+          onClick={handleLogout}
+          className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+        >
+          {t('nav_signout')}
+        </button>
+      </div>
+    </div>
+  </div>,
+  document.body
+)}
     </nav>
   );
 }
