@@ -54,69 +54,66 @@ export default function LandingPage() {
 
       <div className="flex-1 pt-6">
 
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 px-4">
-            <img src="/images/logo.png" alt="SkinSense AI" className="h-8 w-auto" />
-            <span className="font-bold text-gray-900 dark:text-white">SkinSense AI</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
-              className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-xs font-bold text-gray-600 dark:text-gray-300"
-            >
-              {lang === 'id' ? 'EN' : 'ID'}
-            </button>
-            <button
-              onClick={() => setDark(!dark)}
-              className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            >
-              {dark ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} className="text-gray-500" />}
-            </button>
-            <button onClick={() => navigate('/login')} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-800 dark:hover:text-blue-400">
-              {t('nav_signin')}
-            </button>
-            <button onClick={() => navigate('/register')} className="bg-blue-800 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-blue-900">
-              {t('landing_analyze_btn')}
-            </button>
-          </div>
-        </nav>
+<nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-4 flex justify-between items-center">
+  <div className="flex items-center gap-2">
+    <img src="/images/logo.png" alt="SkinSense AI" className="h-8 w-auto" />
+    <span className="font-bold text-gray-900 dark:text-white text-sm md:text-base">SkinSense AI</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <button onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
+      className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
+      {lang === 'id' ? 'EN' : 'ID'}
+    </button>
+    <button onClick={() => setDark(!dark)}
+      className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+      {dark ? <Sun size={15} className="text-yellow-400" /> : <Moon size={15} className="text-gray-500" />}
+    </button>
+    <button onClick={() => navigate('/login')}
+      className="hidden sm:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-800">
+      {t('nav_signin')}
+    </button>
+    <button onClick={() => navigate('/register')}
+      className="bg-blue-800 text-white text-xs md:text-sm font-semibold px-3 md:px-4 py-2 rounded-xl hover:bg-blue-900">
+      {t('landing_analyze_btn')}
+    </button>
+  </div>
+</nav>
 
-        {/* Hero */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:py-10">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12">
-            {/* Kiri: teks */}
-            <div className="max-w-2xl lg:w-1/2">
-              <span className="inline-flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
-                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-                {t('landing_badge')}
-              </span>
-              <h1 className="text-5xl lg:text-5.5xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
-                {t('landing_hero_title')}{' '}
-                <span className="text-blue-800 dark:text-blue-400">{t('landing_hero_subtitle')}</span>
-              </h1>
-              <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed mb-8 max-w-lg">
-                {t('landing_hero_desc')}
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={() => navigate('/analysis')}
-                  className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white font-semibold px-6 py-3 rounded-xl transition-all text-sm"
-                  style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
-                >
-                  <Scan size={16} /> {t('landing_try_scanner')}
-                </button>
-                <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold px-6 py-3 rounded-xl transition-all text-sm">
-                  <FlaskConical size={16} /> {t('landing_explore_tech')}
-                </button>
-              </div>
-            </div>
+<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:py-10">
+  <div className="flex flex-col lg:flex-row md:items-center lg:gap-12">
+    <div className="max-w-2xl lg:w-1/2 text-center lg:text-left">
+      <span className="inline-flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
+        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+        {t('landing_badge')}
+      </span>
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+        {t('landing_hero_title')}{' '}
+        <span className="text-blue-800 dark:text-blue-400">{t('landing_hero_subtitle')}</span>
+      </h1>
+      <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
+        {t('landing_hero_desc')}
+      </p>
+      <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+        <button onClick={() => navigate('/analysis')}
+          className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white font-semibold px-6 py-3 rounded-xl text-sm"
+          style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}>
+          <Scan size={16} /> {t('landing_try_scanner')}
+        </button>
+        <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold px-6 py-3 rounded-xl text-sm">
+          <FlaskConical size={16} /> {t('landing_explore_tech')}
+        </button>
+      </div>
+    </div>
 
-            {/* Kanan: face scan animation */}
-            <div className="hidden lg:flex lg:w-1/2 items-center justify-center mt-10 lg:mt-0">
-              <FaceScanHero />
-            </div>
-          </div>
-        </section>
+    {/* FaceScanHero — muncul di semua ukuran */}
+    <div className="flex items-center justify-center mt-10 lg:mt-0 lg:w-1/2">
+      <div className="w-full max-w-xs sm:max-w-sm lg:max-w-full">
+        <FaceScanHero />
+      </div>
+    </div>
+
+  </div>
+</section>
 
         {/* Designed for Your Journey */}
         <section className="bg-gray-50 dark:bg-gray-800 py-16">
@@ -159,12 +156,12 @@ export default function LandingPage() {
         {/* Clinical Roadmap */}
         <section className="bg-gray-50 dark:bg-gray-800 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-12 gap-4">
-              <div>
+            <div className="flex flex-col items-center lg:flex-row lg:items-start lg:justify-between mb-12 gap-4">
+              <div className="text-center lg:text-left">
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_roadmap_title')}</h2>
                 <p className="text-gray-500 dark:text-gray-400 text-sm max-w-sm">{t('landing_roadmap_desc')}</p>
               </div>
-              <span className="inline-flex items-center gap-1.5 bg-blue-800 text-white text-xs font-semibold px-3 py-1.5 rounded-full self-start lg:mt-2">
+              <span className="inline-flex items-center gap-1.5 bg-blue-800 text-white text-xs font-semibold px-3 py-1.5 rounded-full lg:self-start lg:mt-2">
                 <Shield size={12} /> {t('landing_encrypted')}
               </span>
             </div>
@@ -183,8 +180,8 @@ export default function LandingPage() {
 
         {/* CTA Banner */}
         <section className="pb-2 py-14 px-4 bg-white dark:bg-gray-900">
-          <div className="max-w-3xl mx-auto bg-blue-800 rounded-3xl px-8 py-14 text-center">
-            <h2 className="text-3xl font-bold text-white mb-3">{t('landing_cta_title')}</h2>
+<div className="max-w-3xl mx-auto bg-blue-800 rounded-3xl px-6 md:px-8 py-10 md:py-14 text-center">            
+  <h2 className="text-2xl font-bold text-white mb-3">{t('landing_cta_title')}</h2>
             <p className="text-blue-200 text-sm mb-2 max-w-md mx-auto">{t('landing_cta_desc')}</p>
             <p className="text-blue-300 text-xs mb-8">{t('landing_cta_note')}</p>
             <button
@@ -200,25 +197,25 @@ export default function LandingPage() {
         <section className="py-14 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_team_title')}</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{t('landing_team_title')}</h2>
               <p className="text-gray-500 dark:text-gray-400 text-sm max-w-md mx-auto">{t('landing_team_desc')}</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              {team.map((member, i) => (
-                <div key={i} className="text-center">
-                  <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <svg viewBox="0 0 40 40" className="w-10 h-10 text-gray-400 dark:text-gray-500" fill="currentColor">
-                      <circle cx="20" cy="14" r="7" />
-                      <path d="M4 36c0-8.837 7.163-16 16-16s16 7.163 16 16" />
-                    </svg>
-                  </div>
-                  <p className="font-semibold text-gray-800 dark:text-gray-100 text-sm">{member.name}</p>
-                  <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full mt-1 ${roleColors[member.role]}`}>
-                    {member.role}
-                  </span>
-                </div>
-              ))}
-            </div>
+<div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+  {team.map((member, i) => (
+    <div key={i} className="text-center p-3 md:p-0">
+      <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3">
+        <svg viewBox="0 0 40 40" className="w-8 h-8 md:w-10 md:h-10 text-gray-400 dark:text-gray-500" fill="currentColor">
+          <circle cx="20" cy="14" r="7" />
+          <path d="M4 36c0-8.837 7.163-16 16-16s16 7.163 16 16" />
+        </svg>
+      </div>
+      <p className="font-semibold text-gray-800 dark:text-gray-100 text-xs md:text-sm">{member.name}</p>
+      <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full mt-1 ${roleColors[member.role]}`}>
+        {member.role}
+      </span>
+    </div>
+  ))}
+</div>
           </div>
         </section>
       </div>

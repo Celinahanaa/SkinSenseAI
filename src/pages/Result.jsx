@@ -77,15 +77,14 @@ export default function Result() {
 
   const getSkinDescription = (type) => {
     const map = {
-      // English
       'Oily':        t('result_desc_oily'),
       'Dry':         t('result_desc_dry'),
       'Normal':      t('result_desc_normal'),
       'Combination': t('result_desc_combination'),
-      // Indonesia ← tambahkan ini
       'Berminyak':   t('result_desc_oily'),
       'Kering':      t('result_desc_dry'),
       'Kombinasi': t('result_desc_combination'),
+      'Acne': t('result_desc_acne'), 'Berjerawat': t('result_desc_acne'),
     };
     return map[type] || `${t('result_detected')}: ${type}`;
   };
@@ -331,6 +330,38 @@ const handleDownloadPDF = async () => {
                       <p className="text-xs text-gray-400 mt-1">{t('result_confidence').toUpperCase()}</p>
                     </div>
                   </div>
+                      <div className="mb-5">
+  <div className="flex flex-wrap gap-2">
+    {(skinType.toLowerCase() === 'oily' || skinType.toLowerCase() === 'berminyak') && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">💧 {t('char_oily_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">✨ {t('char_oily_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">⚖️ {t('char_oily_3')}</span>
+      </>
+    )}
+    {(skinType.toLowerCase() === 'dry' || skinType.toLowerCase() === 'kering') && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🌿 {t('char_dry_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">✨ {t('char_dry_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🛡️ {t('char_dry_3')}</span>
+      </>
+    )}
+    {skinType.toLowerCase() === 'normal' && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">✅ {t('char_normal_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">💧 {t('char_normal_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">🌿 {t('char_normal_3')}</span>
+      </>
+    )}
+    {(skinType.toLowerCase() === 'acne' || skinType.toLowerCase() === 'berjerawat') && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🧪 {t('char_acne_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🔬 {t('char_acne_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🌿 {t('char_acne_3')}</span>
+      </>
+    )}
+  </div>
+</div>
 
                   <hr className="border-gray-100 dark:border-gray-700 mb-5" />
 

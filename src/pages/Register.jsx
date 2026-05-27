@@ -24,6 +24,10 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.agree) {
+      setError(t('register_agree_error'));
+      return;
+    }
     setLoading(true);
     setError('');
     try {

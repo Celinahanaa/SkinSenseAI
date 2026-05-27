@@ -6,6 +6,7 @@ const { getProfile, updateProfile, upload } = require('../controllers/profileCon
 const { getHistory, getHistoryDetail, deleteHistory } = require('../controllers/historyController');
 const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 router.post('/auth/register', register);
 router.post('/auth/login', login);
@@ -55,6 +56,30 @@ router.post('/history', auth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Gagal simpan history', error: err.message });
   }
+});
+
+router.post('/auth/reset-password', async (req, res) => {
+  const { email, newPassword } = req.body;
+  try {
+    const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (user.rows.length === 0)
+      return res.status(404).json({ message: 'Email tidak ditemukan' });
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE users SET password = $1 WHERE email = $2', [hashed, email]);
+
+    res.json({ message: 'Password berhasil diubah' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+router.post('/auth/check-email', async (req, res) => {
+  const { email } = req.body;
+  const user = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+  if (user.rows.length === 0)
+    return res.status(404).json({ message: 'Email tidak ditemukan' });
+  res.json({ message: 'OK' });
 });
 
 module.exports = router;

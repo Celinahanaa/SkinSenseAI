@@ -15,12 +15,12 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white mt-auto">
+    <footer className="bg-gray-900 text-white mt-auto text-center md:text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
           {/* Brand */}
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-2 mb-3">
               <img src="/images/logo2.png" alt="SkinSense AI" className="h-8 w-auto" />
               <span className="font-bold text-white text-lg">SkinSense AI</span>
@@ -30,18 +30,15 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Menu — selalu ada, kalau tidak login tetap tampil tapi hanya Home */}
-          <div>
+          {/* Menu */}
+          <div className="flex flex-col items-center md:items-start">
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest border-b-2 border-blue-600 pb-2 w-fit">
               {t('footer_menu')}
             </h3>
             <ul className="space-y-2">
               {footerLinks.map((link) => (
-                <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    className="text-gray-400 hover:text-white text-sm transition-colors flex items-center gap-2"
-                  >
+                <li key={link.to} className="flex justify-center md:justify-start">
+                  <Link to={link.to} className="text-gray-400 hover:text-white text-sm transition-colors flex items-center gap-2">
                     <span className="text-blue-500">›</span> {link.label}
                   </Link>
                 </li>
@@ -49,8 +46,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Hubungi Kami */}
-          <div>
+          {/* Contact */}
+          <div className="flex flex-col items-center md:items-start">
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest border-b-2 border-blue-600 pb-2 w-fit">
               {t('footer_contact')}
             </h3>
@@ -70,7 +67,7 @@ export default function Footer() {
             </div>
           </div>
 
-        </div>
+</div>
 
         {/* Bottom bar */}
         <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">

@@ -6,8 +6,17 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
 import { useLang } from '../context/LanguageContext';
 import { useGoogleLogin } from '@react-oauth/google';
+import { createPortal } from 'react-dom';
+import { apiCheckEmail, apiResetPassword } from '../services/api';
 
 export default function Login() {
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotStep, setForgotStep] = useState(1); 
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotError, setForgotError] = useState('');
   const { login, setUser } = useAuth();
   const { t } = useLang();
   const navigate = useNavigate();
@@ -139,10 +148,7 @@ export default function Login() {
             </div>
 
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('login_password')}</label>
-                <button type="button" className="text-xs text-blue-700 dark:text-blue-400 hover:underline">{t('login_forgot')}</button>
-              </div>
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider m-2">{t('login_password')}</label>        
               <div className="relative">
                 <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
@@ -161,18 +167,14 @@ export default function Login() {
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
+              <button
+                type="button"
+                onClick={() => setShowForgotModal(true)}
+                className="text-xs text-blue-700 dark:text-blue-400 hover:underline ml-auto flex justify-end mt-2"
+              >
+                {t('login_forgot')}
+              </button>      
             </div>
-
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                name="remember"
-                checked={form.remember}
-                onChange={handleChange}
-                className="w-4 h-4 rounded border-gray-300 accent-blue-800"
-              />
-              <span className="text-sm text-gray-600 dark:text-gray-300">{t('login_remember')}</span>
-            </label>
 
             <button
               type="submit"
@@ -219,6 +221,158 @@ export default function Login() {
           </p>
         </div>
       </div>
+      {showForgotModal && createPortal(
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
+
+          {/* Step 1 — input email */}
+          {forgotStep === 1 && (
+            <>
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Mail size={24} className="text-blue-600 dark:text-blue-400" />
+              </div>
+              <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('forgot_title')}</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mb-5">{t('forgot_desc')}</p>
+              {forgotError && <p className="text-xs text-red-500 mb-3">{forgotError}</p>}
+              <div className="relative mb-4">
+                <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="Email"
+                  className="input-field pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setShowForgotModal(false); setForgotEmail(''); setForgotError(''); }}
+                  className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                >
+                  {t('edit_cancel')}
+                </button>
+                <button
+                  disabled={forgotLoading || !forgotEmail}
+                  onClick={async () => {
+                    setForgotLoading(true);
+                    setForgotError('');
+                    try {
+                      await apiCheckEmail(forgotEmail);
+                      setForgotStep(2);
+                    } catch (err) {
+                      setForgotError(err.response?.data?.message || 'Email tidak ditemukan');
+                    } finally {
+                      setForgotLoading(false);
+                    }
+                  }}
+                  className="flex-1 py-2 rounded-xl bg-blue-800 hover:bg-blue-900 text-white text-sm font-medium transition-colors disabled:opacity-50 flex items-center justify-center"
+                >
+                  {forgotLoading
+                    ? <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                    : t('forgot_next')
+                  }
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* Step 2 — input password baru */}
+          {forgotStep === 2 && (
+            <>
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock size={24} className="text-blue-600 dark:text-blue-400" />
+              </div>
+              <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('forgot_new_title')}</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mb-5">{t('forgot_new_desc')}</p>
+              {forgotError && <p className="text-xs text-red-500 mb-3">{forgotError}</p>}
+              
+              <div className="relative mb-4">
+              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder={t('forgot_new_pass')}
+                className="input-field pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
+              />
+              </div>
+
+              <div className="relative mb-4">
+              <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="password"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                placeholder={t('forgot_confirm_pass')}
+                className="input-field pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
+              />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setForgotStep(1); setForgotError(''); }}
+                  className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                >
+                  {t('forgot_back')}
+                </button>
+                <button
+                  disabled={forgotLoading || !newPassword || !confirmNewPassword}
+                  onClick={async () => {
+                    if (newPassword !== confirmNewPassword) {
+                      setForgotError('Password tidak cocok');
+                      return;
+                    }
+                    setForgotLoading(true);
+                    setForgotError('');
+                    try {
+                      await apiResetPassword(forgotEmail, newPassword);
+                      setForgotStep(3);
+                    } catch (err) {
+                      setForgotError(err.response?.data?.message || 'Gagal reset password');
+                    } finally {
+                      setForgotLoading(false);
+                    }
+                  }}
+                  className="flex-1 py-2 rounded-xl bg-blue-800 hover:bg-blue-900 text-white text-sm font-medium transition-colors disabled:opacity-50 flex items-center justify-center"
+                >
+                  {forgotLoading
+                    ? <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                    : t('forgot_save')
+                  }
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* Step 3 — sukses */}
+          {forgotStep === 3 && (
+            <>
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('forgot_success_title')}</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('forgot_success_desc')}</p>
+              <button
+                onClick={() => {
+                  setShowForgotModal(false);
+                  setForgotStep(1);
+                  setForgotEmail('');
+                  setNewPassword('');
+                  setConfirmNewPassword('');
+                }}
+                className="w-full h-[41px] py-2 rounded-xl bg-blue-800 hover:bg-blue-900 text-white text-sm font-medium transition-colors"
+              >
+                {t('forgot_ok')}
+              </button>
+            </>
+          )}
+
+        </div>
+      </div>,
+      document.body
+    )}
     </div>
   );
 }

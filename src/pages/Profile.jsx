@@ -200,12 +200,44 @@ export default function Profile() {
               <div className="card dark:bg-gray-800 dark:border-gray-700">
                 {lastScan ? (
                   <div className="space-y-4">
-                    <div className="text-center py-2">
+                    <div className="text-center py-4">
                       <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
                         {t('result_detected') || 'Skin Type'}
                       </p>
                       <p className="text-3xl font-black text-amber-500">{skinType.toUpperCase()}</p>
                     </div>
+                    <div className="text-center">
+  <div className="pb-5 flex flex-wrap gap-2 justify-center">
+    {(skinType.toLowerCase() === 'oily' || skinType.toLowerCase() === 'berminyak') && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">💧 {t('char_oily_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">✨ {t('char_oily_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">⚖️ {t('char_oily_3')}</span>
+      </>
+    )}
+    {(skinType.toLowerCase() === 'dry' || skinType.toLowerCase() === 'kering') && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🌿 {t('char_dry_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">✨ {t('char_dry_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🛡️ {t('char_dry_3')}</span>
+      </>
+    )}
+    {skinType.toLowerCase() === 'normal' && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">✅ {t('char_normal_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">💧 {t('char_normal_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">🌿 {t('char_normal_3')}</span>
+      </>
+    )}
+    {(skinType.toLowerCase() === 'acne' || skinType.toLowerCase() === 'berjerawat') && (
+      <>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🧪 {t('char_acne_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🔬 {t('char_acne_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🌿 {t('char_acne_3')}</span>
+      </>
+    )}
+  </div>
+</div>
                     <div className="flex items-center gap-3">
                       <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">
                         {t('result_confidence') || 'Confidence'}

@@ -97,9 +97,9 @@ useEffect(() => {
   const getSkinDescription = (type) => {
     const map = {
       'Oily': t('result_desc_oily'), 'Dry': t('result_desc_dry'),
-      'Normal': t('result_desc_normal'), 'Combination': t('result_desc_combination'),
+      'Normal': t('result_desc_normal'), 
       'Berminyak': t('result_desc_oily'), 'Kering': t('result_desc_dry'),
-      'Kombinasi': t('result_desc_combination'),
+      'Acne': t('result_desc_acne'), 'Berjerawat': t('result_desc_acne'),
     };
     return map[type] || `${t('result_detected')}: ${type}`;
   };
@@ -371,12 +371,12 @@ useEffect(() => {
             >
               <ArrowLeft size={16} /> {t('result_back')}
             </button>
-<button
-  onClick={() => setShowDeleteModal(true)}
-  className="flex items-center gap-2 text-sm font-medium text-red-500 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 hover:border-red-300 dark:hover:border-red-700 px-4 py-2 rounded-xl transition-colors"
->
-  <Trash2 size={14} /> {t('result_trash')}
-</button>
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="flex items-center gap-2 text-sm font-medium text-red-500 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 hover:border-red-300 dark:hover:border-red-700 px-4 py-2 rounded-xl transition-colors"
+          >
+            <Trash2 size={14} /> {t('result_trash')}
+          </button>
           </div>
 
           <h1 className="text-3xl font-bold text-center text-blue-900 dark:text-blue-400 mb-2">{t('result_title2')}</h1>
@@ -473,11 +473,11 @@ useEffect(() => {
         <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">🌿 {t('char_normal_3')}</span>
       </>
     )}
-    {(skinType.toLowerCase() === 'combination' || skinType.toLowerCase() === 'kombinasi') && (
+    {(skinType.toLowerCase() === 'acne' || skinType.toLowerCase() === 'berjerawat') && (
       <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">⚖️ {t('char_combo_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">🌿 {t('char_combo_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">✨ {t('char_combo_3')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🧪 {t('char_acne_1')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🔬 {t('char_acne_2')}</span>
+        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🌿 {t('char_acne_3')}</span>
       </>
     )}
   </div>

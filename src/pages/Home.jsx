@@ -59,19 +59,19 @@ export default function Home() {
       {/* Hero */}
       <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] via-[#e8f0fe] to-[#dce8ff] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto pt-6 px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-up">
               <span className="inline-flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
                 <CheckCircle2 size={12} />
                 {t('home_badge')}
               </span>
-              <h1 className="text-5xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight mb-3">
+              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight mb-3">
                 {t('home_title1')}<br />{t('home_title2')}
               </h1>
-              <h1 className="text-5xl lg:text-5xl font-bold leading-tight mb-6 text-blue-800 dark:text-blue-400">
+              <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-blue-800 dark:text-blue-400">
                 {t('home_subtitle')}
               </h1>
-              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8 max-w-md">
+              <p className="text-gray-600 dark:text-gray-300 text-l leading-relaxed mb-8 max-w-md">
               {t('landing_hero_desc')}
               </p>
               <div className="flex flex-wrap gap-4">
@@ -97,7 +97,7 @@ export default function Home() {
       {/* Problem section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="grid grid-cols-3 gap-4 h-full">
               <div className="col-span-1 flex flex-col gap-4">
                 <div className="flex-1 rounded-2xl overflow-hidden shadow-md">
@@ -224,7 +224,7 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-3xl mx-auto text-center px-4">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{t('landing_cta_title')}</h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 text-lg">{t('landing_cta_desc')}</p>
+          <p className="text-gray-500 dark:text-gray-400 mb-8 text-l">{t('landing_cta_desc')}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={user ? '/analysis' : '/register'}

@@ -1,13 +1,20 @@
-// src/services/api.js
+import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000/api';
 const AI_URL = 'http://localhost:8000';
 
 const getToken = () => localStorage.getItem('token');
 
-const authHeaders = () => ({
-  'Authorization': `Bearer ${getToken()}`,
-  'Content-Type': 'application/json',
+// instance dengan base config
+const api = axios.create({
+  baseURL: BASE_URL,
+});
+
+// auto attach token ke setiap request
+api.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
 });
 
 // ─────────────────────────────────────────
@@ -15,24 +22,22 @@ const authHeaders = () => ({
 // ─────────────────────────────────────────
 
 export const apiRegister = async (name, email, password) => {
-  const res = await fetch(`${BASE_URL}/auth/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password }),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Register gagal');
+  const { data } = await api.post('/auth/register', { name, email, password });
   return data;
 };
 
 export const apiLogin = async (email, password) => {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Login gagal');
+  const { data } = await api.post('/auth/login', { email, password });
+  return data;
+};
+
+export const apiCheckEmail = async (email) => {
+  const { data } = await api.post('/auth/check-email', { email });
+  return data;
+};
+
+export const apiResetPassword = async (email, newPassword) => {
+  const { data } = await api.post('/auth/reset-password', { email, newPassword });
   return data;
 };
 
@@ -41,90 +46,54 @@ export const apiLogin = async (email, password) => {
 // ─────────────────────────────────────────
 
 export const apiGetProfile = async () => {
-  const res = await fetch(`${BASE_URL}/profile`, {
-    headers: authHeaders(),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Gagal ambil profil');
+  const { data } = await api.get('/profile');
   return data;
 };
 
 export const apiUpdateProfile = async (formData) => {
-  const token = localStorage.getItem('token');
-  const res = await fetch('http://localhost:3000/api/profile', {
-    method: 'PUT', // atau PATCH, sesuai backend
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      // JANGAN tambah Content-Type, biar FormData set sendiri
-    },
-    body: formData,
+  const { data } = await api.put('/profile', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
-
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Server error');
   return data;
 };
 
 // ─────────────────────────────────────────
-// HISTORY — ke Express (BASE_URL)
+// HISTORY
 // ─────────────────────────────────────────
 
 export const apiGetHistory = async () => {
-  const res = await fetch(`${BASE_URL}/history`, {
-    headers: authHeaders(),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Gagal ambil history');
+  const { data } = await api.get('/history');
   return data;
 };
 
 export const apiGetHistoryDetail = async (id) => {
-  const res = await fetch(`${BASE_URL}/history/${id}`, {
-    headers: authHeaders(),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Data tidak ditemukan');
+  const { data } = await api.get(`/history/${id}`);
   return data;
 };
 
 export const apiDeleteHistory = async (id) => {
-  const res = await fetch(`${BASE_URL}/history/${id}`, {
-    method: 'DELETE',
-    headers: authHeaders(),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Gagal hapus history');
+  const { data } = await api.delete(`/history/${id}`);
   return data;
 };
 
 export const apiSaveHistory = async ({ skin_type, confidence, recommendations, image_url }) => {
-  const res = await fetch(`${BASE_URL}/history`, {
-    method: 'POST',
-    headers: authHeaders(),
-    body: JSON.stringify({
-      result: { skin_type, confidence, recommendations },
-      image_url,
-    }),
+  const { data } = await api.post('/history', {
+    result: { skin_type, confidence, recommendations },
+    image_url,
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Gagal simpan history');
   return data;
 };
 
 // ─────────────────────────────────────────
-// ANALYZE — FastAPI Python model
+// ANALYZE — FastAPI Python
 // ─────────────────────────────────────────
 
 export const apiAnalyze = async (imageFile) => {
   const formData = new FormData();
   formData.append('file', imageFile);
 
-  const res = await fetch(`${AI_URL}/analyze`, {
-    method: 'POST',
-    body: formData,
+  const { data } = await axios.post(`${AI_URL}/analyze`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
-
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.detail || 'Analisis gagal');
   return data;
 };
