@@ -58,7 +58,7 @@ export default function Home() {
       <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#f0f4ff] via-[#e8f0fe] to-[#dce8ff] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto pt-6 px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in-up">
+          <div className="animate-fade-in-up text-center md:text-left">
               <span className="inline-flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
                 <CheckCircle2 size={12} />
                 {t('home_badge')}
@@ -69,10 +69,10 @@ export default function Home() {
               <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-blue-800 dark:text-blue-400">
                 {t('home_subtitle')}
               </h1>
-              <p className="text-gray-600 dark:text-gray-300 text-l leading-relaxed mb-8 max-w-md">
+              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8 mx-auto">
               {t('landing_hero_desc')}
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                 <Link
                   to={user ? '/analysis' : '/register'}
                   className="h-[45px] btn-primary py-3.5 px-8 rounded-xl text-base"
