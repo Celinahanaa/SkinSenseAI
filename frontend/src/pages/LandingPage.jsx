@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { useTheme } from '../context/ThemeContext';
 import { useLang } from '../context/LanguageContext';
 import FaceScanHero from '../components/FaceScanHero';
+import { useRef } from 'react';
 
 const roleColors = {
   'Data Scientist': 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
@@ -42,6 +43,12 @@ export default function LandingPage() {
     { icon: <Brain size={24} className="text-white" />, phase: t('phase2'), title: t('phase2_title'), desc: t('phase2_desc') },
     { icon: <LayoutDashboard size={24} className="text-white" />, phase: t('phase3'), title: t('phase3_title'), desc: t('phase3_desc') },
   ];
+
+  const featuresRef = useRef(null);
+  
+  const scrollToFeatures = () => {
+    featuresRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
@@ -96,7 +103,7 @@ export default function LandingPage() {
                   style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}>
                   <Scan size={16} /> {t('landing_try_scanner')}
                 </button>
-                <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold px-6 py-3 rounded-xl text-sm">
+                <button onClick={scrollToFeatures} className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold px-6 py-3 rounded-xl text-sm">
                   <FlaskConical size={16} /> {t('landing_explore_tech')}
                 </button>
               </div>
@@ -142,7 +149,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="bg-gray-50 dark:bg-gray-800 py-16">
+        <section ref={featuresRef} className="bg-gray-50 dark:bg-gray-800 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center lg:flex-row lg:items-start lg:justify-between mb-12 gap-4">
               <div className="text-center lg:text-left">

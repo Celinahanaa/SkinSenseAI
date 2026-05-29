@@ -32,15 +32,10 @@ const getProfile = async (req, res) => {
       'SELECT skin_type FROM skin_profiles WHERE user_id = $1',
       [req.user.id]
     );
-    const concerns = await pool.query(
-      'SELECT concern FROM skin_concerns WHERE user_id = $1',
-      [req.user.id]
-    );
 
     res.json({
       ...user.rows[0],
       skin_type: skinProfile.rows[0]?.skin_type || null,
-      skin_concerns: concerns.rows.map(r => r.concern),
     });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -50,7 +45,7 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   console.log('req.body:', req.body);
   console.log('req.file:', req.file);
-  const { name, phone, birthdate, skin_type, skin_concerns } = req.body;
+  const { name, phone, birthdate, skin_type } = req.body;
   const avatar_url = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
@@ -72,16 +67,6 @@ const updateProfile = async (req, res) => {
          ON CONFLICT (user_id) DO UPDATE SET skin_type=$2, updated_at=NOW()`,
         [req.user.id, skin_type]
       );
-    }
-
-    if (Array.isArray(skin_concerns) && skin_concerns.length > 0) {
-      await pool.query('DELETE FROM skin_concerns WHERE user_id = $1', [req.user.id]);
-      for (const concern of skin_concerns) {
-        await pool.query(
-          'INSERT INTO skin_concerns (user_id, concern) VALUES ($1, $2)',
-          [req.user.id, concern]
-        );
-      }
     }
 
     res.json({ message: 'Profil berhasil diperbarui' });

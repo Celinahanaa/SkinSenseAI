@@ -163,14 +163,14 @@ export default function EditProfile() {
           <div className="flex gap-3">
             <button
               onClick={() => navigate('/profile')}
-              className="flex-1 py-4 rounded-2xl font-bold text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
+              className="h-[45px] items-center justify-center flex-1 py-4 rounded-2xl font-bold text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
             >
               {t('edit_cancel')}
             </button>
             <button
               onClick={handleSave}
               disabled={saving || saved}
-              className={`flex-1 py-4 rounded-2xl font-bold text-sm text-white transition-all flex items-center justify-center gap-2 ${
+              className={`h-[45px] flex-1 py-4 rounded-2xl font-bold text-sm text-white transition-all flex items-center justify-center gap-2 ${
                 saved ? 'bg-green-500' : 'bg-blue-800 hover:bg-blue-900'
               }`}
               style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}
