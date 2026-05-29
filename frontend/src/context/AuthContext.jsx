@@ -5,18 +5,15 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // cek token saat app dibuka
+  const [loading, setLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Saat app pertama dibuka, cek apakah ada token tersimpan
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Ambil data profil pakai token yang ada
       apiGetProfile()
         .then(profile => setUser(profile))
         .catch(() => {
-          // Token expired/invalid, hapus
           localStorage.removeItem('token');
         })
         .finally(() => setLoading(false));
@@ -28,7 +25,6 @@ export function AuthProvider({ children }) {
 const login = async (email, password) => {
   const data = await apiLogin(email, password);
   localStorage.setItem('token', data.token);
-  // ✅ fetch profile lengkap termasuk skin_type & skin_concerns
   const profile = await apiGetProfile();
   setUser(profile);
   return data;
@@ -51,7 +47,6 @@ const logout = () => {
 
 
   if (loading) return null;
-
   return (
     <AuthContext.Provider value={{ user, setUser, login, register, logout, loading, isLoggingOut }}>
       {children}

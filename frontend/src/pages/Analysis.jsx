@@ -13,7 +13,6 @@ export default function Analysis() {
   const [loading, setLoading] = useState(false);
   const fileRef = useRef();
   const navigate = useNavigate();
-
   const videoRef = useRef(null);
   const [cameraActive, setCameraActive] = useState(false);
   const streamRef = useRef(null);
@@ -92,7 +91,6 @@ export default function Analysis() {
       }
 
       const imageBase64 = mode === 'camera' ? imageUrl : await toBase64(fileToAnalyze);
-
       const result = await apiAnalyze(fileToAnalyze);
 
       await apiSaveHistory({
@@ -152,7 +150,6 @@ export default function Analysis() {
               </button>
             ))}
           </div>
-
           <div className={mode === 'camera' ? 'block' : 'grid lg:grid-cols-2 gap-10 items-start'}>
             <div>
               {mode === 'upload' ? (
@@ -165,7 +162,6 @@ export default function Analysis() {
                     style={{ height: '360px' }}
                   >
                     <input ref={fileRef} type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFile} className="hidden" />
-
                     {preview ? (
                       <div className="relative h-full" style={{ height: '360px' }}>
                         <img
@@ -174,21 +170,14 @@ export default function Analysis() {
                           className="w-full h-full object-cover transition-opacity duration-300"
                           style={{ height: '360px', opacity: loading ? 0.82 : 1 }}
                         />
-
-                        {/* Hover overlay — hanya saat tidak loading */}
                         {!loading && (
                           <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                             <p className="text-white font-medium text-sm bg-black/50 px-4 py-2 rounded-xl">{t('analysis_change')}</p>
                           </div>
                         )}
-
-                        {/* Scan overlay — hanya saat loading */}
                         {loading && (
                           <>
-                            {/* Tint biru tipis */}
                             <div className="absolute inset-0 bg-blue-500/5 pointer-events-none" />
-
-                            {/* Dot grid */}
                             <div
                               className="absolute inset-0 pointer-events-none"
                               style={{
@@ -196,22 +185,15 @@ export default function Analysis() {
                                 backgroundSize: '20px 20px',
                               }}
                             />
-
-                            {/* Scan line */}
                             <div className="scan-line absolute left-0 right-0 pointer-events-none" />
-
-                            {/* Corner brackets */}
                             <div className="scan-corner tl" />
                             <div className="scan-corner tr" />
                             <div className="scan-corner bl" />
                             <div className="scan-corner br" />
                           </>
-                          
                         )}
-                        
                       </div>
                     ) : (
-                      /* Empty state */
                       <div className="flex flex-col items-center justify-center py-20 px-8">
                         <div className="w-20 h-20 mb-2 mt-8">
                           <Upload size={60} className="mx-auto text-blue-300 dark:text-blue-600" />
@@ -228,34 +210,26 @@ export default function Analysis() {
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                     <span className="text-xs text-red-500 font-semibold">Live</span>
                   </div>
-
                   {cameraActive ? (
-  <div className="relative">
-    <video
-      ref={videoRef}
-      autoPlay
-      playsInline
-      className="w-full rounded-2xl"
-      style={{ height: '450px', objectFit: 'cover' }}
-    />
-
-    {/* Overlay scan */}
-    <div className="absolute inset-0 bg-blue-500/5 pointer-events-none rounded-2xl" />
-
-    {/* Dot grid */}
-    <div
-      className="absolute inset-0 pointer-events-none rounded-2xl"
-      style={{
-        backgroundImage:
-          'radial-gradient(circle, rgba(96,165,250,0.18) 1px, transparent 1px)',
-        backgroundSize: '20px 20px',
-      }}
-    />
-
-    {/* Scan line */}
-    <div className="scan-line absolute left-0 right-0 pointer-events-none" />
-
-  </div>
+                    <div className="relative">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        className="w-full rounded-2xl"
+                        style={{ height: '450px', objectFit: 'cover' }}
+                      />
+                      <div className="absolute inset-0 bg-blue-500/5 pointer-events-none rounded-2xl" />
+                      <div
+                        className="absolute inset-0 pointer-events-none rounded-2xl"
+                        style={{
+                          backgroundImage:
+                            'radial-gradient(circle, rgba(96,165,250,0.18) 1px, transparent 1px)',
+                          backgroundSize: '20px 20px',
+                        }}
+                      />
+                      <div className="scan-line absolute left-0 right-0 pointer-events-none" />
+                    </div>
                   ) : (
                     <div className="rounded-2xl p-8 flex flex-col items-center justify-center" style={{ height: '450px' }}>
                       <div className="w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
@@ -268,7 +242,6 @@ export default function Analysis() {
                       </button>
                     </div>
                   )}
-
                   <div className="px-5 pb-5 pt-5">
                     <div className="bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4 flex items-start gap-3">
                       <span className="bg-white dark:bg-gray-700 text-blue-800 dark:text-blue-400 text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0">{t('analysis_tips_label')}</span>
@@ -277,7 +250,6 @@ export default function Analysis() {
                   </div>
                 </div>
               )}
-
               <button
                 onClick={handleAnalyze}
                 disabled={loading || (!preview && mode === 'upload')}
@@ -297,8 +269,6 @@ export default function Analysis() {
                 )}
               </button>
             </div>
-
-            {/* Tips — kolom kanan, hanya di mode upload dan tidak saat loading */}
             {mode === 'upload' && (
               <div>
                 <span className="inline-block bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full mb-5 tracking-wide">
@@ -306,7 +276,6 @@ export default function Analysis() {
                 </span>
                 <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-1">{t('analysis_tips_title')}</h2>
                 <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">{t('analysis_tips_subtitle')}</h2>
-
                 <div className="space-y-6">
                   {tips.map((tip, i) => (
                     <div key={i} className="flex gap-4 items-start">

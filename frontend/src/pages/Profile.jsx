@@ -39,7 +39,7 @@ export default function Profile() {
       }
     })
     .catch(() => {});
-}, []);
+    }, []);
 
   const toggleCheck = (index) => {
     setCheckedItems(prev => ({
@@ -60,7 +60,6 @@ export default function Profile() {
   }
 
   const analysisResult = lastScan?.result || lastScan || {};
-
   const probabilities = analysisResult?.probabilities || {};
   const sortedProbs = Object.entries(probabilities).sort(([, a], [, b]) => b - a);
 
@@ -164,13 +163,8 @@ export default function Profile() {
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">{t('profile_title')}</h1>
-
           <div className="grid lg:grid-cols-2 gap-6 items-stretch mb-6">
-
-            {/* Left col */}
             <div className="grid grid-rows-[auto_1fr] gap-5">
-
-              {/* User info card */}
               <div className="card dark:bg-gray-800 dark:border-gray-700 text-center">
                 <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-3">
                   {user.avatar_url ? (
@@ -195,8 +189,6 @@ export default function Profile() {
                   </button>
                 </div>
               </div>
-
-              {/* Skin metrics */}
               <div className="card dark:bg-gray-800 dark:border-gray-700">
                 {lastScan ? (
                   <div className="space-y-4">
@@ -207,37 +199,37 @@ export default function Profile() {
                       <p className="text-3xl font-black text-amber-500">{skinType.toUpperCase()}</p>
                     </div>
                     <div className="text-center">
-  <div className="pb-5 flex flex-wrap gap-2 justify-center">
-    {(skinType.toLowerCase() === 'oily' || skinType.toLowerCase() === 'berminyak') && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">💧 {t('char_oily_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">✨ {t('char_oily_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">⚖️ {t('char_oily_3')}</span>
-      </>
-    )}
-    {(skinType.toLowerCase() === 'dry' || skinType.toLowerCase() === 'kering') && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🌿 {t('char_dry_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">✨ {t('char_dry_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🛡️ {t('char_dry_3')}</span>
-      </>
-    )}
-    {skinType.toLowerCase() === 'normal' && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">✅ {t('char_normal_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">💧 {t('char_normal_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">🌿 {t('char_normal_3')}</span>
-      </>
-    )}
-    {(skinType.toLowerCase() === 'acne' || skinType.toLowerCase() === 'berjerawat') && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🧪 {t('char_acne_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🔬 {t('char_acne_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🌿 {t('char_acne_3')}</span>
-      </>
-    )}
-  </div>
-</div>
+                    <div className="pb-5 flex flex-wrap gap-2 justify-center">
+                      {(skinType.toLowerCase() === 'oily' || skinType.toLowerCase() === 'berminyak') && (
+                        <>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">💧 {t('char_oily_1')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">✨ {t('char_oily_2')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">⚖️ {t('char_oily_3')}</span>
+                        </>
+                      )}
+                      {(skinType.toLowerCase() === 'dry' || skinType.toLowerCase() === 'kering') && (
+                        <>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🌿 {t('char_dry_1')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">✨ {t('char_dry_2')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🛡️ {t('char_dry_3')}</span>
+                        </>
+                      )}
+                      {skinType.toLowerCase() === 'normal' && (
+                        <>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">✅ {t('char_normal_1')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">💧 {t('char_normal_2')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">🌿 {t('char_normal_3')}</span>
+                        </>
+                      )}
+                      {(skinType.toLowerCase() === 'acne' || skinType.toLowerCase() === 'berjerawat') && (
+                        <>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🧪 {t('char_acne_1')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🔬 {t('char_acne_2')}</span>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🌿 {t('char_acne_3')}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
                     <div className="flex items-center gap-3">
                       <span className="text-sm text-gray-600 dark:text-gray-300 w-28 flex-shrink-0">
                         {t('result_confidence') || 'Confidence'}
@@ -257,15 +249,10 @@ export default function Profile() {
                   </div>
                 )}
               </div>
-
             </div>
-            {/* End left col */}
-
-            {/* Right col — Personalized Routine */}
             <div className="h-full">
               <div className="card dark:bg-gray-800 dark:border-gray-700 h-full">
                 <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">{t('profile_routine_title')}</h3>
-
                 {recommendations.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-sm text-gray-400 dark:text-gray-500">
@@ -304,7 +291,6 @@ export default function Profile() {
                         </div>
                       </div>
                     )}
-
                     {night.length > 0 && (
                       <div>
                         <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm mb-3">
@@ -337,18 +323,13 @@ export default function Profile() {
                 )}
               </div>
             </div>
-            {/* End right col */}
-
           </div>
-          {/* Today's Routine Progress */}
           {hasAnalysis && (
             <div className="card dark:bg-gray-800 dark:border-gray-700">
               <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">
                 Today's Routine Progress
               </h3>
               <div className="space-y-5">
-
-              {/* Morning Progress */}
               {morning.length > 0 && (
                 <div>
                   <div className="flex justify-between items-center mb-2">
@@ -371,8 +352,6 @@ export default function Profile() {
                   </div>
                 </div>
               )}
-
-              {/* Night Progress */}
               {night.length > 0 && (
                 <div>
                   <div className="flex justify-between items-center mb-2">
@@ -395,11 +374,9 @@ export default function Profile() {
                   </div>
                 </div>
               )}
-
             </div>
           </div>
         )}
-
         </div>
       </div>
       <Footer />

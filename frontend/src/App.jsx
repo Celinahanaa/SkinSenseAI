@@ -4,7 +4,6 @@ import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-
 import Landing from './pages/LandingPage';
 import Home from './pages/Home';
 import Login from './pages/Login';

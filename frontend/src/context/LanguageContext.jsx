@@ -182,8 +182,6 @@ export const translations = {
     profile_ai_insights: 'AI Insights',
     profile_hydration_goal: 'Hydration Goal',
     profile_no_insight: 'Run a scan to get AI recommendations.',
-    logout_title: 'Sign Out?',
-    logout_desc: 'You will be signed out of this session.',
 
     // Edit Profile
     edit_title: 'Edit Profile',
@@ -252,6 +250,11 @@ export const translations = {
     char_acne_2: 'Clogged pores',
     char_acne_3: 'Needs special care',
 
+    // logout
+    logout_title: 'Sign Out?',
+    logout_desc: 'You will be signed out of this session.',
+
+    // forgot
     forgot_title: 'Forgot Password?',
     forgot_desc: 'Enter your account email to continue.',
     forgot_next: 'Next',
@@ -267,20 +270,6 @@ export const translations = {
   },
 
   id: {
-// ID
-forgot_title: 'Lupa Password?',
-forgot_desc: 'Masukkan email akunmu untuk melanjutkan.',
-forgot_next: 'Lanjut',
-forgot_back: 'Kembali',
-forgot_new_title: 'Buat Password Baru',
-forgot_new_desc: 'Masukkan password baru untuk akunmu.',
-forgot_new_pass: 'Password baru',
-forgot_confirm_pass: 'Konfirmasi password',
-forgot_save: 'Simpan',
-forgot_ok: 'Login Sekarang',
-forgot_success_title: 'Password Berhasil Diubah!',
-forgot_success_desc: 'Silakan login dengan password barumu.',
-
     // Navbar
     nav_home: 'Beranda',
     nav_analysis: 'Analisis',
@@ -460,8 +449,6 @@ forgot_success_desc: 'Silakan login dengan password barumu.',
     profile_ai_insights: 'Wawasan AI',
     profile_hydration_goal: 'Target Hidrasi',
     profile_no_insight: 'Lakukan scan untuk mendapatkan rekomendasi AI.',
-    logout_title: 'Keluar dari Akun?',
-logout_desc: 'Kamu akan keluar dari sesi ini.',
 
     // Edit Profile
     edit_title: 'Edit Profil',
@@ -530,6 +517,24 @@ logout_desc: 'Kamu akan keluar dari sesi ini.',
     char_acne_1: 'Rentan berjerawat',
     char_acne_2: 'Pori-pori tersumbat',
     char_acne_3: 'Butuh perawatan khusus',
+
+    // logout
+    logout_title: 'Keluar dari Akun?',
+    logout_desc: 'Kamu akan keluar dari sesi ini.',
+
+    // forgot
+    forgot_title: 'Lupa Password?',
+    forgot_desc: 'Masukkan email akunmu untuk melanjutkan.',
+    forgot_next: 'Lanjut',
+    forgot_back: 'Kembali',
+    forgot_new_title: 'Buat Password Baru',
+    forgot_new_desc: 'Masukkan password baru untuk akunmu.',
+    forgot_new_pass: 'Password baru',
+    forgot_confirm_pass: 'Konfirmasi password',
+    forgot_save: 'Simpan',
+    forgot_ok: 'Login Sekarang',
+    forgot_success_title: 'Password Berhasil Diubah!',
+    forgot_success_desc: 'Silakan login dengan password barumu.',
   },
 };
 

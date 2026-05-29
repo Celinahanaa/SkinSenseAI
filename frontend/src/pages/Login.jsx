@@ -47,12 +47,10 @@ export default function Login() {
  const handleGoogleLogin = useGoogleLogin({
   onSuccess: async (tokenResponse) => {
     try {
-      // Ambil data dari Google
       const googleUser = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
       }).then(res => res.json());
 
-      // Kirim ke backend untuk dapat JWT
       const res = await fetch('http://localhost:3000/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,7 +62,6 @@ export default function Login() {
       });
       const data = await res.json();
 
-      // Simpan token & set user
       localStorage.setItem('token', data.token);
       setUser(data.user);
       navigate('/home');
@@ -77,7 +74,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-stretch bg-[#f0f4ff] dark:bg-gray-900">
-      {/* Left panel */}
       <div
         className="hidden lg:flex lg:w-1/2 items-end p-12 relative overflow-hidden"
         style={{ background: 'linear-gradient(160deg, #0a1a5c 0%, #1a3c8f 50%, #0e2770 100%)' }}
@@ -103,7 +99,6 @@ export default function Login() {
             style={{ background: 'radial-gradient(circle, rgba(147,210,255,0.15) 0%, transparent 70%)' }}
           />
         </div>
-
         <div className="relative z-10 max-w-sm">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
             <h2 className="text-3xl font-bold text-white leading-tight mb-3">
@@ -115,8 +110,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-
-      {/* Right panel */}
       <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#f0f4ff] dark:bg-gray-900">
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
           <div className="mb-8">
@@ -124,13 +117,11 @@ export default function Login() {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-4 mb-1">{t('login_welcome')}</h1>
             <p className="text-gray-500 dark:text-gray-400 text-sm">{t('login_subtitle')}</p>
           </div>
-
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
-
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('login_email')}</label>
@@ -146,7 +137,6 @@ export default function Login() {
                 />
               </div>
             </div>
-
             <div>
               <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider m-2">{t('login_password')}</label>        
               <div className="relative">
@@ -175,7 +165,6 @@ export default function Login() {
                 {t('login_forgot')}
               </button>      
             </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -189,13 +178,11 @@ export default function Login() {
               )}
             </button>
           </form>
-
           <div className="flex items-center gap-3 my-6">
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
             <span className="text-xs text-gray-400 dark:text-gray-500">{t('login_or')}</span>
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
           </div>
-
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => handleGoogleLogin()}
@@ -212,7 +199,6 @@ export default function Login() {
               Apple
             </button>
           </div>
-
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
             {t('login_no_account')}{' '}
             <Link to="/register" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">
@@ -224,8 +210,6 @@ export default function Login() {
       {showForgotModal && createPortal(
       <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
-
-          {/* Step 1 — input email */}
           {forgotStep === 1 && (
             <>
               <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -275,8 +259,6 @@ export default function Login() {
               </div>
             </>
           )}
-
-          {/* Step 2 — input password baru */}
           {forgotStep === 2 && (
             <>
               <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -296,7 +278,6 @@ export default function Login() {
                 className="input-field pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
               />
               </div>
-
               <div className="relative mb-4">
               <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
@@ -307,7 +288,6 @@ export default function Login() {
                 className="input-field pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
               />
               </div>
-
               <div className="flex gap-3">
                 <button
                   onClick={() => { setForgotStep(1); setForgotError(''); }}
@@ -343,8 +323,6 @@ export default function Login() {
               </div>
             </>
           )}
-
-          {/* Step 3 — sukses */}
           {forgotStep === 3 && (
             <>
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -368,7 +346,6 @@ export default function Login() {
               </button>
             </>
           )}
-
         </div>
       </div>,
       document.body

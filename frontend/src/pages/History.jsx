@@ -6,14 +6,12 @@ import { useEffect, useState } from 'react';
 import { apiGetHistory, apiDeleteHistory } from '../services/api';
 
 const TAG_COLORS = {
-  // Indonesia
   berminyak:  'bg-amber-100 text-amber-600',
   sensitif:   'bg-pink-100 text-pink-600',
   normal:     'bg-green-100 text-green-600',
   kering:     'bg-blue-100 text-blue-600',
   kombinasi:  'bg-purple-100 text-purple-600',
   berjerawat: 'bg-pink-100 text-pink-600',
-  // English
   oily:        'bg-amber-100 text-amber-600',
   dry:         'bg-blue-100 text-blue-600',
   acne:        'bg-pink-100 text-pink-600',
@@ -26,12 +24,11 @@ const getTagColor = (tag) =>
 export default function History() {
   const { t, lang } = useLang();
   const navigate = useNavigate();
-
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-const [showDeleteModal, setShowDeleteModal] = useState(false);
-const [selectedId, setSelectedId] = useState(null);  
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);  
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -58,10 +55,7 @@ const [selectedId, setSelectedId] = useState(null);
 const handleDelete = async () => {
   try {
     await apiDeleteHistory(selectedId);
-
-    // langsung update list tanpa reload
     setItems(prev => prev.filter(item => item.id !== selectedId));
-
     setShowDeleteModal(false);
     setSelectedId(null);
   } catch (err) {
@@ -69,11 +63,9 @@ const handleDelete = async () => {
   }
 };
 
-  // Data ada di dalam item.result
   const getConfidence = (item) => item.result?.confidence ?? 0;
   const getSkinType   = (item) => item.result?.skin_type ?? '-';
   const getScore      = (item) => Math.round(getConfidence(item) * 100);
-
   const stats = {
     total: items.length,
     avgScore: items.length
@@ -103,12 +95,9 @@ const handleDelete = async () => {
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
           <h1 className="text-4xl font-bold text-blue-800 dark:text-blue-400 mb-8">
             {t('nav_history')}
           </h1>
-
-          {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-10">
             <div className="card dark:bg-gray-800 dark:border-gray-700">
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{t('history_total')}</p>
@@ -129,14 +118,11 @@ const handleDelete = async () => {
               )}
             </div>
           </div>
-
           {error && (
             <div className="bg-red-50 dark:bg-red-900/30 text-red-500 rounded-xl px-4 py-3 text-sm mb-6">
               {t('history_error')}: {error}
             </div>
           )}
-
-          {/* Grouped by month */}
           {items.length > 0 && Object.entries(grouped).map(([bulan, groupItems]) => (
             <div key={bulan} className="mb-8">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 capitalize">{bulan}</h2>
@@ -145,16 +131,12 @@ const handleDelete = async () => {
                   const { date, fullDate } = formatDate(item.created_at);
                   const skinType = getSkinType(item);
                   const score    = getScore(item);
-
                   return (
                     <div key={item.id} className="card dark:bg-gray-800 dark:border-gray-700 flex items-center gap-4">
-                      {/* Date badge */}
                       <div className="w-16 flex-shrink-0 text-center">
                         <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{date.split(' ')[0]}</p>
                         <p className="text-2xl font-bold text-gray-800 dark:text-white">{date.split(' ')[1]}</p>
                       </div>
-
-                      {/* Content */}
                       <div className="flex-1">
                         <p className="font-bold text-gray-800 dark:text-white mb-0.5">
                           {t('history_score')}: {score}%
@@ -166,8 +148,6 @@ const handleDelete = async () => {
                           </span>
                         </div>
                       </div>
-
-                      {/* Actions */}
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <button
                           onClick={() => navigate(`/history/${item.id}`)}
@@ -191,41 +171,39 @@ const handleDelete = async () => {
               </div>
             </div>
           ))}
-
           {!loading && items.length === 0 && (
             <div className="text-center py-20">
               <p className="text-gray-500 dark:text-gray-400 font-medium">{t('history_empty')}</p>
             </div>
           )}
-
         </div>
       </div>
       <Footer />
       {showDeleteModal && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
-      <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-        <Trash2 size={28} className="text-red-600 dark:text-red-400" />
-      </div>
-      <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('result_trashtext')}</p>
-      <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('result_trashtext2')}</p>
-      <div className="flex gap-3">
-        <button
-          onClick={() => setShowDeleteModal(false)}
-          className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          {t('edit_cancel')}
-        </button>
-        <button
-          onClick={handleDelete}
-          className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
-        >
-          {t('result_trash')}
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
+            <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Trash2 size={28} className="text-red-600 dark:text-red-400" />
+            </div>
+            <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('result_trashtext')}</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('result_trashtext2')}</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                {t('edit_cancel')}
+              </button>
+              <button
+                onClick={handleDelete}
+                className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+              >
+                {t('result_trash')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

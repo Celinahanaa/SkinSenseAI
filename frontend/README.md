@@ -1,7 +1,3 @@
-# AI SERVICE ON
-venv\Scripts\activate
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

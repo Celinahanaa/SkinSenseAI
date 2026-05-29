@@ -38,8 +38,6 @@ export default function Navbar() {
             <img src="/images/logo.png" alt="SkinSense AI" className="h-8 w-auto" />
             <span className="font-bold text-blue-900 dark:text-white text-lg">SkinSense AI</span>
           </Link>
-
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
@@ -55,10 +53,7 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
-
-          {/* Right side */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language toggle */}
             <button
               onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
               className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-xs font-bold text-gray-600 dark:text-gray-300"
@@ -66,15 +61,12 @@ export default function Navbar() {
             >
               {lang === 'id' ? 'EN' : 'ID'}
             </button>
-
-            {/* Dark mode toggle */}
             <button
               onClick={() => setDark(!dark)}
               className="w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
             >
               {dark ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} className="text-gray-500" />}
             </button>
-
             {user ? (
               <div className="flex items-center gap-3">
                 <button
@@ -102,15 +94,11 @@ export default function Navbar() {
               </>
             )}
           </div>
-
-          {/* Mobile hamburger */}
           <button className="md:hidden dark:text-white" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
-
-      {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 px-4 py-4 space-y-3 animate-fade-in">
           {navLinks.map((link) => (
@@ -157,31 +145,31 @@ export default function Navbar() {
         </div>
       )}
       {showLogoutModal && createPortal(
-  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4">
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
-      <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-        <LogOut size={22} className="text-red-500 dark:text-red-400" />
-      </div>
-      <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('logout_title')}</p>
-      <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('logout_desc')}</p>
-      <div className="flex gap-3">
-        <button
-          onClick={() => setShowLogoutModal(false)}
-          className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          {t('edit_cancel')}
-        </button>
-        <button
-          onClick={handleLogout}
-          className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
-        >
-          {t('nav_signout')}
-        </button>
-      </div>
-    </div>
-  </div>,
-  document.body
-)}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-sm text-center">
+            <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <LogOut size={22} className="text-red-500 dark:text-red-400" />
+            </div>
+            <p className="font-semibold text-gray-900 dark:text-white mb-2">{t('logout_title')}</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">{t('logout_desc')}</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                {t('edit_cancel')}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
+              >
+                {t('nav_signout')}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </nav>
   );
 }

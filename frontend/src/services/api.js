@@ -5,22 +5,17 @@ const AI_URL = 'http://localhost:8000';
 
 const getToken = () => localStorage.getItem('token');
 
-// instance dengan base config
 const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// auto attach token ke setiap request
 api.interceptors.request.use((config) => {
   const token = getToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// ─────────────────────────────────────────
 // AUTH
-// ─────────────────────────────────────────
-
 export const apiRegister = async (name, email, password) => {
   const { data } = await api.post('/auth/register', { name, email, password });
   return data;
@@ -41,10 +36,7 @@ export const apiResetPassword = async (email, newPassword) => {
   return data;
 };
 
-// ─────────────────────────────────────────
 // PROFILE
-// ─────────────────────────────────────────
-
 export const apiGetProfile = async () => {
   const { data } = await api.get('/profile');
   return data;
@@ -57,10 +49,7 @@ export const apiUpdateProfile = async (formData) => {
   return data;
 };
 
-// ─────────────────────────────────────────
 // HISTORY
-// ─────────────────────────────────────────
-
 export const apiGetHistory = async () => {
   const { data } = await api.get('/history');
   return data;
@@ -84,10 +73,7 @@ export const apiSaveHistory = async ({ skin_type, confidence, recommendations, i
   return data;
 };
 
-// ─────────────────────────────────────────
 // ANALYZE — FastAPI Python
-// ─────────────────────────────────────────
-
 export const apiAnalyze = async (imageFile) => {
   const formData = new FormData();
   formData.append('file', imageFile);

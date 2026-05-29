@@ -18,8 +18,6 @@ export default function Footer() {
     <footer className="bg-gray-900 text-white mt-auto text-center md:text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-
-          {/* Brand */}
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-2 mb-3">
               <img src="/images/logo2.png" alt="SkinSense AI" className="h-8 w-auto" />
@@ -29,8 +27,6 @@ export default function Footer() {
               {t('footer_desc')}
             </p>
           </div>
-
-          {/* Menu */}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest border-b-2 border-blue-600 pb-2 w-fit">
               {t('footer_menu')}
@@ -45,8 +41,6 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-
-          {/* Contact */}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest border-b-2 border-blue-600 pb-2 w-fit">
               {t('footer_contact')}
@@ -66,10 +60,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-
-</div>
-
-        {/* Bottom bar */}
+        </div>
         <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-gray-500 text-xs">{t('footer_copy')}</p>
           <div className="flex gap-5 text-xs text-white">

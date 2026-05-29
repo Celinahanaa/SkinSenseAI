@@ -96,7 +96,6 @@ export default function EditProfile() {
       await apiUpdateProfile(formData);
       const updatedUser = await apiGetProfile();
       setUser(updatedUser);
-
       setSaved(true);
       await new Promise(r => setTimeout(r, 1000));
       navigate('/profile');
@@ -120,8 +119,6 @@ export default function EditProfile() {
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-7 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-
-          {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <button
               onClick={() => navigate('/profile')}
@@ -134,8 +131,6 @@ export default function EditProfile() {
               <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">{t('edit_subtitle')}</p>
             </div>
           </div>
-
-          {/* Avatar */}
           <div className="flex flex-col items-center mb-8">
             <div className="relative">
               <div className="w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center overflow-hidden border-4 border-white dark:border-gray-800 shadow-md">
@@ -155,11 +150,8 @@ export default function EditProfile() {
             </div>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">{t('edit_avatar_hint')}</p>
           </div>
-
-          {/* Personal Info Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-5">
             <h2 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-5">{t('edit_personal_info')}</h2>
-
             <div className="space-y-4">
               <div>
                 <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_name')}</label>
@@ -168,7 +160,6 @@ export default function EditProfile() {
                   <input type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className={inputClass + ' pl-10'} placeholder={t('edit_name_placeholder')} />
                 </div>
               </div>
-
               <div>
                 <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_email')}</label>
                 <div className="relative">
@@ -176,7 +167,6 @@ export default function EditProfile() {
                   <input type="email" value={form.email} disabled className={inputClass + ' pl-10 opacity-60 cursor-not-allowed'} placeholder={t('edit_email_placeholder')} />
                 </div>
               </div>
-
               <div>
                 <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_phone')}</label>
                 <div className="relative">
@@ -184,7 +174,6 @@ export default function EditProfile() {
                   <input type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} className={inputClass + ' pl-10'} placeholder="+62 ..." />
                 </div>
               </div>
-
               <div>
                 <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 block">{t('edit_birthdate')}</label>
                 <div className="relative">
@@ -194,8 +183,6 @@ export default function EditProfile() {
               </div>
             </div>
           </div>
-
-          {/* Action Buttons */}
           <div className="flex gap-3">
             <button
               onClick={() => navigate('/profile')}
@@ -220,7 +207,6 @@ export default function EditProfile() {
               )}
             </button>
           </div>
-
         </div>
       </div>
       <Footer />

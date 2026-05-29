@@ -89,7 +89,6 @@ export default function Register() {
           <h2 className="text-4xl font-bold text-white leading-snug mb-6">
             {t('register_text1')}<br />{t('register_text2')}<br />{t('register_text3')}
           </h2>
-
           <div className="space-y-5">
             {features.map((f, i) => (
               <div key={i} className="flex gap-4 items-start">
@@ -104,23 +103,18 @@ export default function Register() {
             ))}
           </div>
         </div>
-
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-5 bg-white -translate-y-32 translate-x-32" />
         <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-5 bg-white translate-y-24 -translate-x-24" />
       </div>
-
-      {/* Right form */}
       <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#f0f4ff] dark:bg-gray-900">
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-card p-10 w-full max-w-md animate-fade-in-up">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{t('register_title')}</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">{t('register_subtitle')}</p>
-
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
-
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_name')}</label>
@@ -130,7 +124,6 @@ export default function Register() {
                   className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
-
             <div>
               <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_email')}</label>
               <div className="relative">
@@ -139,7 +132,6 @@ export default function Register() {
                   className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
-
             <div>
               <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_password')}</label>
               <div className="relative">
@@ -151,7 +143,6 @@ export default function Register() {
                 </button>
               </div>
             </div>
-
             <div>
               <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_confirm')}</label>
               <div className="relative">
@@ -160,7 +151,6 @@ export default function Register() {
                   className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
-
             <label className="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" name="agree" checked={form.agree} onChange={handleChange} className="w-4 h-4 mt-0.5 accent-blue-800" />
               <span className="text-sm text-gray-600 dark:text-gray-300">
