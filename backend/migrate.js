@@ -27,15 +27,6 @@ const createTables = async () => {
     console.log('✓ Table skin_profiles created');
 
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS skin_concerns (
-        id       SERIAL PRIMARY KEY,
-        user_id  INT REFERENCES users(id) ON DELETE CASCADE,
-        concern  VARCHAR(100)
-      );
-    `);
-    console.log('✓ Table skin_concerns created');
-
-    await pool.query(`
       CREATE TABLE IF NOT EXISTS scan_history (
         id          SERIAL PRIMARY KEY,
         user_id     INT REFERENCES users(id) ON DELETE CASCADE,

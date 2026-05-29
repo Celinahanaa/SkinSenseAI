@@ -18,7 +18,6 @@ export default function EditProfile() {
     phone: '',
     birthdate: '',
     skinType: 'normal',
-    skinConcerns: [],
   });
 
   useEffect(() => {
@@ -29,7 +28,6 @@ export default function EditProfile() {
         phone: user.phone || '',
         birthdate: user.birthdate || '',
         skinType: user.skin_type || 'normal',
-        skinConcerns: user.skin_concerns || [],
       });
     }
   }, [user]);
@@ -53,30 +51,10 @@ export default function EditProfile() {
     { value: 'sensitif',  labelKey: 'edit_skin_sensitive' },
   ];
 
-  const skinConcernOptions = [
-    { value: 'jerawat',          labelKey: 'edit_concern_acne' },
-    { value: 'pori-pori',        labelKey: 'edit_concern_pores' },
-    { value: 'flek hitam',       labelKey: 'edit_concern_darkspot' },
-    { value: 'kerutan',          labelKey: 'edit_concern_wrinkle' },
-    { value: 'kulit kusam',      labelKey: 'edit_concern_dull' },
-    { value: 'lingkaran hitam',  labelKey: 'edit_concern_darkcircle' },
-    { value: 'minyak berlebih',  labelKey: 'edit_concern_excess_oil' },
-    { value: 'kulit kering',     labelKey: 'edit_concern_dry_skin' },
-  ];
-
   const handleAvatarChange = (e) => {
     const f = e.target.files?.[0];
     if (!f) return;
     setAvatarPreview(URL.createObjectURL(f));
-  };
-
-  const toggleConcern = (value) => {
-    setForm(prev => ({
-      ...prev,
-      skinConcerns: prev.skinConcerns.includes(value)
-        ? prev.skinConcerns.filter(c => c !== value)
-        : [...prev.skinConcerns, value],
-    }));
   };
 
   const handleSave = async () => {
@@ -87,7 +65,6 @@ export default function EditProfile() {
       formData.append('phone', form.phone);
       formData.append('birthdate', form.birthdate);
       formData.append('skin_type', form.skinType);
-      form.skinConcerns.forEach(c => formData.append('skin_concerns[]', c));
 
       if (fileRef.current?.files[0]) {
         formData.append('avatar', fileRef.current.files[0]);

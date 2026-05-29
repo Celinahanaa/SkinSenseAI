@@ -17,7 +17,7 @@ const team = [
   { name: 'Celina Hana', role: 'Full Stack Developer', photo: '/images/celin.jpeg' },
   { name: 'Vergi Mutia', role: 'Full Stack Developer', photo: '/images/vergi.jpeg' },
   { name: 'Elok Faiqoh', role: 'AI Engineer', photo: '/images/elok.jpeg' },
-  { name: 'Maulana Ardhiansyah', role: 'AI Engineer', photo: '/images/maulana.jpeg' },
+  { name: 'Maulana Ardhiansyah', role: 'AI Engineer', photo: '/images/ardhi.jpeg' },
 ];
 
 export default function LandingPage() {

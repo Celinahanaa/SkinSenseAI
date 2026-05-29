@@ -186,14 +186,14 @@ export default function Login() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => handleGoogleLogin()}
-              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[43px] rounded-xl text-sm flex items-center justify-center gap-2"
+              className="btn-outline dark:border-gray-600 dark:bg-gray-700/50 dark:text-gray-300 dark:hover:border-blue-700 w-full h-[43px] rounded-xl text-sm flex items-center justify-center gap-2"
             >
               <FcGoogle size={18} />
               Google
             </button>
             <button
               onClick={() => handleGoogleLogin()}
-              className="btn-outline dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 w-full h-[43px] rounded-xl text-sm flex items-center justify-center gap-2"
+              className="btn-outline dark:border-gray-600 dark:bg-gray-700/50 dark:text-gray-300 dark:hover:border-blue-700 w-full h-[43px] rounded-xl text-sm flex items-center justify-center gap-2"
             >
               <FaApple size={18} />
               Apple
