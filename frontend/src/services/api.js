@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api';
-const AI_URL = 'http://localhost:8000';
+const BASE_URL = import.meta.env.VITE_API_URL + '/api';
+const AI_URL = import.meta.env.VITE_API_URL;
 
 const getToken = () => localStorage.getItem('token');
 
@@ -78,7 +78,7 @@ export const apiAnalyze = async (imageFile) => {
   const formData = new FormData();
   formData.append('file', imageFile);
 
-  const { data } = await axios.post(`${AI_URL}/analyze`, formData, {
+  const { data } = await api.post('/ai/analyze', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return data;
