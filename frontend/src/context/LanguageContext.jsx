@@ -182,6 +182,7 @@ export const translations = {
     profile_ai_insights: 'AI Insights',
     profile_hydration_goal: 'Hydration Goal',
     profile_no_insight: 'Run a scan to get AI recommendations.',
+    profile_personalized: 'Please analyze your skin first to get personalized skincare routine',
 
     // Edit Profile
     edit_title: 'Edit Profile',
@@ -449,6 +450,7 @@ export const translations = {
     profile_ai_insights: 'Wawasan AI',
     profile_hydration_goal: 'Target Hidrasi',
     profile_no_insight: 'Lakukan scan untuk mendapatkan rekomendasi AI.',
+    profile_personalized: 'Analisis kulitmu dulu untuk mendapatkan rekomendasi skincare yang sesuai untukmu',
 
     // Edit Profile
     edit_title: 'Edit Profil',
