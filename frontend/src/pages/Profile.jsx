@@ -252,7 +252,7 @@ export default function Profile() {
             </div>
             <div className="h-full">
               <div className="card dark:bg-gray-800 dark:border-gray-700 h-full">
-                <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">{t('profile_routine_title')}</h3>
+                <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-5">{t('profile_pernosalized')}</h3>
                 {recommendations.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-sm text-gray-400 dark:text-gray-500">
