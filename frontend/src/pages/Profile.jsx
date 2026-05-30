@@ -177,9 +177,6 @@ export default function Profile() {
                 </div>
                 <h2 className="font-bold text-gray-900 dark:text-white text-lg">{user.name}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
-                {user.memberSince && (
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('profile_member_since')} {user.memberSince}</p>
-                )}
                 <div className="flex gap-2 mt-5">
                   <button
                     onClick={() => navigate('/editprofile')}
