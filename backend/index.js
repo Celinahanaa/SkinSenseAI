@@ -13,5 +13,7 @@ app.use('/api', require('./routes/index'));
 
 app.get('/', (req, res) => res.json({ message: 'SkinSense AI Backend running' }));
 
+app.use('/api/ai', require('./routes/ai'));
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
