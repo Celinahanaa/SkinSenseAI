@@ -59,8 +59,8 @@ export default function LandingPage() {
         }
       `}</style>
       <div className="flex-1 pt-6">
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
             <img src="/images/logo.png" alt="SkinSense AI" className="h-8 w-auto" />
             <span className="font-bold text-gray-900 dark:text-white text-sm md:text-base">SkinSense AI</span>
           </div>
