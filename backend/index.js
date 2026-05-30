@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const app = express();
+
 app.use(cors({
   origin: ['https://skin-sense-ai-mu.vercel.app', 'http://localhost:5173'],
   credentials: true
 }));
-app.use(cors());
+
 app.use(express.json());
 
 const path = require('path');
