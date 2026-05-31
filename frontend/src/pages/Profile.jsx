@@ -6,6 +6,8 @@ import { apiGetHistory } from '../services/api';
 import Footer from '../components/Footer';
 import { useLang } from '../context/LanguageContext';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const METRIC_COLORS = [
   'bg-gray-900 dark:bg-gray-300',
   'bg-gray-700 dark:bg-gray-400',
@@ -168,7 +170,7 @@ export default function Profile() {
               <div className="card dark:bg-gray-800 dark:border-gray-700 text-center">
                 <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-3">
                   {user.avatar_url ? (
-                    <img src={`http://localhost:3000${user.avatar_url}`} alt="avatar" className="w-full h-full object-cover" />
+                    <img src={`${API_BASE}${user.avatar_url}`} alt="avatar" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
                       <User size={32} className="text-blue-600 dark:text-blue-400" />
