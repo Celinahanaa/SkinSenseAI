@@ -51,8 +51,8 @@ export const translations = {
     analysis_text2: 'Skin Type',
     analysis_text3: 'Active',
     analysis_subtext1: '85%',
-    analysis_subtext2: 'Combination',
-    analysis_subtext3: 'Niacinamide, Hyaluronic',
+    analysis_subtext2: 'Oily',
+    analysis_subtext3: 'Niacinamide, Salicylic Acid',
 
     // Features
     feat1_title: 'Skin Type Detection',
@@ -122,7 +122,7 @@ export const translations = {
     register_agree_error: 'You must agree to the terms & conditions first.',
 
     // Home
-    home_badge: '85% ACCURACY RATE',
+    home_badge: '95% AI ACCURACY RATE',
     home_badge2: 'Accuracy: 90%',
     home_title1: 'Precision',
     home_title2: 'Dermatology,',
@@ -323,8 +323,8 @@ export const translations = {
     analysis_text2: 'Tipe Skin',
     analysis_text3: 'Bahan Aktif',
     analysis_subtext1: '85%',
-    analysis_subtext2: 'Kombinasi',
-    analysis_subtext3: 'Niacinamade, Hyaluronic',
+    analysis_subtext2: 'Berminyak',
+    analysis_subtext3: 'Niacinamide, Salicylic Acid',
 
     // Features
     feat1_title: 'Deteksi Jenis Kulit',
@@ -390,7 +390,7 @@ export const translations = {
     register_text3: 'Pemahaman yang Tepat.',
 
     // Home
-    home_badge: 'TINGKAT AKURASI 85%',
+    home_badge: 'TINGKAT AKURASI AI 95%',
     home_badge2: 'Akurasi: 90%',
     home_title1: 'Dermatologi',
     home_title2: 'Presisi,',
