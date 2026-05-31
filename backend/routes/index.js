@@ -41,10 +41,6 @@ router.get('/history', auth, getHistory);
 router.get('/history/:id', auth, getHistoryDetail);
 router.delete('/history/:id', auth, deleteHistory);
 
-router.post('/analyze', auth, (req, res) => {
-  res.json({ message: 'Endpoint AI belum tersedia, menunggu tim data science' });
-});
-
 router.post('/history', auth, async (req, res) => {
   try {
     const { result, image_url } = req.body;
