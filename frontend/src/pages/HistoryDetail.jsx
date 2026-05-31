@@ -86,6 +86,9 @@ useEffect(() => {
   const score           = Math.round(confidence * 100);
   const imageUrl        = item.image_url ?? null;
 
+  console.log('probabilities:', probabilities);
+  console.log('item.result:', item.result);
+
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
     const locale = lang === 'id' ? 'id-ID' : 'en-US';
