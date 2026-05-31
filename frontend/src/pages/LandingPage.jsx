@@ -85,7 +85,7 @@ export default function LandingPage() {
         </nav>
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:py-10">
           <div className="flex flex-col lg:flex-row md:items-center lg:gap-12">
-            <div className="max-w-2xl lg:w-1/2 text-center lg:text-left pt-10">
+            <div className="max-w-2xl lg:w-1/2 text-center lg:text-left mt-6">
               <span className="inline-flex items-center gap-2 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-wider">
                 <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
                 {t('landing_badge')}
