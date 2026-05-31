@@ -3,7 +3,6 @@ const router = express.Router();
 const multer = require('multer');
 const FormData = require('form-data');
 const fetch = require('node-fetch');
-
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/analyze', upload.single('file'), async (req, res) => {
@@ -25,8 +24,19 @@ router.post('/analyze', upload.single('file'), async (req, res) => {
     });
 
     console.log('FastAPI response status:', response.status);
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error(`FastAPI error ${response.status}:`, text.slice(0, 300));
+      return res.status(503).json({ 
+        error: 'AI service sedang tidak tersedia. Coba beberapa saat lagi.',
+        status: response.status
+      });
+    }
+
     const result = await response.json();
     res.json(result);
+
   } catch (err) {
     console.error('AI route error:', err);
     res.status(500).json({ error: err.message });
