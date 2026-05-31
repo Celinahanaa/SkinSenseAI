@@ -99,6 +99,7 @@ export default function Analysis() {
       await apiSaveHistory({
         skin_type: result.skin_type,
         confidence: result.confidence,
+        probabilities: result.probabilities,
         recommendations: result.recommendations,
         image_url: cloudinaryUrl,
       });
