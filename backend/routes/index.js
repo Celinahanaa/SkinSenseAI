@@ -7,9 +7,11 @@ const { getHistory, getHistoryDetail, deleteHistory } = require('../controllers/
 const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const aiRouter = require('./ai');
 
 router.post('/auth/register', register);
 router.post('/auth/login', login);
+router.use('/ai', aiRouter);
 
 router.post('/auth/google', async (req, res) => {
   const { email, name, avatar_url } = req.body;
