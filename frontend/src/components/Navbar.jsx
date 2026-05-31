@@ -134,7 +134,7 @@ export default function Navbar() {
             </button>
           </div>
           {user ? (
-            <button onClick={handleLogout} className="text-sm text-red-500 font-medium py-2">
+            <button onClick={handleLogoutClick} className="text-sm text-red-500 font-medium py-2">
               {t('nav_signout')}
             </button>
           ) : (
@@ -165,7 +165,7 @@ export default function Navbar() {
                 {t('edit_cancel')}
               </button>
               <button
-                onClick={handleLogout}
+                onClick={handleLogoutConfirm}
                 className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
               >
                 {t('nav_signout')}
