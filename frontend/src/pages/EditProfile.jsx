@@ -36,7 +36,7 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (user?.avatar_url) {
-      setAvatarPreview(`{user.avatar_url}`);
+      setAvatarPreview(user.avatar_url);
     }
   }, [user]);
 
