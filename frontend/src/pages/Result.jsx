@@ -13,15 +13,12 @@ const categoryEmoji = {
   antioxidant: '✨',
   antiinflammatory: '🌿',
   exfoliant: '🔬',
-
   eksfoliasilembut: '🔬',
   brightening: '☀️',
   sunscreen: '🛡️',
   antiacne: '🧪',
-
   barrierrepair: '🛡️',
   skinbarrier: '🛡️',
-
   soothing: '🌱',
   hydration: '💦',
   moisturizing: '💧',
@@ -61,6 +58,11 @@ export default function Result() {
   const probabilities   = state.probabilities   || {};
   const recommendations = state.recommendations || [];
 
+  console.log('=== DEBUG ===');
+  console.log('skinType:', skinType);
+  console.log('probabilities:', probabilities);
+  console.log('keys:', Object.keys(probabilities));
+
   useEffect(() => {
     if (skinType && skinType !== 'Unknown') {
       localStorage.setItem('lastScanResult', JSON.stringify({
@@ -80,11 +82,10 @@ export default function Result() {
       'Oily':        t('result_desc_oily'),
       'Dry':         t('result_desc_dry'),
       'Normal':      t('result_desc_normal'),
-      'Combination': t('result_desc_combination'),
       'Berminyak':   t('result_desc_oily'),
       'Kering':      t('result_desc_dry'),
-      'Kombinasi': t('result_desc_combination'),
-      'Acne': t('result_desc_acne'), 'Berjerawat': t('result_desc_acne'),
+      'Acne': t('result_desc_acne'), 
+      'Berjerawat': t('result_desc_acne'),
     };
     return map[type] || `${t('result_detected')}: ${type}`;
   };
@@ -93,168 +94,217 @@ const handleDownloadPDF = async () => {
   try {
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const W = 210, H = 297;
-    const m = 14;
+    const margin = 14;
+    const contentW = W - margin * 2;
 
-    const rgb = (hex) => [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
-    const F = (hex) => { const [r,g,b]=rgb(hex); pdf.setFillColor(r,g,b); };
-    const S = (hex) => { const [r,g,b]=rgb(hex); pdf.setDrawColor(r,g,b); };
-    const T = (hex) => { const [r,g,b]=rgb(hex); pdf.setTextColor(r,g,b); };
-    const font = (s,n) => { pdf.setFont('helvetica',s); pdf.setFontSize(n); };
+    const rgb = (hex) => [
+      parseInt(hex.slice(1, 3), 16),
+      parseInt(hex.slice(3, 5), 16),
+      parseInt(hex.slice(5, 7), 16),
+    ];
+    const F = (hex) => { const [r,g,b] = rgb(hex); pdf.setFillColor(r,g,b); };
+    const S = (hex) => { const [r,g,b] = rgb(hex); pdf.setDrawColor(r,g,b); };
+    const T = (hex) => { const [r,g,b] = rgb(hex); pdf.setTextColor(r,g,b); };
+    const font = (style, size) => { pdf.setFont('helvetica', style); pdf.setFontSize(size); };
+    const dateStr = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    // ── FULL PAGE BG ──────────────────────────────────────────────
-    F('#f0f4ff'); pdf.rect(0,0,W,H,'F');
+    // BACKGROUND PDF
+    F('#ffffff'); pdf.rect(0, 0, W, H, 'F');
 
-    // left sidebar
-    F('#1a3c8f'); pdf.rect(0,0,58,H,'F');
+    // HEADER PDF
+    T('#1a3c8f'); font('bold', 15);
+    pdf.text('Skinsense-AI Report', margin, 15);
+    T('#9ca3af'); font('normal', 6);
+    pdf.text('PERSONALIZED SKIN REPORT', margin, 20);
 
-    // ── SIDEBAR CONTENT ───────────────────────────────────────────
+    T('#1a3c8f'); font('bold', 8);
+    pdf.text('SkinSense-AI Analysis', W - margin, 12, { align: 'right' });
+    T('#6b7280'); font('normal', 7);
+    pdf.text(`Date: ${dateStr}`, W - margin, 17, { align: 'right' });
 
-    // App name
-    T('#ffffff'); font('bold', 14);
-    pdf.text('Skin', 14, 22);
-    T('#93c5fd'); font('bold', 14);
-    pdf.text('Sense', 30, 22);
+    const badgeText = 'AI Verified Analysis';
+    font('bold', 5.5);
+    const badgeTextW = pdf.getTextWidth(badgeText);
+    const badgeW = badgeTextW + 6;
+    const badgeH = 6, badgeX = W - margin - badgeW, badgeY = 20;
+    F('#dcfce7'); S('#86efac'); pdf.setLineWidth(0.3);
+    pdf.roundedRect(badgeX, badgeY, badgeW, badgeH, 2, 2, 'FD');
+    T('#15803d'); font('bold', 5.5);
+    pdf.text(badgeText, badgeX + badgeW / 2, badgeY + 4, { align: 'center' });
 
-    T('#bfdbfe'); font('normal', 6.5);
-    pdf.text('AI SKIN ANALYSIS', 14, 28);
+    F('#e5e7eb'); pdf.rect(margin, 28.5, contentW, 0.3, 'F');
 
-    // divider
-    F('#2563eb'); pdf.rect(14, 31, 30, 0.4, 'F');
+    // Skin Type PDF
+    let y = 33;
+    T('#1a3c8f'); font('bold', 9);
+    pdf.text('Skin Type Analysis', margin, y);
+    y += 4;
 
-    // photo box
-    const photoY = 36, photoH = 52;
-    F('#1e4db7'); pdf.roundedRect(8, photoY, 42, photoH, 3, 3, 'F');
+    const allProbs = Object.entries(probabilities || {}).sort(([,a],[,b]) => b - a);
+    const probCount = allProbs.length;
+    const card1H = Math.max(55, 30 + (probCount * 7) + 10);
+
+    S('#e5e7eb'); pdf.setLineWidth(0.3);
+    F('#f8fafc'); pdf.roundedRect(margin, y, contentW, card1H, 3, 3, 'FD');
+
+    const photoX = margin + 5, photoW = 48, photoH = 58;
+    const photoY = y + (card1H - photoH) / 2; 
     if (imageUrl) {
-      try { pdf.addImage(imageUrl, 'JPEG', 8, photoY, 42, photoH, '', 'FAST'); }
-      catch(_) {}
+      try {
+        pdf.addImage(imageUrl, 'JPEG', photoX, photoY, photoW, photoH, '', 'FAST');
+      } catch (_) {}
     }
 
-    // skin type label below photo
+    const infoX = margin + photoW + 8;
+    const infoW = contentW - photoW - 10;
+    const barW = infoW - 4;
+
     const skinColors = {
-      oily:'#fbbf24', dry:'#60a5fa', normal:'#34d399',
-      combination:'#a78bfa', berminyak:'#fbbf24', kering:'#60a5fa',
-      kombinasi:'#a78bfa'
+      oily: '#f59e0b', dry: '#3b82f6', normal: '#10b981',
+      berminyak: '#f59e0b', kering: '#3b82f6',
+      acne: '#ef4444', berjerawat: '#ef4444',
     };
-    const skinHex = skinColors[skinType.toLowerCase()] || '#93c5fd';
-    T(skinHex); font('bold', 16);
-    pdf.text(skinType.toUpperCase(), 29, photoY + photoH + 10, { align:'center' });
+    const skinHex = skinColors[skinType.toLowerCase()] || '#3b82f6';
 
-    T('#bfdbfe'); font('normal', 6.5);
-    pdf.text('DETECTED SKIN TYPE', 29, photoY + photoH + 16, { align:'center' });
+    T('#6b7280'); font('normal', 6);
+    pdf.text('DETECTED SKIN TYPE', infoX, y + 6);
+    T(skinHex); font('bold', 13);
+    pdf.text(skinType.toUpperCase(), infoX, y + 13);
 
-    // confidence circle (manual)
-    const cx = 29, cy = photoY + photoH + 34, cr = 12;
-    F('#1e4db7'); pdf.circle(cx, cy, cr, 'F');
-    S(skinHex); pdf.setLineWidth(1.5);
-    pdf.circle(cx, cy, cr, 'S');
-    T('#ffffff'); font('bold', 11);
-    pdf.text(`${score}%`, cx, cy + 3.5, { align:'center' });
-    T('#bfdbfe'); font('normal', 6);
-    pdf.text('CONFIDENCE', cx, cy + cr + 5, { align:'center' });
+    const confPct = Math.min(Math.max(Number(score) || 0, 0), 100);
+    
+    T('#374151'); font('bold', 6.5);
+    pdf.text('Confidence', infoX, y + 20);
+    pdf.text(`${confPct}%`, infoX + barW, y + 20, { align: 'right' });
+    F('#e2e8f0'); pdf.roundedRect(infoX, y + 22, barW, 3, 1, 1, 'F');
+    if (confPct > 0) {
+      F(skinHex);
+      pdf.roundedRect(infoX, y + 22, barW * (confPct / 100), 3, 1, 1, 'F');
+    }
 
-    // sidebar: prob list
-    let sy = photoY + photoH + 60;
-    T('#93c5fd'); font('bold', 7);
-    pdf.text('PROBABILITY', 14, sy);
-    sy += 5;
+    // MODEL PROBABILITY PDF
+    let barY = y + 30;
+    T('#9ca3af'); font('bold', 5.5);
+    pdf.text('MODEL PROBABILITY', infoX, barY);
+    barY += 5;
 
-    sortedProbs.forEach(([type, prob], i) => {
-      const pct = Math.round(prob * 100);
-      const bw = 36;
-      T(i===0 ? '#ffffff' : '#93c5fd'); font(i===0?'bold':'normal', 7);
-      pdf.text(type, 14, sy);
-      pdf.text(`${pct}%`, 52, sy, { align:'right' });
+    allProbs.forEach(([type, prob]) => {
+    const pct = Math.min(Math.round((prob || 0) * 100), 100);
+    T('#374151'); font('normal', 6.5);
+    pdf.text(type, infoX, barY);
+    T('#6b7280'); font('normal', 6.5);
+    pdf.text(`${pct}%`, infoX + barW, barY, { align: 'right' });
 
-      F('#1e4db7'); pdf.roundedRect(14, sy+1.5, bw, 3, 1,1,'F');
-      const barHex = i===0 ? skinHex : '#3b82f6';
-      F(barHex);
-      if(pct>0) pdf.roundedRect(14, sy+1.5, bw*(pct/100), 3, 1,1,'F');
+    F('#e2e8f0'); pdf.roundedRect(infoX, barY + 1.5, barW, 2.5, 1, 1, 'F');
+    const barColors = {
+      oily: '#3b82f6', berminyak: '#3b82f6',
+      acne: '#3b82f6', berjerawat: '#3b82f6',
+      normal: '#3b82f6',
+      dry: '#3b82f6', kering: '#3b82f6',
+    };
 
-      sy += 10;
-    });
+    const fillW = pct > 0 ? barW * (pct / 100) : 1.5;
+    F(barColors[type.toLowerCase()] || '#93c5fd');
+    pdf.roundedRect(infoX, barY + 1.5, fillW, 2.5, 1, 1, 'F');
+    barY += 7;
+  });
 
-    // sidebar footer
-    T('#3b5fd4'); font('normal', 6);
-    pdf.text(new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}), 29, H-8, { align:'center' });
+    y += card1H + 5;
 
-    // ── MAIN CONTENT (right panel) ────────────────────────────────
-    const rx = 66, rw = W - rx - m;
+    // DIVIDER
+    F('#e5e7eb'); pdf.rect(margin, y, contentW, 0.3, 'F');
+    y += 5;
 
-    // ── SECTION: Result heading ───────────────────────────────────
-    T('#1a3c8f'); font('bold', 18);
-    pdf.text('Analysis', rx, 20);
-    T(skinHex); font('bold', 18);
-    pdf.text('Report', rx + 34, 20);
-
-    T('#6b7280'); font('normal', 7);
-    pdf.text('Your personalized skin type result & recommendations', rx, 27);
-
-    F('#e5e7eb'); pdf.rect(rx, 30, rw, 0.4, 'F');
-
-    // ── SECTION: Description card ─────────────────────────────────
-    let ry = 35;
-    F('#ffffff'); S('#e5e7eb'); pdf.setLineWidth(0.3);
-    pdf.roundedRect(rx, ry, rw, 36, 3,3,'FD');
-
-    // top accent
-    F(skinHex); pdf.roundedRect(rx, ry, rw, 5, 3,3,'F');
-    pdf.rect(rx, ry+2, rw, 3, 'F');
-
-    T('#1f2937'); font('bold', 8);
-    pdf.text('ABOUT YOUR SKIN TYPE', rx+6, ry+17);
+    // Skin Analysis PDF
+    T('#1a3c8f'); font('bold', 9);
+    pdf.text('Skin Analysis Summary', margin, y);
+    y += 4;
 
     const desc = getSkinDescription(skinType);
-    const descLines = pdf.splitTextToSize(desc, rw - 12);
-    T('#4b5563'); font('normal', 7.5);
-    pdf.text(descLines.slice(0,4), rx+6, ry+23);
+    const descLines = pdf.splitTextToSize(desc, contentW - 6);
+    const card2H = Math.max(24, descLines.length * 4.8 + 12);
 
-    ry += 42;
+    S('#e5e7eb'); pdf.setLineWidth(0.3);
+    F('#ffffff'); pdf.roundedRect(margin, y, contentW, card2H, 3, 3, 'FD');
+    F('#1a3c8f'); pdf.rect(margin, y, 2.5, card2H, 'F');
 
-    // ── SECTION: Recommendations ──────────────────────────────────
+    T('#374151'); font('normal', 7);
+    pdf.text(descLines, margin + 7, y + 8);
+    y += card2H + 5;
+
+    // DIVIDER
+    F('#e5e7eb'); pdf.rect(margin, y, contentW, 0.3, 'F');
+    y += 5;
+
+    // Recommended Active Ingredients PDF
     T('#1a3c8f'); font('bold', 9);
-    pdf.text('Recommended Ingredients', rx, ry);
-    T('#6b7280'); font('normal', 6.5);
-    pdf.text(`Tailored for ${skinType} skin`, rx, ry+5);
-    ry += 10;
+    pdf.text('Recommended Active Ingredients', margin, y);
+    y += 5;
 
-    // grid: 2 columns
-    const cols = 2;
-    const colW = (rw - 4) / cols;
-    const itemH = 14;
-    const maxRecs = Math.min(recommendations.length, 12);
+    const cols = 3;
+    const gap = 3;
+    const colW = (contentW - gap * (cols - 1)) / cols;
+    const itemH = 19;
+    const maxRecs = Math.min((recommendations || []).length, 6);
+
+    const tagColors = [
+      { bg: '#dbeafe', text: '#1e40af', label: 'Active' },
+      { bg: '#d1fae5', text: '#065f46', label: 'Barrier' },
+      { bg: '#fce7f3', text: '#9d174d', label: 'Exfoliant' },
+      { bg: '#ede9fe', text: '#5b21b6', label: 'Soothing' },
+      { bg: '#fef9c3', text: '#854d0e', label: 'Hydration' },
+      { bg: '#dcfce7', text: '#166534', label: 'Protective' },
+    ];
 
     recommendations.slice(0, maxRecs).forEach((rec, i) => {
       const col = i % cols;
       const row = Math.floor(i / cols);
-      const ix = rx + col * (colW + 4);
-      const iy = ry + row * (itemH + 3);
+      const ix = margin + col * (colW + gap);
+      const iy = y + row * (itemH + gap);
+      const tag = tagColors[i % tagColors.length];
 
-      F('#ffffff'); S('#e5e7eb'); pdf.setLineWidth(0.2);
-      pdf.roundedRect(ix, iy, colW, itemH, 2,2,'FD');
+      S('#e5e7eb'); pdf.setLineWidth(0.2);
+      F('#ffffff'); pdf.roundedRect(ix, iy, colW, itemH, 2, 2, 'FD');
 
-      // left accent
-      F(i % 3 === 0 ? '#1a3c8f' : i % 3 === 1 ? skinHex : '#6366f1');
-      pdf.roundedRect(ix, iy, 3, itemH, 1,1,'F');
+      const [br, bg2, bb] = rgb(tag.bg);
+      pdf.setFillColor(br, bg2, bb);
+      const tagBadgeW = 16, tagBadgeH = 4;
+      pdf.roundedRect(ix + 3, iy + 3, tagBadgeW, tagBadgeH, 1, 1, 'F');
+      T(tag.text); font('bold', 5);
+      pdf.text(tag.label, ix + 3 + tagBadgeW / 2, iy + 3 + 2.8, { align: 'center' });
 
-      T('#1f2937'); font('bold', 7.5);
-      const name = rec.Bahan_Standar.length > 22
-        ? rec.Bahan_Standar.slice(0,20)+'…'
-        : rec.Bahan_Standar;
-      pdf.text(name, ix+6, iy+6);
+      const maxChars = Math.floor(colW / 1.9);
+      const name = (rec.Bahan_Standar || '').length > maxChars
+        ? (rec.Bahan_Standar || '').slice(0, maxChars - 2) + '…'
+        : (rec.Bahan_Standar || '');
+      T('#1f2937'); font('bold', 6.5);
+      pdf.text(name, ix + 3, iy + 12);
 
-      T('#6b7280'); font('normal', 6.5);
       const cat = rec.Kategori_Fungsi || '';
-      const catShort = cat.length > 18 ? cat.slice(0,16)+'…' : cat;
-      pdf.text(catShort, ix+6, iy+11);
+      const catTrunc = cat.length > maxChars ? cat.slice(0, maxChars - 2) + '…' : cat;
+      T('#6b7280'); font('normal', 5.5);
+      pdf.text(catTrunc, ix + 3, iy + 16.5);
     });
 
     const gridRows = Math.ceil(maxRecs / cols);
-    ry += gridRows * (itemH + 3) + 6;
+    y += gridRows * (itemH + gap) + 5;
 
-    // ── FOOTER BAR ─────────────────────────────────────────────────
-    F('#1a3c8f'); pdf.rect(58, H-14, W-58, 14, 'F');
-    T('#93c5fd'); font('normal', 6.5);
-    pdf.text('SkinSense · For informational purposes only · AI-generated report', rx, H-5.5);
+    // FOOTER PDF
+    const footerY = H - 20;
+    F('#f8fafc'); pdf.rect(0, footerY, W, 20, 'F');
+    F('#e5e7eb'); pdf.rect(0, footerY, W, 0.3, 'F');
+
+    T('#9ca3af'); font('normal', 5);
+    const disclaimer =
+      'Medical Disclaimer: This report is generated by SkinSense AI for informational purposes only. ' +
+      'It does not constitute a formal medical diagnosis. Please consult a board-certified dermatologist before beginning any new clinical routine.';
+    const discLines = pdf.splitTextToSize(disclaimer, 115);
+    pdf.text(discLines, margin, footerY + 6);
+
+    T('#1a3c8f'); font('bold', 7);
+    pdf.text(`© ${new Date().getFullYear()} SkinSense AI.`, W - margin, footerY + 11, { align: 'right' });
+    T('#9ca3af'); font('normal', 6);
+    pdf.text('By Coding Camp Tim 2026', W - margin, footerY + 16, { align: 'right' });
 
     pdf.save(`skinsense-${skinType.toLowerCase()}-report.pdf`);
   } catch (err) {
@@ -330,38 +380,39 @@ const handleDownloadPDF = async () => {
                       <p className="text-xs text-gray-400 mt-1">{t('result_confidence').toUpperCase()}</p>
                     </div>
                   </div>
-                      <div className="mb-5">
-  <div className="flex flex-wrap gap-2">
-    {(skinType.toLowerCase() === 'oily' || skinType.toLowerCase() === 'berminyak') && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">💧 {t('char_oily_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">✨ {t('char_oily_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">⚖️ {t('char_oily_3')}</span>
-      </>
-    )}
-    {(skinType.toLowerCase() === 'dry' || skinType.toLowerCase() === 'kering') && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🌿 {t('char_dry_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">✨ {t('char_dry_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🛡️ {t('char_dry_3')}</span>
-      </>
-    )}
-    {skinType.toLowerCase() === 'normal' && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">✅ {t('char_normal_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">💧 {t('char_normal_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">🌿 {t('char_normal_3')}</span>
-      </>
-    )}
-    {(skinType.toLowerCase() === 'acne' || skinType.toLowerCase() === 'berjerawat') && (
-      <>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🧪 {t('char_acne_1')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🔬 {t('char_acne_2')}</span>
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🌿 {t('char_acne_3')}</span>
-      </>
-    )}
-  </div>
-</div>
+                  
+                  <div className="mb-5">
+                  <div className="flex flex-wrap gap-2">
+                    {(skinType.toLowerCase() === 'oily' || skinType.toLowerCase() === 'berminyak') && (
+                      <>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">💧 {t('char_oily_1')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">✨ {t('char_oily_2')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">⚖️ {t('char_oily_3')}</span>
+                      </>
+                    )}
+                    {(skinType.toLowerCase() === 'dry' || skinType.toLowerCase() === 'kering') && (
+                      <>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🌿 {t('char_dry_1')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">✨ {t('char_dry_2')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">🛡️ {t('char_dry_3')}</span>
+                      </>
+                    )}
+                    {skinType.toLowerCase() === 'normal' && (
+                      <>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">✅ {t('char_normal_1')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">💧 {t('char_normal_2')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">🌿 {t('char_normal_3')}</span>
+                      </>
+                    )}
+                    {(skinType.toLowerCase() === 'acne' || skinType.toLowerCase() === 'berjerawat') && (
+                      <>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🧪 {t('char_acne_1')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🔬 {t('char_acne_2')}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400">🌿 {t('char_acne_3')}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
 
                   <hr className="border-gray-100 dark:border-gray-700 mb-5" />
 
@@ -384,56 +435,56 @@ const handleDownloadPDF = async () => {
             </div>
 
             {/* Rekomendasi */}
-<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-card p-6">
-  <div className="mb-5">
-    <h3 className="font-bold text-gray-800 dark:text-white text-lg">
-      {t('result_rec_title')}
-    </h3>
-
-    <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
-      {t('result_rec_desc')}{' '}
-      <span className="font-semibold text-blue-600 dark:text-blue-400">
-        {skinType}
-      </span>
-    </p>
-  </div>
-
-  {recommendations.length > 0 ? (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-      {recommendations.map((rec, i) => {
-        console.log(rec.Kategori_Fungsi);
-
-        const normalizedCategory = rec.Kategori_Fungsi
-          ?.toLowerCase()
-          .replace(/[\s-_]/g, '');
-
-        return (
-          <div
-            key={i}
-            className="bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors rounded-xl p-3 flex flex-col items-center text-center gap-2"
-          >
-            <div className="text-3xl">
-              {categoryEmoji[normalizedCategory] || '🧴'}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-card p-6">
+              <div className="mb-5">
+                <h3 className="font-bold text-gray-800 dark:text-white text-lg">
+                  {t('result_rec_title')}
+                </h3>
+            
+                <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
+                  {t('result_rec_desc')}{' '}
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                    {skinType}
+                  </span>
+                </p>
+              </div>
+            
+              {recommendations.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                  {recommendations.map((rec, i) => {
+                    console.log(rec.Kategori_Fungsi);
+            
+                    const normalizedCategory = rec.Kategori_Fungsi
+                      ?.toLowerCase()
+                      .replace(/[\s-_]/g, '');
+            
+                    return (
+                      <div
+                        key={i}
+                        className="bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors rounded-xl p-3 flex flex-col items-center text-center gap-2"
+                      >
+                        <div className="text-3xl">
+                          {categoryEmoji[normalizedCategory] || '🧴'}
+                        </div>
+            
+                        <p className="font-semibold text-gray-800 dark:text-gray-100 text-xs capitalize leading-tight">
+                          {rec.Bahan_Standar}
+                        </p>
+            
+                        <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded-full">
+                          {rec.Kategori_Fungsi}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-400 text-center py-6">
+                  {t('result_no_rec')}
+                </p>
+              )}
             </div>
-
-            <p className="font-semibold text-gray-800 dark:text-gray-100 text-xs capitalize leading-tight">
-              {rec.Bahan_Standar}
-            </p>
-
-            <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded-full">
-              {rec.Kategori_Fungsi}
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  ) : (
-    <p className="text-sm text-gray-400 text-center py-6">
-      {t('result_no_rec')}
-    </p>
-  )}
-</div>
-</div>
+            </div>
           {/* End reportRef */}
 
           {/* Tombol Download */}
