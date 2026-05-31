@@ -45,6 +45,7 @@ router.delete('/history/:id', auth, deleteHistory);
 
 router.post('/history', auth, async (req, res) => {
   try {
+    console.log('history req.body:', req.body); 
     const { skin_type, confidence, probabilities, recommendations, image_url } = req.body;
     
     const result = {
