@@ -43,7 +43,15 @@ router.delete('/history/:id', auth, deleteHistory);
 
 router.post('/history', auth, async (req, res) => {
   try {
-    const { result, image_url } = req.body;
+    const { skin_type, confidence, probabilities, recommendations, image_url } = req.body;
+    
+    const result = {
+      skin_type,
+      confidence,
+      probabilities,
+      recommendations,
+    };
+
     await pool.query(
       'INSERT INTO scan_history (user_id, result, image_url) VALUES ($1, $2, $3)',
       [req.user.id, JSON.stringify(result), image_url || null]
