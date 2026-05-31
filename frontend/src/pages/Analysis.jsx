@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Upload, Camera, Loader2, User, Sun, Info } from 'lucide-react';
 import Footer from '../components/Footer';
 import { useLang } from '../context/LanguageContext';
-import { apiAnalyze, apiSaveHistory } from '../services/api';
+import { apiAnalyze, apiSaveHistory, apiUploadImage } from '../services/api';
 
 export default function Analysis() {
   const { t } = useLang();
@@ -92,12 +92,15 @@ export default function Analysis() {
 
       const imageBase64 = mode === 'camera' ? imageUrl : await toBase64(fileToAnalyze);
       const result = await apiAnalyze(fileToAnalyze);
-
+      
+      const uploadRes = await apiUploadImage(fileToAnalyze);
+      const cloudinaryUrl = uploadRes.url;
+      
       await apiSaveHistory({
         skin_type: result.skin_type,
         confidence: result.confidence,
         recommendations: result.recommendations,
-        image_url: imageBase64,
+        image_url: cloudinaryUrl,
       });
 
       if (streamRef.current) {
