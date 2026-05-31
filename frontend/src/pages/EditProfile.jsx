@@ -6,6 +6,8 @@ import { useAuth } from '../context/AuthContext';
 import { apiUpdateProfile, apiGetProfile } from '../services/api';
 import { useLang } from '../context/LanguageContext';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export default function EditProfile() {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (user?.avatar_url) {
-      setAvatarPreview(`http://localhost:3000${user.avatar_url}`);
+      setAvatarPreview(`${API_BASE}${user.avatar_url}`);
     }
   }, [user]);
 
