@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-2 mb-3">
               <img src="/images/logo2.png" alt="SkinSense AI" className="h-8 w-auto" />
-              <span className="font-bold text-white text-lg">SkinSense AI</span>
+              <span className="font-bold text-blue-900 dark:text-white text-lg whitespace-nowrap">SkinSense AI</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-[220px]">
               {t('footer_desc')}
