@@ -1,19 +1,22 @@
 const pool = require('../config/db');
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `avatar_${req.user.id}_${Date.now()}${ext}`);
-  },
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const fs = require('fs');
-if (!fs.existsSync('uploads')) {
-  fs.mkdirSync('uploads');
-}
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'skinsense-avatars',
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    transformation: [{ width: 300, height: 300, crop: 'fill' }],
+  },
+});
 
 const upload = multer({ storage });
 
@@ -27,12 +30,10 @@ const getProfile = async (req, res) => {
     );
     if (user.rows.length === 0)
       return res.status(404).json({ message: 'User tidak ditemukan' });
-
     const skinProfile = await pool.query(
       'SELECT skin_type FROM skin_profiles WHERE user_id = $1',
       [req.user.id]
     );
-
     res.json({
       ...user.rows[0],
       skin_type: skinProfile.rows[0]?.skin_type || null,
@@ -46,7 +47,8 @@ const updateProfile = async (req, res) => {
   console.log('req.body:', req.body);
   console.log('req.file:', req.file);
   const { name, phone, birthdate, skin_type } = req.body;
-  const avatar_url = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const avatar_url = req.file ? req.file.path : null;
 
   try {
     if (avatar_url) {
@@ -60,7 +62,6 @@ const updateProfile = async (req, res) => {
         [name, phone, birthdate || null, req.user.id]
       );
     }
-
     if (skin_type) {
       await pool.query(
         `INSERT INTO skin_profiles (user_id, skin_type) VALUES ($1, $2)
@@ -68,7 +69,6 @@ const updateProfile = async (req, res) => {
         [req.user.id, skin_type]
       );
     }
-
     res.json({ message: 'Profil berhasil diperbarui' });
   } catch (err) {
     console.error('Update profile error:', err.message);
