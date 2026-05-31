@@ -59,28 +59,49 @@ export default function LandingPage() {
         }
       `}</style>
       <div className="flex-1 pt-6">
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <img src="/images/logo.png" alt="SkinSense AI" className="h-8 w-auto" />
-            <span className="font-bold text-gray-900 dark:text-white text-sm md:text-base">SkinSense AI</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
-              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
-              {lang === 'id' ? 'EN' : 'ID'}
-            </button>
-            <button onClick={() => setDark(!dark)}
-              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-              {dark ? <Sun size={15} className="text-yellow-400" /> : <Moon size={15} className="text-gray-500" />}
-            </button>
-            <button onClick={() => navigate('/login')}
-              className="hidden sm:block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-800">
-              {t('nav_signin')}
-            </button>
-            <button onClick={() => navigate('/register')}
-              className="bg-blue-800 text-white text-xs md:text-sm font-semibold px-3 md:px-4 py-2 rounded-xl hover:bg-blue-900">
-              {t('landing_analyze_btn')}
-            </button>
+       <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <img src="/images/logo.png" alt="SkinSense AI" className="h-7 w-auto" />
+              <span className="font-bold text-gray-900 dark:text-white text-sm md:text-base">SkinSense AI</span>
+            </div>
+
+            {/* Desktop */}
+            <div className="hidden sm:flex items-center gap-2">
+              <button onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
+                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
+                {lang === 'id' ? 'EN' : 'ID'}
+              </button>
+              <button onClick={() => setDark(!dark)}
+                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                {dark ? <Sun size={15} className="text-yellow-400" /> : <Moon size={15} className="text-gray-500" />}
+              </button>
+              <button onClick={() => navigate('/login')}
+                className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-800">
+                {t('nav_signin')}
+              </button>
+              <button onClick={() => navigate('/register')}
+                className="bg-blue-800 text-white font-semibold px-4 py-2 rounded-xl hover:bg-blue-900 text-sm">
+                {t('landing_analyze_btn')}
+              </button>
+            </div>
+
+            {/* Mobile */}
+            <div className="flex sm:hidden items-center gap-2">
+              <button onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
+                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
+                {lang === 'id' ? 'EN' : 'ID'}
+              </button>
+              <button onClick={() => setDark(!dark)}
+                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                {dark ? <Sun size={15} className="text-yellow-400" /> : <Moon size={15} className="text-gray-500" />}
+              </button>
+              <button onClick={() => navigate('/register')}
+                className="bg-blue-800 text-white font-semibold px-3 py-2 rounded-xl hover:bg-blue-900 text-xs">
+                {t('landing_analyze_btn')}
+              </button>
+            </div>
           </div>
         </nav>
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:py-10">
