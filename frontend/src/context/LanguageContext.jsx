@@ -50,7 +50,7 @@ export const translations = {
     analysis_text1: 'AI Confidence',
     analysis_text2: 'Skin Type',
     analysis_text3: 'Active',
-    analysis_subtext1: '85%',
+    analysis_subtext1: '95%',
     analysis_subtext2: 'Oily',
     analysis_subtext3: 'Niacinamide, Salicylic Acid',
 
@@ -322,7 +322,7 @@ export const translations = {
     analysis_text1: 'Keberhasilan AI',
     analysis_text2: 'Tipe Skin',
     analysis_text3: 'Bahan Aktif',
-    analysis_subtext1: '85%',
+    analysis_subtext1: '95%',
     analysis_subtext2: 'Berminyak',
     analysis_subtext3: 'Niacinamide, Salicylic Acid',
 
