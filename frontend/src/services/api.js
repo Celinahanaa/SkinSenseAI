@@ -65,9 +65,12 @@ export const apiDeleteHistory = async (id) => {
   return data;
 };
 
-export const apiSaveHistory = async ({ skin_type, confidence, recommendations, image_url }) => {
+export const apiSaveHistory = async ({ skin_type, confidence, probabilities, recommendations, image_url }) => {
   const { data } = await api.post('/history', {
-    result: { skin_type, confidence, recommendations },
+    skin_type,
+    confidence,
+    probabilities,
+    recommendations,
     image_url,
   });
   return data;
