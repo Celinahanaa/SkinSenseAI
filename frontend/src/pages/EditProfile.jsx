@@ -42,6 +42,11 @@ export default function EditProfile() {
     }
   }, [user]);
 
+  useEffect(() => {
+    console.log('user:', user);
+    console.log('avatar_url:', user?.avatar_url);
+  }, [user]);
+
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
