@@ -15,7 +15,12 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+  
+  const handleLogoutConfirm = () => {
+    setShowLogoutModal(false);
     logout();
     navigate('/');
   };
