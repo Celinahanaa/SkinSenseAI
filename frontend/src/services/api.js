@@ -83,3 +83,12 @@ export const apiAnalyze = async (imageFile) => {
   });
   return data;
 };
+
+export const apiUploadImage = async (imageFile) => {
+  const formData = new FormData();
+  formData.append('file', imageFile);
+  const { data } = await api.post('/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
