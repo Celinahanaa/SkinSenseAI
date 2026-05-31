@@ -66,8 +66,6 @@ export default function LandingPage() {
               <img src="/images/logo.png" alt="SkinSense AI" className="h-7 w-auto" />
               <span className="font-bold text-gray-900 dark:text-white text-sm md:text-base">SkinSense AI</span>
             </div>
-
-            {/* Desktop */}
             <div className="hidden sm:flex items-center gap-2">
               <button onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
                 className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
@@ -86,8 +84,6 @@ export default function LandingPage() {
                 {t('landing_analyze_btn')}
               </button>
             </div>
-
-            {/* Mobile */}
             <div className="flex sm:hidden items-center gap-2">
               <button onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
                 className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
