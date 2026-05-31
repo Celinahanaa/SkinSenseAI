@@ -6,6 +6,7 @@
 
 html {
     font-size: 14px;
+    overflow-x: hidden;
   }
 
 @layer base {
@@ -14,6 +15,7 @@ html {
     background-color: #f8faff;
     color: #1a1a2e;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 }
 
