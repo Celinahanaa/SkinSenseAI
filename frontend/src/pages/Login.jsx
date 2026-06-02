@@ -132,7 +132,7 @@ export default function Login() {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  placeholder="name@medical.com"
+                  placeholder="name@gmail.com"
                   className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500"
                 />
               </div>
