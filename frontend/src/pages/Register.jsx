@@ -127,7 +127,7 @@ export default function Register() {
               <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t('register_email')}</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="name@medical.com"
+                <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="name@gmail.com"
                   className="input-field dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" />
               </div>
             </div>
