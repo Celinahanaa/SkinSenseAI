@@ -446,8 +446,6 @@ const handleDownloadPDF = async () => {
               {recommendations.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                   {recommendations.map((rec, i) => {
-                    console.log(rec.Kategori_Fungsi);
-            
                     const normalizedCategory = rec.Kategori_Fungsi
                       ?.toLowerCase()
                       .replace(/[\s-_]/g, '');
