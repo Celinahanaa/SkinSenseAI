@@ -115,7 +115,7 @@ export default function LandingPage() {
                 {t('landing_hero_desc')}
               </p>
               <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <button onClick={() => navigate('/analysis')}
+                <button onClick={() => navigate('/login')}
                   className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white font-semibold px-6 py-3 rounded-xl text-sm"
                   style={{ boxShadow: '0 4px 20px rgba(26,60,143,0.3)' }}>
                   <Scan size={16} /> {t('landing_try_scanner')}
