@@ -1,8 +1,8 @@
-# 🧴 SkinSenseAI
+# SkinSenseAI
 
-Aplikasi web analisis kondisi kulit wajah berbasis kecerdasan buatan. Pengguna cukup mengunggah foto wajah, lalu sistem akan mendeteksi kondisi kulit (seperti jerawat, komedo, kulit kering, dll.) dan memberikan rekomendasi perawatan yang sesuai.
+Aplikasi web analisis kondisi kulit wajah berbasis Artificial Intelligence. User cukup mengunggah foto wajah, lalu sistem akan mendeteksi kondisi tipe kulit (seperti kering, berminyak, berjerawat, dan normal) dan memberikan rekomendasi bahan aktif untuk perawatan yang sesuai.
 
-Stack: **React + Vite** (frontend) · **Node.js / Express** (backend) · **FastAPI + PyTorch/TF** (ML service) · **PostgreSQL** · **Cloudinary**
+**React + Vite** (frontend) · **Node.js / Express** (backend) · **FastAPI** (AI service) · **PostgreSQL** · **Cloudinary**
 
 ---
 
@@ -12,7 +12,7 @@ Stack: **React + Vite** (frontend) · **Node.js / Express** (backend) · **FastA
 SkinSenseAI/
 ├── frontend/        # React + Vite + Tailwind CSS
 ├── backend/         # Node.js + Express + PostgreSQL
-└── (ml-service)     # FastAPI — repo terpisah, lihat tautan di bawah
+└── (ai-service)     # FastAPI — repo terpisah
 ```
 
 ---
@@ -29,17 +29,17 @@ cp backend/.env.example backend/.env
 
 | Variabel | Keterangan |
 |---|---|
-| `DB_HOST` | Host PostgreSQL (Railway: `postgres.railway.internal`) |
+| `DB_HOST` | Host PostgreSQL |
 | `DB_PORT` | Port PostgreSQL, default `5432` |
 | `DB_USER` | Username database |
 | `DB_PASSWORD` | Password database |
-| `DB_NAME` | Nama database, default `railway` |
-| `DATABASE_URL` | Full connection string (opsional, auto-dipakai Railway) |
+| `DB_NAME` | Nama database |
+| `DATABASE_URL` | Full connection string (opsional, Railway) |
 | `JWT_SECRET` | String rahasia untuk signing JWT — **ganti wajib!** |
 | `CLOUDINARY_CLOUD_NAME` | Cloud name dari dashboard Cloudinary |
 | `CLOUDINARY_API_KEY` | API Key Cloudinary |
 | `CLOUDINARY_API_SECRET` | API Secret Cloudinary |
-| `AI_SERVICE_URL` | URL ke layanan FastAPI model ML |
+| `AI_SERVICE_URL` | URL ke layanan FastAPI model AI |
 | `PORT` | Port server Express, default `3000` |
 
 ### Frontend (`frontend/.env`)
@@ -54,15 +54,13 @@ cp frontend/.env.example frontend/.env
 
 ---
 
-## 🤖 Model Machine Learning
+## 🤖 Model AI
 
-Layanan ML berjalan sebagai service FastAPI terpisah.
+Layanan AI berjalan sebagai service FastAPI terpisah.
 
-- **Repository ML:** [https://skinsense.ardhiansyah.my.id](https://skinsense.ardhiansyah.my.id) *(atau sesuaikan `AI_SERVICE_URL` di `.env`)*
+- **Repository AI:** [https://skinsense.ardhiansyah.my.id](https://skinsense.ardhiansyah.my.id) *(atau sesuaikan `AI_SERVICE_URL` di `.env`)*
 - **Endpoint yang dipakai:** `POST /analyze` — menerima `multipart/form-data` dengan field `file` (gambar wajah), mengembalikan JSON hasil analisis kulit.
-- Model dilatih untuk mendeteksi kondisi kulit seperti jerawat, pori-pori, tekstur, dll.
-
-Untuk menjalankan ML service secara lokal, clone repo ML dan ikuti petunjuk di README-nya, lalu set `AI_SERVICE_URL=http://localhost:8000`.
+- Model dilatih untuk mendeteksi kondisi tipe kulit seperti kering, berminyak, berjerawat, dan normal.
 
 ---
 
@@ -73,7 +71,7 @@ Untuk menjalankan ML service secara lokal, clone repo ML dan ikuti petunjuk di R
 - Node.js >= 18
 - PostgreSQL (lokal atau Railway)
 - Akun Cloudinary (gratis)
-- ML service berjalan (lokal atau hosted)
+- AI service berjalan (lokal atau hosted)
 
 ---
 
@@ -90,7 +88,7 @@ cd SkinSenseAI
 cd backend
 npm install
 cp .env.example .env
-# Edit .env sesuai konfigurasi kamu
+# Edit .env sesuai konfigurasi
 npm run migrate    # Buat tabel di database
 npm run dev        # Development (nodemon)
 # atau
@@ -114,15 +112,6 @@ Frontend akan berjalan di `http://localhost:5173`.
 ### 4. Akses Aplikasi
 
 Buka browser dan kunjungi `http://localhost:5173`.
-
----
-
-## 🌐 Deployment (Railway)
-
-1. Push repo ke GitHub.
-2. Buat project baru di [Railway](https://railway.app), tambahkan service **PostgreSQL** dan service dari repo GitHub.
-3. Set semua environment variable di tab **Variables** sesuai tabel di atas.
-4. Railway akan otomatis menjalankan `npm start` (termasuk migrasi).
 
 ---
 
