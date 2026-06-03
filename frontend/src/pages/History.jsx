@@ -71,7 +71,7 @@ const handleDelete = async () => {
     avgScore: items.length
       ? Math.round(items.reduce((a, b) => a + getConfidence(b), 0) / items.length * 100)
       : 0,
-    change: items.length >= 2
+    change: items.length >= 2 && items[0].result?.skin_type === items[1].result?.skin_type
       ? Math.round((getConfidence(items[0]) - getConfidence(items[1])) * 100)
       : null,
   };
