@@ -2,7 +2,7 @@
 
 Aplikasi web analisis kondisi kulit wajah berbasis Artificial Intelligence. User cukup mengunggah foto wajah, lalu sistem akan mendeteksi kondisi tipe kulit (seperti kering, berminyak, berjerawat, dan normal) dan memberikan rekomendasi bahan aktif untuk perawatan yang sesuai.
 
-**React + Vite** (frontend) · **Node.js / Express** (backend) · **FastAPI** (AI service) · **PostgreSQL** · **Cloudinary**
+**React + Vite** (frontend) · **Node.js / Express** · **PostgreSQL**  (backend) · **FastAPI** (AI service) · **Cloudinary** (opsional)
 
 ---
 
@@ -36,9 +36,9 @@ cp backend/.env.example backend/.env
 | `DB_NAME` | Nama database |
 | `DATABASE_URL` | Full connection string (opsional, Railway) |
 | `JWT_SECRET` | String rahasia untuk signing JWT — **ganti wajib!** |
-| `CLOUDINARY_CLOUD_NAME` | Cloud name dari dashboard Cloudinary |
-| `CLOUDINARY_API_KEY` | API Key Cloudinary |
-| `CLOUDINARY_API_SECRET` | API Secret Cloudinary |
+| `CLOUDINARY_CLOUD_NAME` | Cloud name dari dashboard Cloudinary (opsional |
+| `CLOUDINARY_API_KEY` | API Key Cloudinary (opsional) |
+| `CLOUDINARY_API_SECRET` | API Secret Cloudinary (opsional) |
 | `AI_SERVICE_URL` | URL ke layanan FastAPI model AI |
 | `PORT` | Port server Express, default `3000` |
 
@@ -71,7 +71,7 @@ Layanan AI berjalan sebagai service FastAPI terpisah.
 
 - Node.js >= 18
 - PostgreSQL (lokal atau Railway)
-- Akun Cloudinary (gratis)
+- Akun Cloudinary (gratis, opsional)
 - AI service berjalan (lokal atau hosted)
 
 ---
@@ -104,7 +104,7 @@ Backend akan berjalan di `http://localhost:3000`.
 cd frontend
 npm install
 cp .env.example .env
-# Edit VITE_API_URL sesuai URL backend
+# Edit sesuai konfigurasi
 npm run dev
 ```
 
