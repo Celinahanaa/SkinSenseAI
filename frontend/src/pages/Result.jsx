@@ -22,7 +22,6 @@ const categoryEmoji = {
   soothing: '🌱',
   hydration: '💦',
   moisturizing: '💧',
-
   sebumcontrol: '⚖️',
 };
 
@@ -57,11 +56,6 @@ export default function Result() {
   const confidence      = state.confidence      || 0;
   const probabilities   = state.probabilities   || {};
   const recommendations = state.recommendations || [];
-
-  console.log('=== DEBUG ===');
-  console.log('skinType:', skinType);
-  console.log('probabilities:', probabilities);
-  console.log('keys:', Object.keys(probabilities));
 
   useEffect(() => {
     if (skinType && skinType !== 'Unknown') {
