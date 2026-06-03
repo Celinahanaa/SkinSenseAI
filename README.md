@@ -59,7 +59,7 @@ cp frontend/.env.example frontend/.env
 
 Layanan AI berjalan sebagai service FastAPI terpisah.
 
-- **Repository AI:** [https://skinsense.ardhiansyah.my.id](https://skinsense.ardhiansyah.my.id) *(atau sesuaikan `AI_SERVICE_URL` di `.env`)*
+- **Repository AI:** sesuaikan `AI_SERVICE_URL` di `.env`.
 - **Endpoint yang dipakai:** `POST /analyze` — menerima `multipart/form-data` dengan field `file` (gambar wajah), mengembalikan JSON hasil analisis kulit.
 - Model dilatih untuk mendeteksi kondisi tipe kulit seperti kering, berminyak, berjerawat, dan normal.
 
