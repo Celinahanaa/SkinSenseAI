@@ -51,6 +51,7 @@ cp frontend/.env.example frontend/.env
 | Variabel | Keterangan |
 |---|---|
 | `VITE_API_URL` | URL backend API, contoh `http://localhost:3000` |
+| `VITE_GOOGLE_CLIENT_ID` | Client ID Google, contoh `285642663285-q7no7..` |
 
 ---
 
