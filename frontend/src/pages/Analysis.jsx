@@ -137,8 +137,6 @@ export default function Analysis() {
     <div className="flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-          {/* Mode tabs */}
           <div className="inline-flex bg-white dark:bg-gray-800 rounded-2xl p-1.5 shadow-card mb-10">
             {['upload', 'camera'].map((m) => (
               <button
