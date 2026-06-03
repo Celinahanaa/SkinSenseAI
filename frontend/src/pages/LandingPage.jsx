@@ -195,7 +195,7 @@ export default function LandingPage() {
             <p className="text-blue-200 text-sm mb-2 max-w-md mx-auto">{t('landing_cta_desc')}</p>
             <p className="text-blue-300 text-xs mb-8">{t('landing_cta_note')}</p>
             <button
-              onClick={() => navigate('/analysis')}
+              onClick={() => navigate('/login')}
               className="bg-white text-blue-800 font-bold px-8 py-3 rounded-xl text-sm hover:bg-blue-50 transition-all"
             >
               {t('landing_analyze_btn')}
