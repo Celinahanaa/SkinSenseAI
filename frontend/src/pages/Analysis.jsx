@@ -242,7 +242,7 @@ export default function Analysis() {
                         }}
                         className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white text-blue-800 font-bold px-6 py-2.5 rounded-xl shadow-lg hover:bg-blue-50 transition z-10 flex items-center gap-2"
                       >
-                        <Camera size={16} /> Ambil Foto
+                        <Camera size={16} /> {t('analysis_camera_take')}
                       </button>
                     </div>
                   ) : capturedImage ? (
@@ -271,10 +271,18 @@ export default function Analysis() {
                         </>
                       )}
                       <button
-                        onClick={() => setCapturedImage(null)}
+                        onClick={() => {
+                          setCapturedImage(null);
+                          // Pastikan video element dapat stream lagi
+                          setTimeout(() => {
+                            if (videoRef.current && streamRef.current) {
+                              videoRef.current.srcObject = streamRef.current;
+                            }
+                          }, 0);
+                        }}
                         className="absolute top-4 left-4 bg-white/80 text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-xl hover:bg-white transition z-10"
                       >
-                        Ulangi
+                        {t('analysis_camera_retake')}
                       </button>
                     </div>
                   ) : (
