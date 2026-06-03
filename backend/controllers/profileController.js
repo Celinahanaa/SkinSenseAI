@@ -44,7 +44,6 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  console.log('req.file:', req.file);
   const { name, phone, birthdate, skin_type } = req.body;
 
   const avatar_url = req.file ? req.file.path : null;
