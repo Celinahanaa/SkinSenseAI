@@ -134,6 +134,8 @@ export const translations = {
     home_text3: 'Auto-focus for macro precision',
 
     // Analysis
+    analysis_camera_take: 'Take Photo',
+    analysis_camera_retake: 'Retake',
     analysis_upload: 'Upload Photo',
     analysis_camera: 'Use Camera',
     analysis_click: 'Click to upload',
@@ -402,6 +404,8 @@ export const translations = {
     home_text3: 'Auto-fokus untuk presisi detail',
 
     // Analysis
+    analysis_camera_take: 'Ambil Foto',
+    analysis_camera_retake: 'Ulangi',
     analysis_upload: 'Upload Foto',
     analysis_camera: 'Gunakan Kamera',
     analysis_click: 'Klik untuk upload',
