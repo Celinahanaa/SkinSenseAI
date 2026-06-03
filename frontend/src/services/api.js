@@ -15,6 +15,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+const uploadApi = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+});
+
+uploadApi.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
 // AUTH
 export const apiRegister = async (name, email, password) => {
   const { data } = await api.post('/auth/register', { name, email, password });
@@ -90,7 +100,7 @@ export const apiAnalyze = async (imageFile) => {
 export const apiUploadImage = async (imageFile) => {
   const formData = new FormData();
   formData.append('file', imageFile);
-  const { data } = await api.post('/upload', formData, {
+  const { data } = await uploadApi.post('/api/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return data;
