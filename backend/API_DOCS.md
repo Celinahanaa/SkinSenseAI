@@ -251,7 +251,7 @@ Upload gambar ke Cloudinary dan kembalikan URL-nya. Dipakai untuk menyimpan foto
 ## AI / Analisis
 
 ### POST `/ai/analyze`
-Kirim foto wajah untuk dianalisis oleh model ML (FastAPI). Endpoint ini meneruskan gambar ke AI service dan mengembalikan hasilnya langsung.
+Kirim foto wajah untuk dianalisis oleh model AI (FastAPI). Endpoint ini meneruskan gambar ke AI service dan mengembalikan hasilnya langsung.
 
 **Tidak butuh token.**  
 **Content-Type:** `multipart/form-data`
@@ -310,7 +310,7 @@ Ambil semua riwayat scan milik user, diurutkan dari terbaru.
         "Acne": 0.01
       },
       "recommendations": [
-        "Gunakan pembersih wajah berbahan salicylic acid"
+        "salicylic acid"
       ]
     },
     "created_at": "2026-05-09T10:00:00.000Z"
@@ -341,7 +341,7 @@ Ambil detail satu riwayat scan berdasarkan ID.
       "Acne": 0.01
     },
     "recommendations": [
-      "Gunakan pembersih wajah berbahan salicylic acid"
+      "salicylic acid"
     ]
   },
   "created_at": "2026-05-09T10:00:00.000Z"
