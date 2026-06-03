@@ -1,0 +1,46 @@
+# ===========================
+# SkinSenseAI - .gitignore
+# ===========================
+
+# Environment variables — JANGAN pernah di-commit!
+.env
+.env.local
+.env.production
+.env.development
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+build/
+.vite/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Upload lokal (gunakan Cloudinary di production)
+backend/uploads/*.jpg
+backend/uploads/*.jpeg
+backend/uploads/*.png
+backend/uploads/*.webp
+!backend/uploads/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage / testing
+coverage/
+.nyc_output/
