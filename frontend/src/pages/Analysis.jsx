@@ -16,6 +16,8 @@ export default function Analysis() {
   const videoRef = useRef(null);
   const [cameraActive, setCameraActive] = useState(false);
   const streamRef = useRef(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
 
   const handleFile = (e) => {
     const f = e.target.files?.[0];
@@ -53,6 +55,7 @@ export default function Analysis() {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
       setCameraActive(false);
+      setCapturedImage(null);
     }
   }, [mode]);
 
@@ -69,18 +72,15 @@ export default function Analysis() {
       let imageUrl = preview;
 
       if (mode === 'camera') {
-        if (!videoRef.current || !cameraActive) {
-          alert('Aktifkan kamera terlebih dahulu.');
+        if (!capturedImage) {
+          alert('Ambil foto terlebih dahulu.');
           setLoading(false);
           return;
         }
-        const canvas = document.createElement('canvas');
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
-        canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-
-        imageUrl = canvas.toDataURL('image/jpeg');
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+        setAnalyzing(true);
+        imageUrl = capturedImage;
+        const res = await fetch(capturedImage);
+        const blob = await res.blob();
         fileToAnalyze = new File([blob], 'camera.jpg', { type: 'image/jpeg' });
       }
 
@@ -92,10 +92,10 @@ export default function Analysis() {
 
       const imageBase64 = mode === 'camera' ? imageUrl : await toBase64(fileToAnalyze);
       const result = await apiAnalyze(fileToAnalyze);
-      
+
       const uploadRes = await apiUploadImage(fileToAnalyze);
       const cloudinaryUrl = uploadRes.url;
-      
+
       await apiSaveHistory({
         skin_type: result.skin_type,
         confidence: result.confidence,
@@ -109,6 +109,8 @@ export default function Analysis() {
         streamRef.current = null;
         setCameraActive(false);
       }
+      setAnalyzing(false);
+      setCapturedImage(null);
 
       navigate('/result', {
         state: {
@@ -121,6 +123,7 @@ export default function Analysis() {
       });
     } catch (err) {
       console.error('Analyze error:', err);
+      setAnalyzing(false);
       alert('Analisis gagal: ' + (err?.message || err?.detail || 'Terjadi kesalahan, cek console untuk detail.'));
     } finally {
       setLoading(false);
@@ -212,7 +215,7 @@ export default function Analysis() {
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                     <span className="text-xs text-red-500 font-semibold">Live</span>
                   </div>
-                  {cameraActive ? (
+                  {cameraActive && !capturedImage ? (
                     <div className="relative">
                       <video
                         ref={videoRef}
@@ -225,12 +228,54 @@ export default function Analysis() {
                       <div
                         className="absolute inset-0 pointer-events-none rounded-2xl"
                         style={{
-                          backgroundImage:
-                            'radial-gradient(circle, rgba(96,165,250,0.18) 1px, transparent 1px)',
+                          backgroundImage: 'radial-gradient(circle, rgba(96,165,250,0.18) 1px, transparent 1px)',
                           backgroundSize: '20px 20px',
                         }}
                       />
-                      <div className="scan-line absolute left-0 right-0 pointer-events-none" />
+                      <button
+                        onClick={() => {
+                          const canvas = document.createElement('canvas');
+                          canvas.width = videoRef.current.videoWidth;
+                          canvas.height = videoRef.current.videoHeight;
+                          canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
+                          setCapturedImage(canvas.toDataURL('image/jpeg'));
+                        }}
+                        className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white text-blue-800 font-bold px-6 py-2.5 rounded-xl shadow-lg hover:bg-blue-50 transition z-10 flex items-center gap-2"
+                      >
+                        <Camera size={16} /> Ambil Foto
+                      </button>
+                    </div>
+                  ) : capturedImage ? (
+                    <div className="relative">
+                      <img
+                        src={capturedImage}
+                        alt="captured"
+                        className="w-full rounded-2xl"
+                        style={{ height: '450px', objectFit: 'cover' }}
+                      />
+                      {analyzing && (
+                        <>
+                          <div className="absolute inset-0 bg-blue-500/5 pointer-events-none rounded-2xl" />
+                          <div
+                            className="absolute inset-0 pointer-events-none rounded-2xl"
+                            style={{
+                              backgroundImage: 'radial-gradient(circle, rgba(96,165,250,0.18) 1px, transparent 1px)',
+                              backgroundSize: '20px 20px',
+                            }}
+                          />
+                          <div className="scan-line absolute left-0 right-0 pointer-events-none" />
+                          <div className="scan-corner tl" />
+                          <div className="scan-corner tr" />
+                          <div className="scan-corner bl" />
+                          <div className="scan-corner br" />
+                        </>
+                      )}
+                      <button
+                        onClick={() => setCapturedImage(null)}
+                        className="absolute top-4 left-4 bg-white/80 text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-xl hover:bg-white transition z-10"
+                      >
+                        Ulangi
+                      </button>
                     </div>
                   ) : (
                     <div className="rounded-2xl p-8 flex flex-col items-center justify-center" style={{ height: '450px' }}>
