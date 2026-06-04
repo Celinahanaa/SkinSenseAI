@@ -4,6 +4,7 @@ const auth = require('../middleware/auth');
 const { register, login } = require('../controllers/authController');
 const { getProfile, updateProfile, upload } = require('../controllers/profileController');
 const { getHistory, getHistoryDetail, deleteHistory } = require('../controllers/historyController');
+const { checkQuota, getQuota } = require('../middleware/quota');
 const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -39,11 +40,13 @@ router.post('/auth/google', async (req, res) => {
 router.get('/profile', auth, getProfile);
 router.put('/profile', auth, upload.single('avatar'), updateProfile);
 
+router.get('/quota', auth, getQuota);
+
 router.get('/history', auth, getHistory);
 router.get('/history/:id', auth, getHistoryDetail);
 router.delete('/history/:id', auth, deleteHistory);
 
-router.post('/history', auth, async (req, res) => {
+router.post('/history', auth, checkQuota, async (req, res) => {
   try {
     const { skin_type, confidence, probabilities, recommendations, image_url } = req.body;
     
