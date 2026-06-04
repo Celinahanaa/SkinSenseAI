@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Upload, Camera, Loader2, User, Sun, Info } from 'lucide-react';
 import Footer from '../components/Footer';
 import { useLang } from '../context/LanguageContext';
-import { apiAnalyze, apiSaveHistory, apiUploadImage } from '../services/api';
+import { apiAnalyze, apiSaveHistory, apiUploadImage, apiGetQuota } from '../services/api';
 
 export default function Analysis() {
   const { t } = useLang();
@@ -59,6 +59,12 @@ export default function Analysis() {
     }
   }, [mode]);
 
+  const [quota, setQuota] = useState(null);
+
+  useEffect(() => {
+    apiGetQuota().then(setQuota).catch(() => setQuota(null));
+  }, []);
+
   const toBase64 = (f) => new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
@@ -104,6 +110,8 @@ export default function Analysis() {
         image_url: cloudinaryUrl,
       });
 
+      apiGetQuota().then(setQuota).catch(() => {});
+
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
         streamRef.current = null;
@@ -140,6 +148,19 @@ export default function Analysis() {
     <div className="flex flex-col bg-white dark:bg-gray-900">
       <div className="flex-1 pt-20 pb-8 bg-gradient-to-br from-[#f8faff] to-[#eef4ff] dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          {quota !== null && (
+            <div className={`inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full mb-6 ${
+              quota.remaining === 0
+                ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
+                : quota.remaining <= 2
+                ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400'
+                : 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
+            }`}>
+              {quota.remaining === 0
+                ? '⛔ Kuota analisis hari ini habis. Coba lagi besok.'
+                : `✦ Sisa analisis hari ini: ${quota.remaining} / ${quota.limit}`}
+            </div>
+          )}
           <div className="inline-flex bg-white dark:bg-gray-800 rounded-2xl p-1.5 shadow-card mb-10">
             {['upload', 'camera'].map((m) => (
               <button
@@ -306,7 +327,7 @@ export default function Analysis() {
               )}
               <button
                 onClick={handleAnalyze}
-                disabled={loading || (!preview && mode === 'upload')}
+                disabled={loading || (!preview && mode === 'upload') || quota?.remaining === 0}
                 className={`w-full mt-5 py-4 rounded-2xl font-bold text-base text-white transition-all ${
                   preview || mode === 'camera'
                     ? 'bg-blue-800 hover:bg-blue-900 cursor-pointer'
