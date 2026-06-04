@@ -211,10 +211,6 @@ export default function Analysis() {
                 </div>
               ) : (
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-card overflow-hidden relative">
-                  <div className="absolute top-4 right-4 flex items-center gap-1.5 z-10">
-                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                    <span className="text-xs text-red-500 font-semibold">Live</span>
-                  </div>
                   {cameraActive && !capturedImage ? (
                     <div className="relative">
                       <video
