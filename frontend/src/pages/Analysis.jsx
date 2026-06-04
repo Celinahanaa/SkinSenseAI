@@ -173,8 +173,8 @@ export default function Analysis() {
                   : 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
               }`}>
                 {quota.remaining === 0
-                ? `⛔ ${t('quota_full')}`
-                : `✦ ${t('quota_remaining')} ${quota.remaining} / ${quota.limit}`
+                ? `\u26D4 ${t('quota_full')}`
+                : `\u2726 ${t('quota_remaining')} ${quota.remaining} / ${quota.limit}`
               </div>
             )}
           </div>
