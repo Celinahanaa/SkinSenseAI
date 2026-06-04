@@ -53,6 +53,8 @@ export const translations = {
     analysis_subtext1: '95%',
     analysis_subtext2: 'Oily',
     analysis_subtext3: 'Niacinamide, Salicylic Acid',
+    quota_full: 'Daily quota reached. Try again tomorrow.',
+    quota_remaining: 'Analyses left today:',
 
     // Features
     feat1_title: 'Skin Type Detection',
@@ -327,6 +329,8 @@ export const translations = {
     analysis_subtext1: '95%',
     analysis_subtext2: 'Berminyak',
     analysis_subtext3: 'Niacinamide, Salicylic Acid',
+    quota_full: 'Kuota analisis hari ini habis. Coba lagi besok.',
+    quota_remaining: 'Sisa analisis hari ini:',
 
     // Features
     feat1_title: 'Deteksi Jenis Kulit',
