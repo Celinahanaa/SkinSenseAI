@@ -222,7 +222,7 @@ export default function Analysis() {
                         autoPlay
                         playsInline
                         className="w-full rounded-2xl"
-                        style={{ height: '450px', objectFit: 'cover' }}
+                        style={{ height: '450px', objectFit: 'cover', transform: 'scaleX(-1)' }}
                       />
                       <div className="absolute inset-0 bg-blue-500/5 pointer-events-none rounded-2xl" />
                       <div
@@ -237,7 +237,10 @@ export default function Analysis() {
                           const canvas = document.createElement('canvas');
                           canvas.width = videoRef.current.videoWidth;
                           canvas.height = videoRef.current.videoHeight;
-                          canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
+                          const ctx = canvas.getContext('2d');
+                          ctx.translate(canvas.width, 0);
+                          ctx.scale(-1, 1);
+                          ctx.drawImage(videoRef.current, 0, 0);
                           setCapturedImage(canvas.toDataURL('image/jpeg'));
                         }}
                         className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white text-blue-800 font-bold px-6 py-2.5 rounded-xl shadow-lg hover:bg-blue-50 transition z-10 flex items-center gap-2"
