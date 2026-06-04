@@ -172,9 +172,11 @@ export default function Analysis() {
                   ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400'
                   : 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
               }`}>
-                {quota.remaining === 0
-                ? `\u26D4 ${t('quota_full')}`
-                : `\u2726 ${t('quota_remaining')} ${quota.remaining} / ${quota.limit}`
+                {quota.remaining === 0 ? (
+                  <span>🚫 {t('quota_full')}</span>
+                ) : (
+                  <span>✦ {t('quota_remaining')} {quota.remaining} / {quota.limit}</span>
+                )}
               </div>
             )}
           </div>
