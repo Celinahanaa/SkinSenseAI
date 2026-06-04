@@ -165,7 +165,7 @@ export default function Analysis() {
             ))}
           </div>
           {quota !== null && (
-              <div className={`inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full ${
+              <div className={`inline-flex items-center gap-2 text-sm font-semibold px-4 rounded-full ${
                 quota.remaining === 0
                   ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
                   : quota.remaining <= 2
