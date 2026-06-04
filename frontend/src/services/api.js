@@ -87,6 +87,11 @@ export const apiSaveHistory = async ({ skin_type, confidence, probabilities, rec
 };
 
 // ANALYZE — FastAPI Python
+export const apiGetQuota = async () => {
+  const { data } = await api.get('/quota');
+  return data;
+};
+
 export const apiAnalyze = async (imageFile) => {
   const formData = new FormData();
   formData.append('file', imageFile);
