@@ -17,6 +17,21 @@ SkinSenseAI/
 
 ---
 
+## 🧴 Cara Menggunakan Aplikasi
+
+1. **Buka aplikasi** di browser dan kunjungi URL frontend [`https://skin-sense-ai-mu.vercel.app/`].
+2. **Daftar atau login** — buat akun baru atau masuk dengan akun yang sudah ada.
+3. **Masuk ke halaman Skin Check** — klik menu atau tombol "Analisis" di navigasi.
+4. **Unggah foto wajah** — pilih gambar wajah/ambil gambar wajah yang jelas, pencahayaan cukup, dan menghadap ke depan.
+5. **Mulai analisis** — klik tombol "Analisis" dan tunggu beberapa saat.
+6. **Lihat hasil** — sistem akan menampilkan:
+   - Tipe kulit yang terdeteksi (kering, berminyak, berjerawat, atau normal)
+   - Rekomendasi bahan aktif perawatan yang sesuai
+   - Setiap hasil analisis dapat di download dokumen pdfnya
+7. **Riwayat analisis** — hasil setiap analisis tersimpan dan bisa dilihat kembali di halaman History.
+
+---
+
 ## ⚙️ Setup Environment Variables
 
 ### Backend (`backend/.env`)
@@ -36,7 +51,7 @@ cp backend/.env.example backend/.env
 | `DB_NAME` | Nama database |
 | `DATABASE_URL` | Full connection string (opsional, Railway) |
 | `JWT_SECRET` | String rahasia untuk signing JWT — **ganti wajib!** |
-| `CLOUDINARY_CLOUD_NAME` | Cloud name dari dashboard Cloudinary (opsional |
+| `CLOUDINARY_CLOUD_NAME` | Cloud name dari dashboard Cloudinary (opsional) |
 | `CLOUDINARY_API_KEY` | API Key Cloudinary (opsional) |
 | `CLOUDINARY_API_SECRET` | API Secret Cloudinary (opsional) |
 | `AI_SERVICE_URL` | URL ke layanan FastAPI model AI |
@@ -51,7 +66,7 @@ cp frontend/.env.example frontend/.env
 | Variabel | Keterangan |
 |---|---|
 | `VITE_API_URL` | URL backend API, contoh `http://localhost:3000` |
-| `VITE_GOOGLE_CLIENT_ID` | Client ID Google, contoh `285642663285-q7no7..` |
+| `VITE_GOOGLE_CLIENT_ID` | Client ID Google, contoh `2962587162648179..` |
 
 ---
 
