@@ -1,0 +1,27 @@
+Nama Variabel,Tipe Data,Deskripsi
+dataset_path,String,Path lokasi dataset utama gambar jenis kulit
+classes,List,Daftar nama kelas/label jenis kulit
+total_images,Integer,Total seluruh gambar dalam dataset
+sizes,List,Menyimpan ukuran gambar
+heights,List,Menyimpan tinggi gambar
+widths,List,Menyimpan lebar gambar
+formats,List,Menyimpan format file gambar
+pixel_min,Integer,Nilai pixel minimum gambar
+pixel_max,Integer,Nilai pixel maksimum gambar
+corrupt_images,List,Daftar gambar corrupt/rusak
+non_image_files,List,Daftar file non-image
+hashes,Dictionary,Hash gambar untuk deteksi duplikat
+safe_duplicates,List,Daftar gambar duplikat aman
+suspicious,List,Daftar gambar mencurigakan antar kelas
+anomali_images,List,Daftar gambar anomali/outlier
+detector,Object,Model MTCNN untuk deteksi wajah
+input_folder,String,Folder input resize
+output_folder,String,Folder output resize
+input_path,String,Path input preprocessing
+output_path,String,Path output preprocessing
+source_dir,String,Direktori sumber dataset
+output_dir,String,Direktori hasil split dataset
+class_counts,List,Jumlah gambar tiap kelas
+df_counts,DataFrame,Dataframe distribusi kelas
+image_sizes,List,Resolusi gambar untuk EDA
+brightness_values,List,Nilai brightness gambar
